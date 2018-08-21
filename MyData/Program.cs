@@ -9,6 +9,7 @@ namespace MyData
         {
             Application.Init();
             MainWindow win = new MainWindow();
+            win.Title = "MyData - Coded by Tricky";
             win.Show();
             Application.Run();
         }
