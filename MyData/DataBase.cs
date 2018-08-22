@@ -37,7 +37,7 @@ namespace MyData
             // saver comes here later!
         }
 
-        public DataBase(){
+        public void DataBase(){
 
         }
     }
