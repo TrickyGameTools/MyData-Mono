@@ -40,6 +40,9 @@ namespace MyData
             int linecount = 0;
             string TL;
             string Chunk = "UNKNOWN";
+            int cpage = 0;
+            int pagey = 0; // Not sure if this is needed, but I need to be sure
+            string pagename = "";
             foreach(string L in lines){
                 TL = L.Trim();
                 if (TL.Length()>0  && TL.Substring(0,1)!="#" && TL.Substring(0,2)!="//" && TL.Substring(0,2)!="--"){ // No empty lines and no comment either.
