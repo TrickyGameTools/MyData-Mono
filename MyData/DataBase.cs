@@ -43,7 +43,9 @@ namespace MyData
             foreach(string L in lines){
                 TL = L.Trim();
                 if (TL.Length()>0  && TL.Substring(0,1)!="#" && TL.Substring(0,2)!="//" && TL.Substring(0,2)!="--"){ // No empty lines and no comment either.
-
+                    if (TL.ToUpper()=="[SYSTEM]") {
+                        Chunk = "System";
+                    }
                 }
             }
             // loader comes here later!
