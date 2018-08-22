@@ -23,6 +23,7 @@ namespace MyData
         public static Button ButForceMod = new Button("Force Modified");
         public static Button ButSave = new Button("Save and Export");
         static HBox WorkBox = new HBox();
+        public static TreeView ListRecords = new TreeView();
 
         static bool ChooseTheFile(Window w){
             FileChooserDialog fcd = new FileChooserDialog("Choose database", w, FileChooserAction.Open,"Select", ResponseType.Accept, "Cancel", ResponseType.Close);
@@ -82,8 +83,9 @@ namespace MyData
             MenuBoxRow2.Add(ButRename);
             MenuBoxRow2.Add(ButForceMod);
             MenuBoxRow2.Add(ButSave);
-            HeadBox.Add(WorkBox);
             MainBox.Add(HeadBox);
+            MainBox.Add(WorkBox);
+            WorkBox.Add(ListRecords);
             win.Add(MainBox);
             win.ShowAll();
             Application.Run(); 
