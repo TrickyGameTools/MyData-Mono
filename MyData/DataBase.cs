@@ -16,6 +16,14 @@ namespace MyData
         public SortedDictionary<string, MyRecord> Record = new SortedDictionary<string, MyRecord>();
         public SortedDictionary<string, string> MyStructure = new SortedDictionary<string, string>();
 
+        static void CRASH(string message){
+            MessageDialog md = new MessageDialog(MainClass.win,
+                            DialogFlags.DestroyWithParent, MessageType.Error,
+                            ButtonsType.Close, message);
+            md.Run();
+            md.Destroy();
+        }
+
         public static bool Load(string filename){
             bool ret = true;
             string[] lines;
