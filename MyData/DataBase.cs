@@ -13,6 +13,15 @@ namespace MyData
     {
         public SortedDictionary<string, MyRecord> Record = new SortedDictionary<string, MyRecord>();
         public SortedDictionary<string, string> MyStructure = new SortedDictionary<string, string>();
+
+        public void Load(string filename){
+            // loader comes here later!
+        }
+
+        public void Save(string filename){
+            // saver comes here later!
+        }
+
         public DataBase()
         {
 
