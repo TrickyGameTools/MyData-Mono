@@ -5,7 +5,8 @@ namespace MyData
 {
 
     public class MyRecord {
-        public SortedDictionary<string, string> value = new SortedDictionary<string, string>(); 
+        public SortedDictionary<string, string> value = new SortedDictionary<string, string>();
+        public bool MODIFIED = false;
     }
 
 
