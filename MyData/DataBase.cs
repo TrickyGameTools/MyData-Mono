@@ -3,9 +3,16 @@ using System.Collections.Generic;
 
 namespace MyData
 {
+
+    public class MyRecord {
+        public SortedDictionary<string, string> value = new SortedDictionary<string, string>(); 
+    }
+
+
     public class DataBase
     {
-        public SortedDictionary<string, string> recitem = new SortedDictionary<string,string>(); // temp line... Something more accurate may come later.
+        public SortedDictionary<string, MyRecord> Record = new SortedDictionary<string, MyRecord>();
+        public SortedDictionary<string, string> MyStructure = new SortedDictionary<string, string>();
         public DataBase()
         {
 
