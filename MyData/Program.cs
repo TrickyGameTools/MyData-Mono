@@ -9,6 +9,8 @@ namespace MyData
     {
         static public string filename;
         public static MainWindow win;
+        static HBox HeadBox;
+        static Image Girl;
 
         static bool ChooseTheFile(Window w){
             FileChooserDialog fcd = new FileChooserDialog("Choose database", w, FileChooserAction.Open,"Select", ResponseType.Accept, "Cancel", ResponseType.Close);
@@ -37,19 +39,28 @@ namespace MyData
             System.IO.Stream stream = asm.GetManifestResourceStream("MyData.Properties.Icon.png");
             Gdk.Pixbuf PIX = new Gdk.Pixbuf(stream);
             win.Icon = PIX;
+            stream.Dispose();
+            stream = asm.GetManifestResourceStream("MyData.Properties.Icon.png");
+            Girl = new Image(stream);
+            stream.Dispose();
         }
 
         public static void Main(string[] args) {
             Application.Init();
+            Window tWin = new Window("Schijt");
+            tWin.Resize(400, 400);
+            if (!ChooseTheFile(tWin)) return;
+            tWin.Hide();
+            //TestIncbin(win); // debug ONLY!
+            if (!MyDataBase.Load(filename)) return;
             win = new MainWindow();
             win.Resize(1000, 800);
+            win.Title = filename + " - MyData - Coded by Tricky";
+            HeadBox = new HBox();
             SetIcon(win);
-            if (!ChooseTheFile(win)) return;
-            win.Title = filename+" - MyData - Coded by Tricky";
-            //TestIncbin(win); // debug ONLY!
-            if (!MyDataBase.Load(filename))
-            win.Show();
-
+            HeadBox.Add(Girl);
+            win.Add(HeadBox);
+            win.ShowAll();
             Application.Run(); 
         }
     }
