@@ -37,6 +37,15 @@ namespace MyData
                 md.Destroy();
                 return false;
             }
+            int linecount = 0;
+            string TL;
+            string Chunk = "UNKNOWN";
+            foreach(string L in lines){
+                TL = L.Trim();
+                if (TL.Length()>0  && TL.Substring(0,1)!="#" && TL.Substring(0,2)!="//" && TL.Substring(0,2)!="--"){ // No empty lines and no comment either.
+
+                }
+            }
             // loader comes here later!
             return ret;
         }
