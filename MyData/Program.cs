@@ -24,6 +24,7 @@ namespace MyData
         public static Button ButSave = new Button("Save and Export");
         static HBox WorkBox = new HBox();
         public static TreeView ListRecords = new TreeView();
+        public static Notebook Pages = new Notebook();
 
         static bool ChooseTheFile(Window w){
             FileChooserDialog fcd = new FileChooserDialog("Choose database", w, FileChooserAction.Open,"Select", ResponseType.Accept, "Cancel", ResponseType.Close);
@@ -86,6 +87,7 @@ namespace MyData
             MainBox.Add(HeadBox);
             MainBox.Add(WorkBox);
             WorkBox.Add(ListRecords);
+            WorkBox.Add(Pages);
             win.Add(MainBox);
             win.ShowAll();
             Application.Run(); 
