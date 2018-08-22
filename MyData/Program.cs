@@ -22,6 +22,7 @@ namespace MyData
         public static Button ButRename = new Button("Rename Record");
         public static Button ButForceMod = new Button("Force Modified");
         public static Button ButSave = new Button("Save and Export");
+        static HBox WorkBox = new HBox();
 
         static bool ChooseTheFile(Window w){
             FileChooserDialog fcd = new FileChooserDialog("Choose database", w, FileChooserAction.Open,"Select", ResponseType.Accept, "Cancel", ResponseType.Close);
@@ -81,6 +82,7 @@ namespace MyData
             MenuBoxRow2.Add(ButRename);
             MenuBoxRow2.Add(ButForceMod);
             MenuBoxRow2.Add(ButSave);
+            HeadBox.Add(WorkBox);
             MainBox.Add(HeadBox);
             win.Add(MainBox);
             win.ShowAll();
