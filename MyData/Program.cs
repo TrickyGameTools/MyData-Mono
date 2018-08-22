@@ -2,6 +2,7 @@
 using Gtk;
 using System.Reflection;
 
+
 namespace MyData
 {
     class MainClass
@@ -26,16 +27,26 @@ namespace MyData
             string[] resNames = Assembly.GetExecutingAssembly().GetManifestResourceNames();
             string tout = "";
             foreach (string resName in resNames)
-                tout += resName; //Console.WriteLine(resName);
+                tout += resName+"; "; //Console.WriteLine(resName);
             w.Title = "I got: " + tout;
         }
+
+        static void SetIcon(MainWindow w){
+
+            Assembly asm = Assembly.GetExecutingAssembly();
+            System.IO.Stream stream = asm.GetManifestResourceStream("MyData.Properties.Icon.png");
+            Gdk.Pixbuf PIX = new Gdk.Pixbuf(stream);
+            win.Icon = PIX;
+        }
+
         public static void Main(string[] args) {
             Application.Init();
             win = new MainWindow();
-            win.Title = "MyData - Coded by Tricky";
-            TestIncbin(win); // debug ONLY!
             win.Resize(1000, 800);
+            SetIcon(win);
             if (!ChooseTheFile(win)) return;
+            win.Title = filename+" - MyData - Coded by Tricky";
+            //TestIncbin(win); // debug ONLY!
             if (!MyDataBase.Load(filename))
             win.Show();
 
