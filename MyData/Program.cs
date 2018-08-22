@@ -9,8 +9,19 @@ namespace MyData
     {
         static public string filename;
         public static MainWindow win;
+        static VBox MainBox;
         static HBox HeadBox;
         static Image Girl;
+        static VBox MenuBoxRoot = new VBox();
+        static HBox MenuBoxRow1 = new HBox();
+        static HBox MenuBoxRow2 = new HBox();
+        static HBox MenuBoxRow3 = new HBox();
+        public static Button ButNew = new Button("New Record");
+        public static Button ButDupe = new Button("Duplicate Record");
+        public static Button ButRemove = new Button("Remove Record");
+        public static Button ButRename = new Button("Rename Record");
+        public static Button ButForceMod = new Button("Force Modified");
+        public static Button ButSave = new Button("Save and Export");
 
         static bool ChooseTheFile(Window w){
             FileChooserDialog fcd = new FileChooserDialog("Choose database", w, FileChooserAction.Open,"Select", ResponseType.Accept, "Cancel", ResponseType.Close);
@@ -56,10 +67,22 @@ namespace MyData
             win = new MainWindow();
             win.Resize(1000, 800);
             win.Title = filename + " - MyData - Coded by Tricky";
+            MainBox = new VBox();
             HeadBox = new HBox();
             SetIcon(win);
             HeadBox.Add(Girl);
-            win.Add(HeadBox);
+            HeadBox.Add(MenuBoxRoot);
+            MenuBoxRoot.Add(MenuBoxRow1);
+            MenuBoxRoot.Add(MenuBoxRow2);
+            MenuBoxRoot.Add(MenuBoxRow3);
+            MenuBoxRow1.Add(ButNew);
+            MenuBoxRow1.Add(ButDupe);
+            MenuBoxRow1.Add(ButRemove);
+            MenuBoxRow2.Add(ButRename);
+            MenuBoxRow2.Add(ButForceMod);
+            MenuBoxRow2.Add(ButSave);
+            MainBox.Add(HeadBox);
+            win.Add(MainBox);
             win.ShowAll();
             Application.Run(); 
         }
