@@ -65,6 +65,10 @@ namespace MyData
                     }
                 } else if (TL.ToUpper() == "[RECORDS]") {
                     Chunk = "Records";
+                } else if (TL.ToUpper() == "[DEFAULTS]") {
+                    Chunk = "Default";
+                } else if (TL.Length>7 && TL.ToUpper().Substring(0,7)=="[ALLOW:") {
+                    Chunk = "Allow";
                 }
             }
             // loader comes here later!
