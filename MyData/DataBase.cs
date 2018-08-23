@@ -114,6 +114,12 @@ namespace MyData
                                         if (SL.Length != 2) { CRASH("Invalid string declaration in line #"+linecount+"\n\n"+TL); return false; }
                                         Field2Gui.NewString(CurrentPanel, SL[1]);
                                         break;
+                                    case "int":
+                                    case "double":
+                                        if (SL.Length != 2) { CRASH("Invalid number declaration in line #" + linecount + "\n\n" + TL); return false; }
+                                        Field2Gui.NewNumber(CurrentPanel, SL[0],SL[1]);
+                                        break;
+
 
                                 }
                                 break;
