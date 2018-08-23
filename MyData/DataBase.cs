@@ -49,7 +49,7 @@ namespace MyData
             int cpage = 0;
             int pagey = 0; // Not sure if this is needed, but I need to be sure
             string pagename = "";
-            VBox CurrentPanel;
+            VBox CurrentPanel = null; // This definition is absolutely LUDICROUS, but it prevents a "Use of unassinged local variable" error....
             foreach(string L in lines){
                 linecount++;
                 TL = L.Trim();
@@ -87,6 +87,30 @@ namespace MyData
                         {
                             CRASH("Unknown Chunk definition in line #" + linecount + "\n\n" + TL);
                             return false;
+                        }
+                    } else {
+                        switch(Chunk){
+                            case "System":
+                                // Actual code comes later!
+                                break;
+                            case "Structure":
+                                var TTL = TL;
+                                TTL = TTL.Replace("\t", " ");
+                                string OTL;
+                                do { OTL = TTL; TTL = TTL.Replace("  ", " "); } while( OTL != TTL );
+                                var SL = TTL.Split(' ');
+                                SL[0] = SL[0].ToLower();
+                                if (SL[0]!="strike" && SL.Length<2) {
+                                    CRASH("Invalid structure field declaration in line #" + linecount + "\n\n" + TL);
+                                    return false;
+                                }
+                                switch(SL[0]){
+                                    case "strike": break;
+                                    case "info":
+                                        CurrentPanel.Add(new Label(TL.Substring(5, TL.Length - 5)));
+                                        break;
+                                }
+                                break;
                         }
                     }
                 }
