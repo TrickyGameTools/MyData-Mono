@@ -75,7 +75,7 @@ namespace MyData
                         {
                             Chunk = "Records";
                         }
-                        else if (TL.ToUpper() == "[DEFAULTS]")
+                        else if (TL.ToUpper() == "[DEFAULT]")
                         {
                             Chunk = "Default";
                         }
