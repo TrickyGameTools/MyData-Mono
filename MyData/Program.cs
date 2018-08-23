@@ -1,6 +1,7 @@
 ﻿using System;
 using Gtk;
 using System.Reflection;
+using System.Collections.Generic;
 
 
 namespace MyData
@@ -8,6 +9,7 @@ namespace MyData
     class MainClass
     {
         static public string filename;
+        static public MyBase Base = new MyBase();
         public static MainWindow win;
         static VBox MainBox;
         static HBox HeadBox;
@@ -25,6 +27,7 @@ namespace MyData
         static HBox WorkBox = new HBox();
         public static TreeView ListRecords = new TreeView();
         public static Notebook Pages = new Notebook();
+        public static List<VBox> Panels = new List<VBox>();
 
         static bool ChooseTheFile(Window w){
             FileChooserDialog fcd = new FileChooserDialog("Choose database", w, FileChooserAction.Open,"Select", ResponseType.Accept, "Cancel", ResponseType.Close);

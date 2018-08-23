@@ -12,7 +12,8 @@ namespace MyData
 
     public class MyBase {
         public Dictionary<string, string> fields = new Dictionary<string, string>();
-        public SortedDictionary<string, MyRecord>=new Dictionary<string,MyRecord>();
+        public Dictionary<string, string> defaults = new Dictionary<string, string>();
+        public SortedDictionary<string, MyRecord> records = new SortedDictionary<string,MyRecord>();
     }
 
 
@@ -48,12 +49,22 @@ namespace MyData
             int cpage = 0;
             int pagey = 0; // Not sure if this is needed, but I need to be sure
             string pagename = "";
+            VBox CurrentPanel;
             foreach(string L in lines){
+                linecount++;
                 TL = L.Trim();
-                if (TL.Length()>0  && TL.Substring(0,1)!="#" && TL.Substring(0,2)!="//" && TL.Substring(0,2)!="--"){ // No empty lines and no comment either.
-                    if (TL.ToUpper()=="[SYSTEM]") {
+                if (TL.Length > 0 && TL.Substring(0, 1) != "#" && TL.Substring(0, 2) != "//" && TL.Substring(0, 2) != "--") { // No empty lines and no comment either.
+                    if (TL.ToUpper() == "[SYSTEM]") {
                         Chunk = "System";
+                    } else if (TL.Length >= 6 && TL.ToUpper().Substring(0, 6) == "[PAGE:") {
+                        Chunk = "Structure";
+                        cpage++;
+                        pagey = 0;
+                        pagename = TL.Substring(6, TL.Length - 7).Trim();
+                        CurrentPanel = Field2Gui.NewPage(pagename);
                     }
+                } else if (TL.ToUpper() == "[RECORDS]") {
+                    Chunk = "Records";
                 }
             }
             // loader comes here later!
