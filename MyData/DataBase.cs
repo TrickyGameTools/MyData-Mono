@@ -82,6 +82,9 @@ namespace MyData
                     else if (TL.Length > 7 && TL.ToUpper().Substring(0, 7) == "[ALLOW:")
                     {
                         Chunk = "Allow";
+                    } else {
+                        CRASH("Unknown Chunk definition in line #" + linecount + "\n\n" + TL);
+                        return false;
                     }
                 }
             }
