@@ -70,21 +70,24 @@ namespace MyData
                             pagename = TL.Substring(6, TL.Length - 7).Trim();
                             CurrentPanel = Field2Gui.NewPage(pagename);
                         }
-                    }
-                    else if (TL.ToUpper() == "[RECORDS]")
-                    {
-                        Chunk = "Records";
-                    }
-                    else if (TL.ToUpper() == "[DEFAULTS]")
-                    {
-                        Chunk = "Default";
-                    }
-                    else if (TL.Length > 7 && TL.ToUpper().Substring(0, 7) == "[ALLOW:")
-                    {
-                        Chunk = "Allow";
-                    } else {
-                        CRASH("Unknown Chunk definition in line #" + linecount + "\n\n" + TL);
-                        return false;
+
+                        else if (TL.ToUpper() == "[RECORDS]")
+                        {
+                            Chunk = "Records";
+                        }
+                        else if (TL.ToUpper() == "[DEFAULTS]")
+                        {
+                            Chunk = "Default";
+                        }
+                        else if (TL.Length > 7 && TL.ToUpper().Substring(0, 7) == "[ALLOW:")
+                        {
+                            Chunk = "Allow";
+                        }
+                        else
+                        {
+                            CRASH("Unknown Chunk definition in line #" + linecount + "\n\n" + TL);
+                            return false;
+                        }
                     }
                 }
             }
