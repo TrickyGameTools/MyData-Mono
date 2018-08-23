@@ -84,6 +84,8 @@ namespace MyData
             MainClass.Base.fields[name] = "mc";
             MainClass.Base.defaults[name] = "";
             mmc.HeadersVisible = false;
+            mmc.FixedHeightMode = true;
+            mmc.HeightRequest = 30;
             return mmc;
         }
 
