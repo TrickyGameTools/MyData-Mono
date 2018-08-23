@@ -53,22 +53,36 @@ namespace MyData
             foreach(string L in lines){
                 linecount++;
                 TL = L.Trim();
-                if (TL.Length > 0 && TL.Substring(0, 1) != "#" && TL.Substring(0, 2) != "//" && TL.Substring(0, 2) != "--") { // No empty lines and no comment either.
-                    if (TL.ToUpper() == "[SYSTEM]") {
-                        Chunk = "System";
-                    } else if (TL.Length >= 6 && TL.ToUpper().Substring(0, 6) == "[PAGE:") {
-                        Chunk = "Structure";
-                        cpage++;
-                        pagey = 0;
-                        pagename = TL.Substring(6, TL.Length - 7).Trim();
-                        CurrentPanel = Field2Gui.NewPage(pagename);
+                if (TL.Length > 0 && TL.Substring(0, 1) != "#" && TL.Substring(0, 2) != "//" && TL.Substring(0, 2) != "--")
+                { // No empty lines and no comment either.
+                    if (TL.Substring(0, 1) == "[" && TL.Substring(TL.Length - 1, 1) == "]")
+                    {
+
+                        if (TL.ToUpper() == "[SYSTEM]")
+                        {
+                            Chunk = "System";
+                        }
+                        else if (TL.Length >= 6 && TL.ToUpper().Substring(0, 6) == "[PAGE:")
+                        {
+                            Chunk = "Structure";
+                            cpage++;
+                            pagey = 0;
+                            pagename = TL.Substring(6, TL.Length - 7).Trim();
+                            CurrentPanel = Field2Gui.NewPage(pagename);
+                        }
                     }
-                } else if (TL.ToUpper() == "[RECORDS]") {
-                    Chunk = "Records";
-                } else if (TL.ToUpper() == "[DEFAULTS]") {
-                    Chunk = "Default";
-                } else if (TL.Length>7 && TL.ToUpper().Substring(0,7)=="[ALLOW:") {
-                    Chunk = "Allow";
+                    else if (TL.ToUpper() == "[RECORDS]")
+                    {
+                        Chunk = "Records";
+                    }
+                    else if (TL.ToUpper() == "[DEFAULTS]")
+                    {
+                        Chunk = "Default";
+                    }
+                    else if (TL.Length > 7 && TL.ToUpper().Substring(0, 7) == "[ALLOW:")
+                    {
+                        Chunk = "Allow";
+                    }
                 }
             }
             // loader comes here later!
