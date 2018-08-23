@@ -83,6 +83,7 @@ namespace MyData
             pg.Add(tbox);
             MainClass.Base.fields[name] = "mc";
             MainClass.Base.defaults[name] = "";
+            mmc.HeadersVisible = false;
             return mmc;
         }
 
