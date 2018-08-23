@@ -29,6 +29,8 @@ namespace MyData
         public static Notebook Pages = new Notebook();
         public static List<VBox> Panels = new List<VBox>();
         public static Dictionary<string, TextView> DStrings = new Dictionary<string, TextView>();
+        public static Dictionary<string, RadioButton> RBTbools = new Dictionary<string, RadioButton>();
+        public static Dictionary<string, RadioButton> RBFbools = new Dictionary<string, RadioButton>();
 
         static bool ChooseTheFile(Window w){
             FileChooserDialog fcd = new FileChooserDialog("Choose database", w, FileChooserAction.Open,"Select", ResponseType.Accept, "Cancel", ResponseType.Close);

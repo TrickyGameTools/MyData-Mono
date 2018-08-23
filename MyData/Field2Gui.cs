@@ -53,5 +53,20 @@ namespace MyData
             MainClass.Base.defaults[name] = "";
         }
 
+        static public void NewBool(VBox pg,string name){
+            var but1 = new RadioButton("True");
+            var but2 = new RadioButton(but1, "False");
+            var tbox = new HBox();
+            tbox.Add(new Label("bool"));
+            tbox.Add(new Label(name));
+            tbox.Add(but1);
+            tbox.Add(but2);
+            pg.Add(tbox);
+            MainClass.RBTbools[name] = but1;
+            MainClass.RBFbools[name] = but2;
+            MainClass.Base.fields[name] = "bool";
+            MainClass.Base.defaults[name] = "bool";
+        }
+
     }
 }

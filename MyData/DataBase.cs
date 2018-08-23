@@ -119,7 +119,10 @@ namespace MyData
                                         if (SL.Length != 2) { CRASH("Invalid number declaration in line #" + linecount + "\n\n" + TL); return false; }
                                         Field2Gui.NewNumber(CurrentPanel, SL[0],SL[1]);
                                         break;
-
+                                    case "bool":
+                                        if (SL.Length != 2) { CRASH("Invalid boolean declaration in line #" + linecount + "\n\n" + TL); return false; }
+                                        Field2Gui.NewBool(CurrentPanel, SL[1]);
+                                        break;
 
                                 }
                                 break;
