@@ -10,6 +10,11 @@ namespace MyData
         public bool MODIFIED = false;
     }
 
+    public class MyBase {
+        public Dictionary<string, string> fields = new Dictionary<string, string>();
+        public SortedDictionary<string, MyRecord>=new Dictionary<string,MyRecord>();
+    }
+
 
     public class MyDataBase
     {
