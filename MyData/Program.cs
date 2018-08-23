@@ -28,6 +28,7 @@ namespace MyData
         public static TreeView ListRecords = new TreeView();
         public static Notebook Pages = new Notebook();
         public static List<VBox> Panels = new List<VBox>();
+        public static Dictionary<string, TextView> DStrings = new Dictionary<string, TextView>();
 
         static bool ChooseTheFile(Window w){
             FileChooserDialog fcd = new FileChooserDialog("Choose database", w, FileChooserAction.Open,"Select", ResponseType.Accept, "Cancel", ResponseType.Close);

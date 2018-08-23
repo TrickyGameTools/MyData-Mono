@@ -108,7 +108,13 @@ namespace MyData
                                     case "strike": break;
                                     case "info":
                                         CurrentPanel.Add(new Label(TL.Substring(5, TL.Length - 5)));
+                                        pagey += 25;
                                         break;
+                                    case "string":
+                                        if (SL.Length != 2) { CRASH("Invalid string declaration in line #"+linecount+"\n\n"+TL); return false; }
+                                        Field2Gui.NewString(CurrentPanel, SL[1]);
+                                        break;
+
                                 }
                                 break;
                         }
