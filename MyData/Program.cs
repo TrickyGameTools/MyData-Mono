@@ -31,6 +31,7 @@ namespace MyData
         public static Dictionary<string, TextView> DStrings = new Dictionary<string, TextView>();
         public static Dictionary<string, RadioButton> RBTbools = new Dictionary<string, RadioButton>();
         public static Dictionary<string, RadioButton> RBFbools = new Dictionary<string, RadioButton>();
+        public static Dictionary<string, TreeView> mc = new Dictionary<string, TreeView>();
 
         static bool ChooseTheFile(Window w){
             FileChooserDialog fcd = new FileChooserDialog("Choose database", w, FileChooserAction.Open,"Select", ResponseType.Accept, "Cancel", ResponseType.Close);

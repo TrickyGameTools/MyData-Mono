@@ -50,6 +50,8 @@ namespace MyData
             int pagey = 0; // Not sure if this is needed, but I need to be sure
             string pagename = "";
             VBox CurrentPanel = null; // This definition is absolutely LUDICROUS, but it prevents a "Use of unassinged local variable" error....
+            TreeView CurrentMC = null;
+            ListStore CurrentListStore = null;
             foreach(string L in lines){
                 linecount++;
                 TL = L.Trim();
@@ -123,13 +125,32 @@ namespace MyData
                                         if (SL.Length != 2) { CRASH("Invalid boolean declaration in line #" + linecount + "\n\n" + TL); return false; }
                                         Field2Gui.NewBool(CurrentPanel, SL[1]);
                                         break;
-
+                                    case "mc":
+                                        if (SL.Length != 2) { CRASH("Invalid multiple choice declaration in line #" + linecount + "\n\n" + TL); return false; }
+                                        if (CurrentMC != null) CurrentMC.Model = CurrentListStore;
+                                        CurrentMC = Field2Gui.NewMC(CurrentPanel, SL[1]);
+                                        CurrentListStore = new ListStore(typeof(string));
+                                        break;
+                                    case "@i":
+                                        if (CurrentMC == null) { CRASH("Add item request without a multiple choice declaration in line #" + linecount); return false; }
+                                        if (TL.Length < 4) { CRASH("Invalid item in line #" + linecount); return false; }
+                                        /*
+                                        CurrentMC.AppendText(TL.Substring(3, TL.Length - 3));
+                                        CurrentMC.Active = 0;
+                                        */
+                                        var itext = TL.Substring(3, TL.Length - 3);
+                                        // CRASH("Test @i!\n"+itext);
+                                        CurrentListStore.AppendValues(itext);
+                                        //CurrentMC.Add(new Label(itext));
+                                        break;
                                 }
                                 break;
                         }
                     }
                 }
-            }
+            }            
+            // Make sure MCs are properly finalized
+            if (CurrentMC != null) CurrentMC.Model = CurrentListStore;
             // loader comes here later!
             return ret;
         }

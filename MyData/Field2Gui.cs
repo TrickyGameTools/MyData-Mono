@@ -65,7 +65,25 @@ namespace MyData
             MainClass.RBTbools[name] = but1;
             MainClass.RBFbools[name] = but2;
             MainClass.Base.fields[name] = "bool";
-            MainClass.Base.defaults[name] = "bool";
+            MainClass.Base.defaults[name] = "TRUE";
+        }
+
+        static public TreeView NewMC(VBox pg,string name){
+            var mmc = new TreeView();
+            var tbox = new HBox();
+            var tvc = new TreeViewColumn();
+            var NameCell = new CellRendererText();
+            tvc.PackStart(NameCell, true);
+            tvc.AddAttribute(NameCell, "text", 0);
+            mmc.AppendColumn(tvc);
+            tvc.Title = name;
+            tbox.Add(new Label("mc")); // FYI: mc = Multiple Choice
+            tbox.Add(new Label(name));
+            tbox.Add(mmc);
+            pg.Add(tbox);
+            MainClass.Base.fields[name] = "mc";
+            MainClass.Base.defaults[name] = "";
+            return mmc;
         }
 
     }
