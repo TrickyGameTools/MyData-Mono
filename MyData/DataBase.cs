@@ -65,7 +65,13 @@ namespace MyData
         public static bool Load(string filename){
             bool ret = true;
             string[] lines;
-            try{
+            string OnlyAllowExt = "";
+            string[] OnlyAllowExtList = null;
+            string OnlyAllowPath = "";
+            string[] OnlyAllowPathList = null;
+            string OnlyAllowPrefix = "";
+            try
+            {
                 lines = System.IO.File.ReadAllLines(filename);
             } catch {
                 MessageDialog md = new MessageDialog(MainClass.win,
@@ -201,6 +207,33 @@ namespace MyData
                                             if (l.Length>=5 && l.Substring(0, 5) == "Rec: " && readrec) CurrentListStore.AppendValues(l.Substring(4, l.Length - 4));
                                         }
                                         break;
+                                    case "@noextfilter":
+                                        OnlyAllowExt = "";
+                                        OnlyAllowExtList = null;
+                                        break;
+                                    case "@nopathfilter": case "@nodirfilter":
+                                        OnlyAllowPath = "";
+                                        OnlyAllowPathList = null;
+                                        break;
+                                    case "@extfilter":
+                                        OnlyAllowExt = qstr.Right(TL, qstr.Len(TL) - qstr.Len("@extfilter ")).ToUpper().Trim();
+                                        OnlyAllowExtList = OnlyAllowExt.Split(',');
+                                        break;
+                                    case "@pathfilter":
+                                        OnlyAllowPath = qstr.Right(TL, qstr.Len(TL) - qstr.Len("@pathfilter ")).ToUpper().Trim();
+                                        OnlyAllowPathList = OnlyAllowPath.Split(',');
+                                        break;
+                                    case "@dirfilter":
+                                        OnlyAllowPath = qstr.Right(TL, qstr.Len(TL) - qstr.Len("@dirfilter ")).ToUpper().Trim();
+                                        OnlyAllowPathList = OnlyAllowPath.Split(',');
+                                        break;
+                                    case "@prefix":
+                                        OnlyAllowPrefix = qstr.Right(TL, Len(TL) - Len("@prefix ")).Trim().ToUpper();
+                                        break;
+                                    default:
+                                        CRASH("I do not understand: " + TL);
+                                        return false;
+                                        //break;
                                 }
                                 break;
                         }
