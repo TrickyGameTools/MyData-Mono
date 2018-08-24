@@ -74,6 +74,9 @@
     <Compile Include="..\..\TrickyUnits\mkl.cs">
       <Link>LinkedStuff\mkl.cs</Link>
     </Compile>
+    <Compile Include="..\..\TrickyUnits\qstr.cs">
+      <Link>LinkedStuff\qstr.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="LinkedStuff\" />
