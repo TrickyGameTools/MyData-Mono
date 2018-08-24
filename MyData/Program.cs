@@ -1,7 +1,33 @@
+// Lic:
+// 	MyData for C#
+// 	Main Program
+// 	
+// 	
+// 	
+// 	(c) Jeroen P. Broks, 2018, All rights reserved
+// 	
+// 		This program is free software: you can redistribute it and/or modify
+// 		it under the terms of the GNU General Public License as published by
+// 		the Free Software Foundation, either version 3 of the License, or
+// 		(at your option) any later version.
+// 		
+// 		This program is distributed in the hope that it will be useful,
+// 		but WITHOUT ANY WARRANTY; without even the implied warranty of
+// 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// 		GNU General Public License for more details.
+// 		You should have received a copy of the GNU General Public License
+// 		along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// 		
+// 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
+// 	to the project the exceptions are needed for.
+// Version: 18.08.24
+// EndLic
 ﻿using System;
 using Gtk;
 using System.Reflection;
 using System.Collections.Generic;
+using TrickyUnits;
+
 
 
 namespace MyData
@@ -32,6 +58,11 @@ namespace MyData
         public static Dictionary<string, RadioButton> RBTbools = new Dictionary<string, RadioButton>();
         public static Dictionary<string, RadioButton> RBFbools = new Dictionary<string, RadioButton>();
         public static Dictionary<string, TreeView> mc = new Dictionary<string, TreeView>();
+
+        static MainClass(){
+            MKL.Version("MyData For C# - Program.cs","18.08.24");
+            MKL.Lic    ("MyData For C# - Program.cs","GNU General Public License 3");
+        }
 
         static bool ChooseTheFile(Window w){
             FileChooserDialog fcd = new FileChooserDialog("Choose database", w, FileChooserAction.Open,"Select", ResponseType.Accept, "Cancel", ResponseType.Close);
@@ -68,7 +99,7 @@ namespace MyData
 
         public static void Main(string[] args) {
             Application.Init();
-            Window tWin = new Window("Schijt");
+            Window tWin = new Window("MyData");
             tWin.Resize(400, 400);
             if (!ChooseTheFile(tWin)) return;
             tWin.Hide();
