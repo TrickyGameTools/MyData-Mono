@@ -143,6 +143,11 @@ namespace MyData
                                         CurrentListStore.AppendValues(itext);
                                         //CurrentMC.Add(new Label(itext));
                                         break;
+                                    case "@f":
+                                        itext = TL.Substring(3, TL.Length - 3);
+                                        CRASH("I cannot yet add the items of \"" + itext + "\" into the multiple choice field, because this requires JCR6 support and JCR6 libraries are (at the present time) non-existent in C#.\n\nI do have plans to make it happen for C#, but I cannot do all at once, ya know!");
+                                        break;
+
                                 }
                                 break;
                         }
