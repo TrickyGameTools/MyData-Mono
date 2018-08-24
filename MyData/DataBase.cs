@@ -179,7 +179,28 @@ namespace MyData
                                         itext = TL.Substring(3, TL.Length - 3);
                                         CRASH("I cannot yet add the items of \"" + itext + "\" into the multiple choice field, because this requires JCR6 support and JCR6 libraries are (at the present time) non-existent in C#.\n\nI do have plans to make it happen for C#, but I cannot do all at once, ya know!");
                                         break;
-
+                                    case "@db": // Please note, I just translated the code from BlitzMax as literally as I could.
+                                        if (CurrentMC==null) { CRASH("No list to add database items to in line #" + linecount); return false; }
+                                        // Print "Importing database: " + Trim(Right(TL, Len(TL) - 4))
+                                        var sf = TL.Substring(4, TL.Length - 4);
+                                        if (!(sf.Substring(0,1)=="/" || sf.Substring(0, 1) == @"\" || sf.Substring(0, 2) == ":") ){
+                                            sf = System.IO.Path.GetDirectoryName(filename) + "/" + sf;
+                                        }
+                                        var sdb = System.IO.File.ReadAllLines(sf);
+                                        var readrec = false;
+                                        foreach (string l in sdb)
+                                        {
+                                            if (l.ToUpper() == "[RECORDS]")
+                                            {
+                                                readrec = true;
+                                            }
+                                            else if (l.Length>0 && l.Substring(0, 1) == "[")
+                                            {
+                                                readrec = false;
+                                            }
+                                            if (l.Length>=5 && l.Substring(0, 5) == "Rec: " && readrec) CurrentListStore.AppendValues(l.Substring(4, l.Length - 4));
+                                        }
+                                        break;
                                 }
                                 break;
                         }
