@@ -77,9 +77,77 @@
     <Compile Include="..\..\TrickyUnits\qstr.cs">
       <Link>LinkedStuff\qstr.cs</Link>
     </Compile>
+    <Compile Include="..\..\JCR6\jcr6.cs">
+      <Link>LinkedStuff\JCR6\jcr6.cs</Link>
+    </Compile>
+    <Compile Include="..\..\JCR6\Drivers\Compression\lzma\SevenZipHelper.cs">
+      <Link>LinkedStuff\JCR6\Drivers\Compression\lzma\SevenZipHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\JCR6\Drivers\Compression\lzma\lzma2jcr6.cs">
+      <Link>LinkedStuff\JCR6\Drivers\Compression\lzma\lzma2jcr6.cs</Link>
+    </Compile>
+    <Compile Include="..\..\JCR6\Drivers\Compression\lzma\Common\CRC.cs">
+      <Link>LinkedStuff\JCR6\Drivers\Compression\lzma\Common\CRC.cs</Link>
+    </Compile>
+    <Compile Include="..\..\JCR6\Drivers\Compression\lzma\Common\CommandLineParser.cs">
+      <Link>LinkedStuff\JCR6\Drivers\Compression\lzma\Common\CommandLineParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\JCR6\Drivers\Compression\lzma\Common\InBuffer.cs">
+      <Link>LinkedStuff\JCR6\Drivers\Compression\lzma\Common\InBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\JCR6\Drivers\Compression\lzma\Common\OutBuffer.cs">
+      <Link>LinkedStuff\JCR6\Drivers\Compression\lzma\Common\OutBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\JCR6\Drivers\Compression\lzma\ICoder\ICoder.cs">
+      <Link>LinkedStuff\JCR6\Drivers\Compression\lzma\ICoder\ICoder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\JCR6\Drivers\Compression\lzma\LZ\IMatchFinder.cs">
+      <Link>LinkedStuff\JCR6\Drivers\Compression\lzma\LZ\IMatchFinder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\JCR6\Drivers\Compression\lzma\LZ\LzBinTree.cs">
+      <Link>LinkedStuff\JCR6\Drivers\Compression\lzma\LZ\LzBinTree.cs</Link>
+    </Compile>
+    <Compile Include="..\..\JCR6\Drivers\Compression\lzma\LZ\LzInWindow.cs">
+      <Link>LinkedStuff\JCR6\Drivers\Compression\lzma\LZ\LzInWindow.cs</Link>
+    </Compile>
+    <Compile Include="..\..\JCR6\Drivers\Compression\lzma\LZ\LzOutWindow.cs">
+      <Link>LinkedStuff\JCR6\Drivers\Compression\lzma\LZ\LzOutWindow.cs</Link>
+    </Compile>
+    <Compile Include="..\..\JCR6\Drivers\Compression\lzma\LZMA\LzmaBase.cs">
+      <Link>LinkedStuff\JCR6\Drivers\Compression\lzma\LZMA\LzmaBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\JCR6\Drivers\Compression\lzma\LZMA\LzmaDecoder.cs">
+      <Link>LinkedStuff\JCR6\Drivers\Compression\lzma\LZMA\LzmaDecoder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\JCR6\Drivers\Compression\lzma\LZMA\LzmaEncoder.cs">
+      <Link>LinkedStuff\JCR6\Drivers\Compression\lzma\LZMA\LzmaEncoder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\JCR6\Drivers\Compression\lzma\RangeCoder\RangeCoder.cs">
+      <Link>LinkedStuff\JCR6\Drivers\Compression\lzma\RangeCoder\RangeCoder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\JCR6\Drivers\Compression\lzma\RangeCoder\RangeCoderBit.cs">
+      <Link>LinkedStuff\JCR6\Drivers\Compression\lzma\RangeCoder\RangeCoderBit.cs</Link>
+    </Compile>
+    <Compile Include="..\..\JCR6\Drivers\Compression\lzma\RangeCoder\RangeCoderBitTree.cs">
+      <Link>LinkedStuff\JCR6\Drivers\Compression\lzma\RangeCoder\RangeCoderBitTree.cs</Link>
+    </Compile>
+    <Compile Include="..\..\JCR6\Drivers\FileTypes\QuakePAK.cs">
+      <Link>LinkedStuff\JCR6\Drivers\FileTypes\QuakePAK.cs</Link>
+    </Compile>
+    <Compile Include="..\..\JCR6\Drivers\FileTypes\RealDir.cs">
+      <Link>LinkedStuff\JCR6\Drivers\FileTypes\RealDir.cs</Link>
+    </Compile>
+    <Compile Include="..\..\JCR6\Drivers\FileTypes\WAD.cs">
+      <Link>LinkedStuff\JCR6\Drivers\FileTypes\WAD.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="LinkedStuff\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\JCR6\Drivers\Compression\lzma\readme.md">
+      <Link>LinkedStuff\JCR6\Drivers\Compression\lzma\readme.md</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
