@@ -24,6 +24,7 @@
 // EndLic
 
 ﻿using TrickyUnits;
+using TrickyUnits.GTK;
 using UseJCR6;
 using System;
 using System.Collections.Generic;
@@ -32,25 +33,35 @@ using Gtk;
 namespace MyData
 {
 
-    public class MyRecord {
+    public class MyRecord
+    {
         public SortedDictionary<string, string> value = new SortedDictionary<string, string>();
         public bool MODIFIED = false;
     }
 
-    public class MyBase {
-        public Dictionary<string, string> fields = new Dictionary<string, string>();
-        public Dictionary<string, string> defaults = new Dictionary<string, string>();
-        public SortedDictionary<string, MyRecord> records = new SortedDictionary<string,MyRecord>();
+    public class MyBase
+    {
+        public SortedDictionary<string, MyRecord> records = new SortedDictionary<string, MyRecord>();
     }
 
 
     public class MyDataBase
     {
+        static public Dictionary<string, string> defaults = new Dictionary<string, string>();
+        static public Dictionary<string, string> fields = new Dictionary<string, string>();
         static public SortedDictionary<string, MyRecord> Record = new SortedDictionary<string, MyRecord>();
         static public SortedDictionary<string, string> MyStructure = new SortedDictionary<string, string>();
         static public Dictionary<string, string> sys = new Dictionary<string, string>();
         static public Dictionary<string, string> recexport = new Dictionary<string, string>();
         static public Dictionary<string, string> basexport = new Dictionary<string, string>();
+        static SortedDictionary<string, MyRecord> recs { get => Record; }
+        static bool RemoveNonExistent
+        {
+            get
+            {
+                return (!sys.ContainsKey("REMOVENONEXISTENT")) || sys["REMOVENONEXISTENT"].ToLower() == "yes" || sys["REMOVENONEXISTENT"].ToLower() == "true";
+            }
+        }
 
         static MyDataBase()
         {
@@ -109,6 +120,7 @@ namespace MyData
             VBox CurrentPanel = null; // This definition is absolutely LUDICROUS, but it prevents a "Use of unassinged local variable" error....
             TreeView CurrentMC = null;
             ListStore CurrentListStore = null;
+            MyRecord TRec=null;
             foreach (string L in lines)
             {
                 linecount++;
@@ -183,6 +195,12 @@ namespace MyData
                                 {
                                     CRASH("Invalid structure field declaration in line #" + linecount + "\n\n" + TL);
                                     return false;
+                                }
+                                if (qstr.Left(SL[0], 1) != "@" && qstr.Left(TL, 6).ToLower() != "strike" && qstr.Left(TL, 4).ToLower() != "info")
+                                {
+                                    if (fields.ContainsKey(SL[1])){ CRASH("Duplicate field: " + SL[1]); return false; }
+                                    fields[SL[1]] = SL[0].ToLower();
+                                    // MapInsert fieldonpage, SL[1], pagename
                                 }
                                 switch (SL[0])
                                 {
@@ -322,6 +340,65 @@ namespace MyData
                                         CRASH("I do not understand: " + TL);
                                         return false;
                                         //break;
+                                }
+                                break;
+                            case "Records":
+                                TL = L.Trim();
+
+                                if (qstr.Upper(qstr.Left(TL, 4)) == "REC:")
+                                {
+                                    if (recs.ContainsKey(qstr.Right(TL, TL.Length - 4))) //MapContains(recs, Upper(Trim(Right(TL, Len(TL)-4))))
+                                    {
+                                        switch (QuickGTK.Proceed("Duplicate record definition:\n\n" + qstr.Upper(qstr.MyTrim(qstr.Right(TL, qstr.Len(TL) - 4))) + "\n\nShall I merge the data with the existing record?"))
+                                        {
+                                            case -1:
+                                                //Print "Kill program by user's request";
+                                                return false; //End; 
+                                            case 0:
+                                                //Print "Destroying the old"
+                                                TRec = new MyRecord();
+                                                recs[qstr.Right(TL, TL.Length - 4)] = TRec;
+                                                break;
+                                            case 1:
+                                                //Print "Merging!"
+                                                TRec = recs[qstr.Right(TL, TL.Length - 4)]; //StringMap(MapValueForKey(Recs, Upper(Trim(Right(TL, Len(TL) - 4)))))
+                                                                                            //For Local k$= EachIn MapKeys(TRec) Print K+" = " + TRec.Value(K) Next ' debug line
+                                                break;
+                                        } //End Select
+                                }
+                                else
+                                {
+                                    TRec = new MyRecord(); //New StringMap
+                                    recs[qstr.Right(TL, TL.Length - 4)] = TRec;
+                                }
+                                } else if (TL.IndexOf('=') != -1) {
+                            if (TRec == null) { CRASH("Definition without starting a record first in line #" + linecount + "~n~n" + L); return false; }
+                            SL = TL.Split('=');
+                                    for (int slak = 0; slak < SL.Length; slak++) SL[slak] = qstr.MyTrim(SL[slak]);
+                                    if (!fields.ContainsKey(SL[0]))
+                                    {
+                                        if (RemoveNonExistent)
+                                        {
+                                            switch (QuickGTK.Proceed("Field does not exist ~q" + SL[0] + "~q in line " + linecount + "~n~nRemove this Field?"))
+                                            {
+                                                case -1: return false;
+                                                case 0: TRec.value[SL[0]] = SL[1]; break;
+                                                case 1: break; //Print "Field " + SL[0] + " has been removed from the database!"
+                                            }//End Select
+                                        }
+                                        else
+                                        {
+                                            CRASH("Field does not exist ~q" + SL[0] + "~q in line " + linecount);
+                                            return false;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        TRec.value[SL[0]] = SL[1];
+                                    }
+                                } else {
+                                    CRASH("Syntax error in " + linecount + "~n~n" + L);
+                                    return false;
                                 }
                                 break;
                         }

@@ -144,6 +144,9 @@
       <Link>LinkedStuff\JCR6\qstream.cs</Link>
     </Compile>
     <Compile Include="export.cs" />
+    <Compile Include="..\..\TrickyUnits\gtk\QuickGTK.cs">
+      <Link>LinkedStuff\QuickGTK.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="LinkedStuff\" />

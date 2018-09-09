@@ -62,8 +62,8 @@ namespace MyData
             tbox.Add(ttxt);
             pg.Add(tbox);
             // Database
-            MainClass.Base.fields[name] = "string";
-            MainClass.Base.defaults[name] = "";
+            MyDataBase.fields[name] = "string";
+            MyDataBase.defaults[name] = "";
         }
 
         static public void NewNumber(VBox pg, string numbertype, string name){
@@ -85,8 +85,8 @@ namespace MyData
             tbox.Add(ttxt);
             pg.Add(tbox);
             // Database
-            MainClass.Base.fields[name] = numbertype;
-            MainClass.Base.defaults[name] = "";
+            MyDataBase.fields[name] = numbertype;
+            MyDataBase.defaults[name] = "";
         }
 
         static public void NewBool(VBox pg,string name){
@@ -104,8 +104,8 @@ namespace MyData
             pg.Add(tbox);
             MainClass.RBTbools[name] = but1;
             MainClass.RBFbools[name] = but2;
-            MainClass.Base.fields[name] = "bool";
-            MainClass.Base.defaults[name] = "TRUE";
+            MyDataBase.fields[name] = "bool";
+            MyDataBase.defaults[name] = "TRUE";
         }
 
         static public TreeView NewMC(VBox pg,string name){
@@ -125,8 +125,8 @@ namespace MyData
             tbox.Add(mmc);
 
             pg.Add(tbox);
-            MainClass.Base.fields[name] = "mc";
-            MainClass.Base.defaults[name] = "";
+            MyDataBase.fields[name] = "mc";
+            MyDataBase.defaults[name] = "";
             mmc.HeadersVisible = false;
             mmc.FixedHeightMode = true;
             mmc.HeightRequest = 30;
