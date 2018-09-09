@@ -78,8 +78,9 @@ namespace MyData
         static public void Configure(Gdk.EventConfigure args){
             Girl.SetSizeRequest(390, 364);
             MenuBoxRoot.SetSizeRequest(args.Width - 390, 364);
-            ListRecords.SetSizeRequest(250, args.Height-390);
-            WorkBox.SetSizeRequest(args.Width - 250, args.Height - 390);
+            WorkBox.SetSizeRequest(args.Width, args.Height - 364);
+            ListRecords.SetSizeRequest(250, args.Height-364);
+            Pages.SetSizeRequest(args.Width - 250, args.Height - 364);
         }
 
         static bool ChooseTheFile(Window w){
@@ -150,6 +151,13 @@ namespace MyData
             MainBox.Add(HeadBox);
             MainBox.Add(WorkBox);
             //ListRecords.SetSizeRequest(250, 800);
+            var tvc = new TreeViewColumn();
+            var NameCell = new CellRendererText();
+            tvc.Title = "Records";
+            tvc.PackStart(NameCell, true);
+            tvc.AddAttribute(NameCell, "text", 0);
+            ListRecords.HeightRequest = 800 - 390;
+            ListRecords.AppendColumn(tvc);
             WorkBox.Add(ListRecords);
             WorkBox.Add(Pages);
             //WorkBox.SetSizeRequest(1000, 800 - 390);

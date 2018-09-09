@@ -92,6 +92,13 @@ namespace MyData
             return ok;
         }
 
+        public static void UpdateRecView(){
+            var lst = new ListStore(typeof(string));
+            foreach(string k in recs.Keys)
+                lst.AppendValues(k);
+            MainClass.ListRecords.Model = lst;
+        }
+
         public static bool Load(string filename){
             bool ret = true;
             string[] lines;
@@ -407,7 +414,8 @@ namespace MyData
             }            
             // Make sure MCs are properly finalized
             if (CurrentMC != null) CurrentMC.Model = CurrentListStore;
-            // loader comes here later!
+            // Record list updated?
+            UpdateRecView();
             return ret;
         }
 
