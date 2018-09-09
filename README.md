@@ -1,3 +1,5 @@
+![image](https://user-images.githubusercontent.com/11202073/45264687-eb192380-b440-11e8-858d-79c9d5ac5420.png)
+
 # MyData Mono
 
 At the present time, this repository will just be an experiment to see if I can master the Mono Framework. This framework interests me so much as I want to be more easily portable with my programs to Windows, Mac and Linux than I am now, and if the mono framework can provide me this flexibility I'll take it.
