@@ -28,6 +28,7 @@ using Gtk;
 using System.Reflection;
 using System.Collections.Generic;
 using TrickyUnits;
+using UseJCR6;
 
 
 
@@ -64,6 +65,10 @@ namespace MyData
         static MainClass(){
             MKL.Version("MyData For C# - Program.cs","18.09.09");
             MKL.Lic    ("MyData For C# - Program.cs","GNU General Public License 3");
+            new JCR6_WAD();
+            new JCR6_lzma();
+            var rd = new JCR6_RealDir(); rd.automerge = false;
+            new JCR_QuakePack();
         }
 
         static public void Configure(Gdk.EventConfigure args){

@@ -22,7 +22,9 @@
 // 	to the project the exceptions are needed for.
 // Version: 18.09.09
 // EndLic
+
 ﻿using TrickyUnits;
+using UseJCR6;
 using System;
 using System.Collections.Generic;
 using Gtk;
@@ -62,6 +64,13 @@ namespace MyData
             md.Destroy();
         }
 
+        static bool ListContains(string [] list, string value){
+            foreach (string vcheck in list){
+                if (vcheck == value) return true;
+            }
+            return false;
+        }
+
         public static bool Load(string filename){
             bool ret = true;
             string[] lines;
@@ -90,7 +99,8 @@ namespace MyData
             VBox CurrentPanel = null; // This definition is absolutely LUDICROUS, but it prevents a "Use of unassinged local variable" error....
             TreeView CurrentMC = null;
             ListStore CurrentListStore = null;
-            foreach(string L in lines){
+            foreach (string L in lines)
+            {
                 linecount++;
                 TL = L.Trim();
                 if (TL.Length > 0 && TL.Substring(0, 1) != "#" && TL.Substring(0, 2) != "//" && TL.Substring(0, 2) != "--")
@@ -128,8 +138,11 @@ namespace MyData
                             CRASH("Unknown Chunk definition in line #" + linecount + "\n\n" + TL);
                             return false;
                         }
-                    } else {
-                        switch(Chunk){
+                    }
+                    else
+                    {
+                        switch (Chunk)
+                        {
                             case "System":
                                 // Actual code comes later!
                                 break;
@@ -137,27 +150,29 @@ namespace MyData
                                 var TTL = TL;
                                 TTL = TTL.Replace("\t", " ");
                                 string OTL;
-                                do { OTL = TTL; TTL = TTL.Replace("  ", " "); } while( OTL != TTL );
+                                do { OTL = TTL; TTL = TTL.Replace("  ", " "); } while (OTL != TTL);
                                 var SL = TTL.Split(' ');
                                 SL[0] = SL[0].ToLower();
-                                if (SL[0]!="strike" && SL.Length<2) {
+                                if (SL[0] != "strike" && SL.Length < 2)
+                                {
                                     CRASH("Invalid structure field declaration in line #" + linecount + "\n\n" + TL);
                                     return false;
                                 }
-                                switch(SL[0]){
+                                switch (SL[0])
+                                {
                                     case "strike": break;
                                     case "info":
                                         CurrentPanel.Add(new Label(TL.Substring(5, TL.Length - 5)));
                                         pagey += 25;
                                         break;
                                     case "string":
-                                        if (SL.Length != 2) { CRASH("Invalid string declaration in line #"+linecount+"\n\n"+TL); return false; }
+                                        if (SL.Length != 2) { CRASH("Invalid string declaration in line #" + linecount + "\n\n" + TL); return false; }
                                         Field2Gui.NewString(CurrentPanel, SL[1]);
                                         break;
                                     case "int":
                                     case "double":
                                         if (SL.Length != 2) { CRASH("Invalid number declaration in line #" + linecount + "\n\n" + TL); return false; }
-                                        Field2Gui.NewNumber(CurrentPanel, SL[0],SL[1]);
+                                        Field2Gui.NewNumber(CurrentPanel, SL[0], SL[1]);
                                         break;
                                     case "bool":
                                         if (SL.Length != 2) { CRASH("Invalid boolean declaration in line #" + linecount + "\n\n" + TL); return false; }
@@ -183,13 +198,59 @@ namespace MyData
                                         break;
                                     case "@f":
                                         itext = TL.Substring(3, TL.Length - 3);
-                                        CRASH("I cannot yet add the items of \"" + itext + "\" into the multiple choice field, because this requires JCR6 support and JCR6 libraries are (at the present time) non-existent in C#.\n\nI do have plans to make it happen for C#, but I cannot do all at once, ya know!");
+                                        //CRASH("I cannot yet add the items of \"" + itext + "\" into the multiple choice field, because this requires JCR6 support and JCR6 libraries are (at the present time) non-existent in C#.\n\nI do have plans to make it happen for C#, but I cannot do all at once, ya know!");
+                                        if (CurrentMC == null)
+                                        {
+                                            CRASH("No list to add this item to in line #" + linecount); return false;
+                                        }
+                                        //Print "Importing JCR: " + Trim(Right(TL, Len(TL) - 3))
+                                        var JD = JCR6.Dir(itext); //qstr.MyTrim(qstr.Right(TL, qstr.Len(TL) - 3)));
+                                        var Ok = true;
+                                        if (JD == null)
+                                        {
+                                            CRASH("JCR could not read file: " + qstr.MyTrim(qstr.Right(TL, qstr.Len(TL) - 3)) + "\n" + JCR6.JERROR); return false;
+                                        }
+                                        //'For Local F$=EachIn OnlyAllowPathlist DebugLog "Dir Allowed: "+f; Next
+                                        //'For Local F$=EachIn OnlyAllowextlist  DebugLog "Ext Allowed: "+F; Next
+                                        CRASH($"JCR6 {itext} has {JD.CountEntries} entries"); // debug
+                                        foreach ( string DK in JD.Entries.Keys) //For Local D: TJCREntry = EachIn MapValues(JD.Entries)
+                                        {
+                                            TJCREntry DE = JD.Entries[DK];
+                                            /*
+                                  Rem Old and inefficient
+                                If Not OnlyAllowExtList
+                                    Print "Adding entry: " + D.FileName
+                                    AddGadgetItem lastlist, D.FileName
+                                 ElseIf ListContains(OnlyAllowExtList, Upper(ExtractExt(D.FileName)))
+                                    Print "Adding entry: " + D.FileName + " (approved by the ext filter)"
+                                    AddGadgetItem lastlist, D.FileName
+                                     Else
+                                    'Print " Disapproved: "+D.FileName+"  ("+Upper(ExtractExt(D.FileName))+" is not in the filterlist"+")"
+                                    EndIf
+                                End Rem*/
+                                            Ok = true;//                                                                                                '               '
+                                            if (OnlyAllowExtList != null && OnlyAllowExtList.Length>0) Ok = Ok && ListContains(OnlyAllowExtList, qstr.Upper(qstr.ExtractExt(DE.Entry)));//'DebugLog "    Ext Check: "+D.FileName+" >>> "+Ok
+                                            if (OnlyAllowPathList != null && OnlyAllowPathList.Length>0) Ok = Ok && ListContains(OnlyAllowPathList, qstr.Upper(qstr.ExtractDir(DE.Entry))); //'DebugLog "    Dir Check: "+D.FileName+" >>> "+Ok
+                                            if (OnlyAllowPrefix != "") Ok = Ok && qstr.Prefixed(DE.Entry, OnlyAllowPrefix);
+                                            CRASH($"Entry: {DE.Entry} / {Ok}");
+                                            if (Ok)
+                                            {
+                                                CurrentListStore.AppendValues(DE.Entry); //AddGadgetItem lastlist,D.FileName
+                                                                                         //                                    'DebugLog "Added to list: "+D.filename
+                                            }
+                                            //else
+                                            //{
+                                                //'DebugLog "     Rejected: "+D.filename
+                                            //}//EndIf
+                                        }//Next
+
                                         break;
                                     case "@db": // Please note, I just translated the code from BlitzMax as literally as I could.
-                                        if (CurrentMC==null) { CRASH("No list to add database items to in line #" + linecount); return false; }
+                                        if (CurrentMC == null) { CRASH("No list to add database items to in line #" + linecount); return false; }
                                         // Print "Importing database: " + Trim(Right(TL, Len(TL) - 4))
                                         var sf = TL.Substring(4, TL.Length - 4);
-                                        if (!(sf.Substring(0,1)=="/" || sf.Substring(0, 1) == @"\" || sf.Substring(0, 2) == ":") ){
+                                        if (!(sf.Substring(0, 1) == "/" || sf.Substring(0, 1) == @"\" || sf.Substring(0, 2) == ":"))
+                                        {
                                             sf = System.IO.Path.GetDirectoryName(filename) + "/" + sf;
                                         }
                                         var sdb = System.IO.File.ReadAllLines(sf);
@@ -200,18 +261,19 @@ namespace MyData
                                             {
                                                 readrec = true;
                                             }
-                                            else if (l.Length>0 && l.Substring(0, 1) == "[")
+                                            else if (l.Length > 0 && l.Substring(0, 1) == "[")
                                             {
                                                 readrec = false;
                                             }
-                                            if (l.Length>=5 && l.Substring(0, 5) == "Rec: " && readrec) CurrentListStore.AppendValues(l.Substring(4, l.Length - 4));
+                                            if (l.Length >= 5 && l.Substring(0, 5) == "Rec: " && readrec) CurrentListStore.AppendValues(l.Substring(4, l.Length - 4));
                                         }
                                         break;
                                     case "@noextfilter":
                                         OnlyAllowExt = "";
                                         OnlyAllowExtList = null;
                                         break;
-                                    case "@nopathfilter": case "@nodirfilter":
+                                    case "@nopathfilter":
+                                    case "@nodirfilter":
                                         OnlyAllowPath = "";
                                         OnlyAllowPathList = null;
                                         break;
