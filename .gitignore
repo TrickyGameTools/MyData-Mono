@@ -1,6 +1,9 @@
 # Autosave files
 *~
 
+# Piko Pixel Temp Files
+*.piko-png
+
 # build
 [Oo]bj/
 [Bb]in/
