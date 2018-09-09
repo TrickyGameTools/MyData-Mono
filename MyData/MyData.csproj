@@ -140,6 +140,9 @@
     <Compile Include="..\..\JCR6\Drivers\FileTypes\WAD.cs">
       <Link>LinkedStuff\JCR6\Drivers\FileTypes\WAD.cs</Link>
     </Compile>
+    <Compile Include="..\..\TrickyUnits\qstream.cs">
+      <Link>LinkedStuff\JCR6\qstream.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="LinkedStuff\" />
