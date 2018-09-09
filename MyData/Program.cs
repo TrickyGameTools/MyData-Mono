@@ -36,6 +36,10 @@ namespace MyData
 {
     class MainClass
     {
+        // Core crap
+        public static Dictionary<string, export> exportdrivers = new Dictionary<string, export>();
+
+        // GUI
         public const int winwidth = 1250;
         static public string filename;
         static public MyBase Base = new MyBase();

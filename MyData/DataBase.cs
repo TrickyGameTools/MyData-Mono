@@ -46,8 +46,11 @@ namespace MyData
 
     public class MyDataBase
     {
-        public SortedDictionary<string, MyRecord> Record = new SortedDictionary<string, MyRecord>();
-        public SortedDictionary<string, string> MyStructure = new SortedDictionary<string, string>();
+        static public SortedDictionary<string, MyRecord> Record = new SortedDictionary<string, MyRecord>();
+        static public SortedDictionary<string, string> MyStructure = new SortedDictionary<string, string>();
+        static public Dictionary<string, string> sys = new Dictionary<string, string>();
+        static public Dictionary<string, string> recexport = new Dictionary<string, string>();
+        static public Dictionary<string, string> basexport = new Dictionary<string, string>();
 
         static MyDataBase()
         {
@@ -69,6 +72,13 @@ namespace MyData
                 if (vcheck == value) return true;
             }
             return false;
+        }
+
+        static bool exportcheck(string sexp)
+        {
+            var ok = MainClass.exportdrivers.ContainsKey(sexp);
+            if (!ok) { CRASH($"This database instructs me to export to {sexp}, however I do not have the proper export drivers for that.\n\nPossibly a typo in the system block or an outdated version of MyData.\n\nThe instruction has been ignored!"); }
+            return ok;
         }
 
         public static bool Load(string filename){
@@ -141,17 +151,33 @@ namespace MyData
                     }
                     else
                     {
+                        string[] SL;
                         switch (Chunk)
                         {
                             case "System":
-                                // Actual code comes later!
-                                break;
+                                var posIS = TL.IndexOf('=');
+                                if (posIS < 0) { CRASH("Invalid System Var Definition!"); return false; }
+                                var svar = qstr.Left(TL, posIS ).Trim().ToUpper();
+                                var sval = qstr.Right(TL, TL.Length - (posIS+1)).Trim();
+                                //CRASH($"svar={svar}; sval={sval}");
+                                var sexp = "";
+                                if (qstr.Prefixed(svar,"OUTPUT") && qstr.Suffixed(svar,"BASE")) {
+                                    sexp = qstr.Mid(svar, 7, svar.Length - 10);
+                                    if (exportcheck(sexp)) { basexport[sexp] = sval; }
+                                } else if (qstr.Prefixed(svar, "OUTPUT") && qstr.Suffixed(svar, "REC")) {
+                                    sexp = qstr.Mid(svar, 7, svar.Length - 9);
+                                    if (exportcheck(sexp)) { basexport[sexp] = sval; }
+                                }
+                                else {
+                                    sys[svar] = sval;
+                                }
+                                    break;
                             case "Structure":
                                 var TTL = TL;
                                 TTL = TTL.Replace("\t", " ");
                                 string OTL;
                                 do { OTL = TTL; TTL = TTL.Replace("  ", " "); } while (OTL != TTL);
-                                var SL = TTL.Split(' ');
+                                SL = TTL.Split(' ');
                                 SL[0] = SL[0].ToLower();
                                 if (SL[0] != "strike" && SL.Length < 2)
                                 {
