@@ -20,8 +20,9 @@
 // 		
 // 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 // 	to the project the exceptions are needed for.
-// Version: 18.08.24
+// Version: 18.09.09
 // EndLic
+
 ﻿using System;
 using Gtk;
 using System.Reflection;
@@ -34,6 +35,7 @@ namespace MyData
 {
     class MainClass
     {
+        public const int winwidth = 1250;
         static public string filename;
         static public MyBase Base = new MyBase();
         public static MainWindow win;
@@ -60,8 +62,15 @@ namespace MyData
         public static Dictionary<string, TreeView> mc = new Dictionary<string, TreeView>();
 
         static MainClass(){
-            MKL.Version("MyData For C# - Program.cs","18.08.24");
+            MKL.Version("MyData For C# - Program.cs","18.09.09");
             MKL.Lic    ("MyData For C# - Program.cs","GNU General Public License 3");
+        }
+
+        static public void Configure(Gdk.EventConfigure args){
+            Girl.SetSizeRequest(390, 364);
+            MenuBoxRoot.SetSizeRequest(args.Width - 390, 364);
+            ListRecords.SetSizeRequest(250, args.Height-390);
+            WorkBox.SetSizeRequest(args.Width - 250, args.Height - 390);
         }
 
         static bool ChooseTheFile(Window w){
@@ -106,16 +115,23 @@ namespace MyData
             //TestIncbin(win); // debug ONLY!
             if (!MyDataBase.Load(filename)) return;
             win = new MainWindow();
-            win.Resize(1000, 800);
             win.Title = filename + " - MyData - Coded by Tricky";
             MainBox = new VBox();
             HeadBox = new HBox();
             SetIcon(win);
+            ButNew.SetSizeRequest(203, 121);
+            ButDupe.SetSizeRequest(203, 121);
+            ButRemove.SetSizeRequest(203, 121);
+            ButRename.SetSizeRequest(203, 121);
+            ButForceMod.SetSizeRequest(203, 121);
+            ButSave.SetSizeRequest(203, 121);
             HeadBox.Add(Girl);
             HeadBox.Add(MenuBoxRoot);
-            MenuBoxRoot.Add(MenuBoxRow1);
-            MenuBoxRoot.Add(MenuBoxRow2);
-            MenuBoxRoot.Add(MenuBoxRow3);
+            //Girl.SetSizeRequest(390, 364);
+            //MenuBoxRoot.SetSizeRequest(1000 - 390, 364);
+            MenuBoxRoot.Add(MenuBoxRow1); MenuBoxRow1.SetSizeRequest(1000 - 390, 121);
+            MenuBoxRoot.Add(MenuBoxRow2); MenuBoxRow2.SetSizeRequest(1000 - 390, 121);
+            MenuBoxRoot.Add(MenuBoxRow3); MenuBoxRow3.SetSizeRequest(1000 - 390, 121);
             MenuBoxRow1.Add(ButNew);
             MenuBoxRow1.Add(ButDupe);
             MenuBoxRow1.Add(ButRemove);
@@ -124,9 +140,12 @@ namespace MyData
             MenuBoxRow2.Add(ButSave);
             MainBox.Add(HeadBox);
             MainBox.Add(WorkBox);
+            //ListRecords.SetSizeRequest(250, 800);
             WorkBox.Add(ListRecords);
             WorkBox.Add(Pages);
+            //WorkBox.SetSizeRequest(1000, 800 - 390);
             win.Add(MainBox);
+            win.Resize(1000, 800);
             win.ShowAll();
             Application.Run(); 
         }

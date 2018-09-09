@@ -20,7 +20,7 @@
 // 		
 // 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 // 	to the project the exceptions are needed for.
-// Version: 18.08.24
+// Version: 18.09.09
 // EndLic
 ﻿using TrickyUnits;
 using System;
@@ -49,7 +49,7 @@ namespace MyData
 
         static MyDataBase()
         {
-            MKL.Version("MyData For C# - DataBase.cs","18.08.24");
+            MKL.Version("MyData For C# - DataBase.cs","18.09.09");
             MKL.Lic    ("MyData For C# - DataBase.cs","GNU General Public License 3");
         }
 
@@ -228,7 +228,7 @@ namespace MyData
                                         OnlyAllowPathList = OnlyAllowPath.Split(',');
                                         break;
                                     case "@prefix":
-                                        OnlyAllowPrefix = qstr.Right(TL, Len(TL) - Len("@prefix ")).Trim().ToUpper();
+                                        OnlyAllowPrefix = qstr.Right(TL, qstr.Len(TL) - qstr.Len("@prefix ")).Trim().ToUpper();
                                         break;
                                     default:
                                         CRASH("I do not understand: " + TL);
