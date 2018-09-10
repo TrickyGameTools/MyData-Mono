@@ -20,7 +20,7 @@
 // 		
 // 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 // 	to the project the exceptions are needed for.
-// Version: 18.09.09
+// Version: 18.09.10
 // EndLic
 
 ﻿using System;
@@ -28,6 +28,7 @@ using Gtk;
 using System.Reflection;
 using System.Collections.Generic;
 using TrickyUnits;
+using TrickyUnits.GTK;
 using UseJCR6;
 
 
@@ -67,7 +68,7 @@ namespace MyData
         public static Dictionary<string, TreeView> mc = new Dictionary<string, TreeView>();
 
         static MainClass(){
-            MKL.Version("MyData For C# - Program.cs","18.09.09");
+            MKL.Version("MyData For C# - Program.cs","18.09.10");
             MKL.Lic    ("MyData For C# - Program.cs","GNU General Public License 3");
             new JCR6_WAD();
             new JCR6_lzma();
@@ -116,6 +117,27 @@ namespace MyData
             stream.Dispose();
         }
 
+        static void OnSelectRecord(object sender, RowActivatedArgs a){
+            //var ra = ListRecords.Selection.Data;
+            /* debug
+            QuickGTK.Info($"Activated {ra}");
+            foreach(string k in ra.Keys){
+                var v = ra[k];
+                QuickGTK.Info($"Key {k}\nValue {v}");
+            }
+            // */
+            TreeSelection selection = (sender as TreeView).Selection;
+            TreeModel model;
+            TreeIter iter;
+            if (selection.GetSelected(out model, out iter)){
+                var rec = (model.GetValue(iter, 0) as string);
+                //QuickGTK.Info(rec);
+                Field2Gui.SelectRecord(rec);
+            } else {
+                Pages.Sensitive = false;
+            }
+        }
+
         public static void Main(string[] args) {
             Application.Init();
             Window tWin = new Window("MyData");
@@ -158,11 +180,14 @@ namespace MyData
             tvc.AddAttribute(NameCell, "text", 0);
             ListRecords.HeightRequest = 800 - 390;
             ListRecords.AppendColumn(tvc);
+            ListRecords.RowActivated += OnSelectRecord;
+            //ListRecords.CursorChanged += OnSelectRecord;
             WorkBox.Add(ListRecords);
             WorkBox.Add(Pages);
             //WorkBox.SetSizeRequest(1000, 800 - 390);
             win.Add(MainBox);
             win.Resize(1000, 800);
+            Pages.Sensitive = false;
             win.ShowAll();
             Application.Run(); 
         }

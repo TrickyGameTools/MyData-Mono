@@ -20,7 +20,7 @@
 // 		
 // 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 // 	to the project the exceptions are needed for.
-// Version: 18.09.09
+// Version: 18.09.10
 // EndLic
 ﻿using System;
 using TrickyUnits;
@@ -32,7 +32,7 @@ namespace MyData
 
         static Field2Gui()
         {
-            MKL.Version("MyData For C# - Field2Gui.cs","18.09.09");
+            MKL.Version("MyData For C# - Field2Gui.cs","18.09.10");
             MKL.Lic    ("MyData For C# - Field2Gui.cs","GNU General Public License 3");
         }
 
@@ -131,6 +131,28 @@ namespace MyData
             mmc.FixedHeightMode = true;
             mmc.HeightRequest = 30;
             return mmc;
+        }
+
+        static public void SelectRecord(string recname){
+            // declications
+            var rec = MyDataBase.Record[recname];
+            // Activate pages
+            MainClass.Pages.Sensitive = true;
+            // TODO: Full enabling and disabling based on the [ALLOW] tags
+
+            // Strings and other textbox related types
+            foreach(string k in MainClass.DStrings.Keys){
+                var tv = MainClass.DStrings[k];
+                tv.Buffer.Text = rec.value[k];
+            }
+
+            // Booleans
+            foreach(string k in MainClass.RBTbools.Keys) {
+                var btrue = MainClass.RBTbools[k];
+                var bfalse = MainClass.RBFbools[k];
+                btrue.Active = rec.value[k].ToUpper() == "TRUE";
+                bfalse.Active = rec.value[k].ToUpper() != "TRUE";
+            }
         }
 
     }
