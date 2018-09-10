@@ -15,3 +15,8 @@ If this experiment works, then MyData will be a serious project, and then this r
 
 
 My object is to leave the original file format of MyData the way it is, so the original MyData and MyData Mono will (for the time being) remain compatible.
+
+
+
+![Screenshot](https://user-images.githubusercontent.com/11202073/45313362-04989900-b52f-11e8-967b-e45e17b1563b.png)
+
