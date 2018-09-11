@@ -65,7 +65,8 @@ namespace MyData
         public static Dictionary<string, TextView> DStrings = new Dictionary<string, TextView>();
         public static Dictionary<string, RadioButton> RBTbools = new Dictionary<string, RadioButton>();
         public static Dictionary<string, RadioButton> RBFbools = new Dictionary<string, RadioButton>();
-        public static Dictionary<string, TreeView> mc = new Dictionary<string, TreeView>();
+        public static Dictionary<string, Dictionary<string,int>> mcval2index = new Dictionary<string,Dictionary<string,int>>();
+        public static Dictionary<string, ComboBox> mc = new Dictionary<string, ComboBox>();
 
         static MainClass(){
             MKL.Version("MyData For C# - Program.cs","18.09.10");

@@ -24,11 +24,13 @@
 // EndLic
 ﻿using System;
 using TrickyUnits;
+using TrickyUnits.GTK;
 using Gtk;
 namespace MyData
 {
     public class Field2Gui
     {
+        static bool uneditable = false;
 
         static Field2Gui()
         {
@@ -151,11 +153,14 @@ namespace MyData
             MyDataBase.fields[name] = "mc";
             MyDataBase.defaults[name] = "";
             mmc.HeightRequest = 30;
+            MainClass.mc[name] = mmc;
             return mmc;
 
         }
 
-        static public void SelectRecord(string recname){
+        static public void SelectRecord(string recname)
+        {
+            uneditable = true;
             // declications
             var rec = MyDataBase.Record[recname];
             // Activate pages
@@ -163,19 +168,38 @@ namespace MyData
             // TODO: Full enabling and disabling based on the [ALLOW] tags
 
             // Strings and other textbox related types
-            foreach(string k in MainClass.DStrings.Keys){
+            foreach (string k in MainClass.DStrings.Keys)
+            {
                 var tv = MainClass.DStrings[k];
                 tv.Buffer.Text = rec.value[k];
             }
 
             // Booleans
-            foreach(string k in MainClass.RBTbools.Keys) {
+            foreach (string k in MainClass.RBTbools.Keys)
+            {
                 var btrue = MainClass.RBTbools[k];
                 var bfalse = MainClass.RBFbools[k];
                 btrue.Active = rec.value[k].ToUpper() == "TRUE";
                 bfalse.Active = rec.value[k].ToUpper() != "TRUE";
             }
-        }
+            // mc
+            foreach (string k in MainClass.mc.Keys)
+            {
+                var mc = MainClass.mc[k];
+                var mcid = MainClass.mcval2index;
+                if (!mcid.ContainsKey(k)) { QuickGTK.Warn("Empty mc list!"); }
+                else
+                {
+                    var mci = mcid[k];
+                    var value = rec.value[k];
+                    if (value != "")
+                    {
+                        if (mci.ContainsKey(value)) mc.Active = mci[value]; else QuickGTK.Error($"The value set for field '{k}' is '{value}', however that value is NOT listed!\n\nSetting ignored!");
+                    }
+                }
 
+            }
+            uneditable = false;
+        }
     }
 }

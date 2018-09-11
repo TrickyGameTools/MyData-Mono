@@ -99,6 +99,23 @@ namespace MyData
             MainClass.ListRecords.Model = lst;
         }
 
+        static int mcidx = 0;
+        static string mcname = "";
+        static ListStore CurrentListStore = null;
+        static void regmc(string value){
+            var m2i = MainClass.mcval2index;
+            CurrentListStore.AppendValues(value);
+            if (!m2i.ContainsKey(mcname)) m2i[mcname] = new Dictionary<string, int>();
+            if (m2i[mcname].ContainsKey(value))
+            {
+                QuickGTK.Warn($"Field \"{mcname}\" contains multiple items labelled \"{value}\"!");
+            }
+            else
+            {
+                Console.WriteLine($"Registering '{value}' to index '{mcidx}' in field '{mcname}'");
+                m2i[mcname][value] = mcidx; mcidx++;
+            }
+        }
         public static bool Load(string filename){
             bool ret = true;
             string[] lines;
@@ -127,8 +144,8 @@ namespace MyData
             VBox CurrentPanel = null; // This definition is absolutely LUDICROUS, but it prevents a "Use of unassinged local variable" error....
             //TreeView CurrentMC = null;
             ComboBox CurrentMC = null;
-            ListStore CurrentListStore = null;
             MyRecord TRec=null;
+            CurrentListStore = null;
             foreach (string L in lines)
             {
                 linecount++;
@@ -148,6 +165,7 @@ namespace MyData
                             cpage++;
                             pagey = 0;
                             pagename = TL.Substring(6, TL.Length - 7).Trim();
+                            //if (CurrentPanel != null) { CurrentPanel.Add(new HBox()); }
                             CurrentPanel = Field2Gui.NewPage(pagename);
                         }
 
@@ -235,6 +253,8 @@ namespace MyData
                                         if (CurrentMC != null) CurrentMC.Model = CurrentListStore;
                                         CurrentMC = Field2Gui.NewMC(CurrentPanel, SL[1]);
                                         CurrentListStore = new ListStore(typeof(string));
+                                        mcidx = 0;
+                                        mcname = SL[1];
                                         break;
                                     case "@i":
                                         if (CurrentMC == null) { CRASH("Add item request without a multiple choice declaration in line #" + linecount); return false; }
@@ -245,7 +265,7 @@ namespace MyData
                                         */
                                         var itext = TL.Substring(3, TL.Length - 3);
                                         // CRASH("Test @i!\n"+itext);
-                                        CurrentListStore.AppendValues(itext);
+                                        regmc(itext);
                                         //CurrentMC.Add(new Label(itext));
                                         break;
                                     case "@f":
@@ -287,7 +307,7 @@ namespace MyData
                                             CRASH($"Entry: {DE.Entry} / {Ok}");
                                             if (Ok)
                                             {
-                                                CurrentListStore.AppendValues(DE.Entry); //AddGadgetItem lastlist,D.FileName
+                                                regmc(DE.Entry); //CurrentListStore.AppendValues(DE.Entry); //AddGadgetItem lastlist,D.FileName
                                                                                          //                                    'DebugLog "Added to list: "+D.filename
                                             }
                                             //else
@@ -317,7 +337,7 @@ namespace MyData
                                             {
                                                 readrec = false;
                                             }
-                                            if (l.Length >= 5 && l.Substring(0, 5) == "Rec: " && readrec) CurrentListStore.AppendValues(l.Substring(4, l.Length - 4));
+                                            if (l.Length >= 5 && l.Substring(0, 5) == "Rec: " && readrec) regmc(l.Substring(4, l.Length - 4)); //CurrentListStore.AppendValues(l.Substring(4, l.Length - 4));
                                         }
                                         break;
                                     case "@noextfilter":
