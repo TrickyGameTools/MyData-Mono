@@ -23,6 +23,8 @@
 // Version: 18.09.10
 // EndLic
 ﻿using System;
+using System.Text;
+using System.Collections.Generic;
 using TrickyUnits;
 using TrickyUnits.GTK;
 using Gtk;
@@ -31,6 +33,78 @@ namespace MyData
     public class Field2Gui
     {
         static bool uneditable = false;
+        static Dictionary<object,string> objlink = new Dictionary<object,string>();
+        static MyRecord currentrec = null;
+
+
+        static void OnCombo(object sender, EventArgs e){
+            if (uneditable) return;
+            var field = objlink[sender];
+            var value = (sender as ComboBox).ActiveText;
+            currentrec.value[field] = value;
+            currentrec.MODIFIED = true;
+        }
+
+        static void OnBoolean(object sender,EventArgs e){
+            if (uneditable) return;
+            var field = objlink[sender];
+            if ((sender as RadioButton).Active) {
+                currentrec.value[field] = "TRUE";
+            } else {
+                currentrec.value[field] = "FALSE";
+            }
+            currentrec.MODIFIED = true;
+            //QuickGTK.Info($"Toggle: field = {currentrec.value[field]}"); // debug
+        }
+
+        static void OnTxt(object sender,EventArgs e){
+            if (uneditable) return;
+            if (!objlink.ContainsKey(sender)) { QuickGTK.Error("INTERNAL ERROR!\n\nTextbox not properly bound to memory field!\n\nPlease report!"); return; }
+            var field = objlink[sender];
+            //var txtf = (sender as TextView);
+            var buf = (sender as TextBuffer );//txtf.Buffer;
+            var txt = buf.Text;
+            int itxt = 0;
+            double dtxt = 0;
+            //QuickGTK.Info ($"Editing textfield: {field}");//debug
+            switch (MyDataBase.fields[field].ToLower()){
+                case "string":
+                    currentrec.value[field] = txt;
+                    break;
+                case "int":
+                    if (txt != "" && txt != "-")
+                    {
+                        try
+                        {
+                            itxt = Int32.Parse(txt);
+                        } catch {
+                            QuickGTK.Error($"'{txt}' is not a valid integer.");
+                            itxt = 0;
+                        }
+                    }
+                    currentrec.value[field] = $"{itxt}";
+                    break;
+                case "double":
+                    if (txt != "" && txt != "-")
+                    {
+                        try
+                        {
+                            dtxt = Double.Parse(txt);
+                        }
+                        catch
+                        {
+                            QuickGTK.Error($"'{txt}' is not a valid double.");
+                            dtxt = 0;
+                        }
+                    }
+                    currentrec.value[field] = $"{dtxt}";
+                    break;
+                default:
+                    QuickGTK.Error($"Internal error!\n\nType {MyDataBase.fields[field].ToLower()} should never have bound itself to a textbox\n\nPlease report this!");
+                    break;
+            }
+            currentrec.MODIFIED = true;
+        }
 
         static Field2Gui()
         {
@@ -66,6 +140,9 @@ namespace MyData
             // Database
             MyDataBase.fields[name] = "string";
             MyDataBase.defaults[name] = "";
+            objlink[ttxt.Buffer] = name;
+            ttxt.Buffer.Changed += OnTxt;
+
         }
 
         static public void NewNumber(VBox pg, string numbertype, string name){
@@ -89,6 +166,8 @@ namespace MyData
             // Database
             MyDataBase.fields[name] = numbertype;
             MyDataBase.defaults[name] = "";
+            objlink[ttxt.Buffer] = name;
+            ttxt.Buffer.Changed += OnTxt;
         }
 
         static public void NewBool(VBox pg,string name){
@@ -108,6 +187,9 @@ namespace MyData
             MainClass.RBFbools[name] = but2;
             MyDataBase.fields[name] = "bool";
             MyDataBase.defaults[name] = "TRUE";
+            objlink[but1] = name;
+            objlink[but2] = name;
+            but1.Toggled += OnBoolean;
         }
 
         /* old
@@ -154,6 +236,8 @@ namespace MyData
             MyDataBase.defaults[name] = "";
             mmc.HeightRequest = 30;
             MainClass.mc[name] = mmc;
+            objlink[mmc] = name;
+            mmc.Changed += OnCombo;
             return mmc;
 
         }
@@ -163,6 +247,7 @@ namespace MyData
             uneditable = true;
             // declications
             var rec = MyDataBase.Record[recname];
+            currentrec = rec;
             // Activate pages
             MainClass.Pages.Sensitive = true;
             // TODO: Full enabling and disabling based on the [ALLOW] tags
