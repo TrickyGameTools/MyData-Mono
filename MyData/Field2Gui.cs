@@ -108,6 +108,7 @@ namespace MyData
             MyDataBase.defaults[name] = "TRUE";
         }
 
+        /* old
         static public TreeView NewMC(VBox pg,string name){
             var mmc = new TreeView();
             var tbox = new HBox();
@@ -131,6 +132,27 @@ namespace MyData
             mmc.FixedHeightMode = true;
             mmc.HeightRequest = 30;
             return mmc;
+        } */
+        static public ComboBox NewMC(VBox pg, string name){
+            var mmc = new ComboBox();
+            var tbox = new HBox();
+            //var NameCell = new CellRendererText();
+            //mmc.AddAttribute(NameCell, "text", 0);
+            CellRendererText text = new CellRendererText();
+            mmc.PackStart(text, false);
+            mmc.AddAttribute(text, "text", 0);
+            var tp = new Label("mc"); tp.SetSizeRequest(200, 25); // FYI: mc = Multiple Choice
+            var nm = new Label(name); nm.SetSizeRequest(400, 25);
+            mmc.SetSizeRequest(400, 25);
+            tbox.Add(tp);
+            tbox.Add(nm);
+            tbox.Add(mmc);
+            pg.Add(tbox);
+            MyDataBase.fields[name] = "mc";
+            MyDataBase.defaults[name] = "";
+            mmc.HeightRequest = 30;
+            return mmc;
+
         }
 
         static public void SelectRecord(string recname){

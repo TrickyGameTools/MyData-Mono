@@ -125,7 +125,8 @@ namespace MyData
             int pagey = 0; // Not sure if this is needed, but I need to be sure
             string pagename = "";
             VBox CurrentPanel = null; // This definition is absolutely LUDICROUS, but it prevents a "Use of unassinged local variable" error....
-            TreeView CurrentMC = null;
+            //TreeView CurrentMC = null;
+            ComboBox CurrentMC = null;
             ListStore CurrentListStore = null;
             MyRecord TRec=null;
             foreach (string L in lines)
