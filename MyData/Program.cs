@@ -147,6 +147,7 @@ namespace MyData
             //TestIncbin(win); // debug ONLY!
             if (!MyDataBase.Load(filename)) return;
             win = new MainWindow();
+            QuickGTK.MyMainWindow = win;
             win.Title = filename + " - MyData - Coded by Tricky";
             MainBox = new VBox();
             HeadBox = new HBox();
@@ -171,7 +172,7 @@ namespace MyData
             MenuBoxRow2.Add(ButForceMod);
             MenuBoxRow2.Add(ButSave);
             MainBox.Add(HeadBox);
-            MainBox.Add(WorkBox);
+            MainBox.Add(WorkBox); 
             //ListRecords.SetSizeRequest(250, 800);
             var tvc = new TreeViewColumn();
             var NameCell = new CellRendererText();
