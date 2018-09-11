@@ -251,6 +251,7 @@ namespace MyData
             // Activate pages
             MainClass.Pages.Sensitive = true;
             MainClass.ButForceMod.Sensitive = !rec.MODIFIED;
+            MainClass.MenuBoxInput.Hide();
             // TODO: Full enabling and disabling based on the [ALLOW] tags
 
             // Strings and other textbox related types
