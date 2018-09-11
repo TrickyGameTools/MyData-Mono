@@ -20,7 +20,7 @@
 // 		
 // 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 // 	to the project the exceptions are needed for.
-// Version: 18.09.09
+// Version: 18.09.11
 // EndLic
 
 ﻿using TrickyUnits;
@@ -65,7 +65,7 @@ namespace MyData
 
         static MyDataBase()
         {
-            MKL.Version("MyData For C# - DataBase.cs","18.09.09");
+            MKL.Version("MyData For C# - DataBase.cs","18.09.11");
             MKL.Lic    ("MyData For C# - DataBase.cs","GNU General Public License 3");
         }
 
