@@ -67,6 +67,7 @@ namespace MyData
         public static Dictionary<string, RadioButton> RBFbools = new Dictionary<string, RadioButton>();
         public static Dictionary<string, Dictionary<string,int>> mcval2index = new Dictionary<string,Dictionary<string,int>>();
         public static Dictionary<string, ComboBox> mc = new Dictionary<string, ComboBox>();
+        public static string sc_rec;
 
         static MainClass(){
             MKL.Version("MyData For C# - Program.cs","18.09.10");
@@ -134,8 +135,17 @@ namespace MyData
                 var rec = (model.GetValue(iter, 0) as string);
                 //QuickGTK.Info(rec);
                 Field2Gui.SelectRecord(rec);
+                sc_rec = rec;
+                ButRemove.Sensitive = true;
             } else {
                 Pages.Sensitive = false;
+                ButRemove.Sensitive = false;
+            }
+        }
+
+        static void OnRemove(object sender, EventArgs e){
+            if (QuickGTK.Confirm($"Are you sure you want to remove {sc_rec}?")){
+                QuickGTK.Info("KILL AND DESTROY!!"); // debug
             }
         }
 
@@ -173,7 +183,9 @@ namespace MyData
             MenuBoxRow2.Add(ButForceMod);
             MenuBoxRow2.Add(ButSave);
             MainBox.Add(HeadBox);
-            MainBox.Add(WorkBox); 
+            MainBox.Add(WorkBox);
+            ButRemove.Clicked += OnRemove;
+            ButRemove.Sensitive = false;
             //ListRecords.SetSizeRequest(250, 800);
             var tvc = new TreeViewColumn();
             var NameCell = new CellRendererText();
