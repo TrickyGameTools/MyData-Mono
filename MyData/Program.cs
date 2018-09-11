@@ -145,6 +145,8 @@ namespace MyData
             } else {
                 Pages.Sensitive = false;
                 ButRemove.Sensitive = false;
+                ButRename.Sensitive = false;
+                ButDupe.Sensitive = false;
             }
         }
 
@@ -250,6 +252,8 @@ namespace MyData
             MainBox.Add(WorkBox);
             ButRemove.Clicked += OnRemove;
             ButRemove.Sensitive = false;
+            ButRename.Sensitive = false;
+            ButDupe.Sensitive = false;
             ButForceMod.Clicked += OnForceMod;
             ButForceMod.Sensitive = false;
             ButNew.Clicked += OnNewRecord;
