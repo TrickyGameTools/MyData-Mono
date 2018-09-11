@@ -20,7 +20,7 @@
 // 		
 // 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 // 	to the project the exceptions are needed for.
-// Version: 18.09.11
+// Version: 18.09.12
 // EndLic
 ﻿using System;
 using System.Text;
@@ -108,7 +108,7 @@ namespace MyData
 
         static Field2Gui()
         {
-            MKL.Version("MyData For C# - Field2Gui.cs","18.09.11");
+            MKL.Version("MyData For C# - Field2Gui.cs","18.09.12");
             MKL.Lic    ("MyData For C# - Field2Gui.cs","GNU General Public License 3");
         }
 
@@ -250,6 +250,7 @@ namespace MyData
             currentrec = rec;
             // Activate pages
             MainClass.Pages.Sensitive = true;
+            MainClass.ButForceMod.Sensitive = !rec.MODIFIED;
             // TODO: Full enabling and disabling based on the [ALLOW] tags
 
             // Strings and other textbox related types

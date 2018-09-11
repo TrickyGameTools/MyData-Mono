@@ -20,7 +20,7 @@
 // 		
 // 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 // 	to the project the exceptions are needed for.
-// Version: 18.09.11
+// Version: 18.09.12
 // EndLic
 
 ﻿using TrickyUnits;
@@ -36,7 +36,16 @@ namespace MyData
     public class MyRecord
     {
         public SortedDictionary<string, string> value = new SortedDictionary<string, string>();
-        public bool MODIFIED = false;
+        bool trueMODIFIED = false;
+        public bool MODIFIED
+        {
+            get => trueMODIFIED; set
+            {
+                trueMODIFIED = value;
+                MainClass.ButForceMod.Sensitive = !trueMODIFIED;
+                MainClass.MenuBoxInput.Hide();
+            }
+        }
     }
 
     public class MyBase
@@ -65,7 +74,7 @@ namespace MyData
 
         static MyDataBase()
         {
-            MKL.Version("MyData For C# - DataBase.cs","18.09.11");
+            MKL.Version("MyData For C# - DataBase.cs","18.09.12");
             MKL.Lic    ("MyData For C# - DataBase.cs","GNU General Public License 3");
         }
 
@@ -97,6 +106,11 @@ namespace MyData
             foreach(string k in recs.Keys)
                 lst.AppendValues(k);
             MainClass.ListRecords.Model = lst;
+        }
+
+        public static void RemoveRec(string record){
+            recs.Remove(record);
+            UpdateRecView();
         }
 
         static int mcidx = 0;
@@ -210,6 +224,13 @@ namespace MyData
                                     sys[svar] = sval;
                                 }
                                     break;
+                            case "Default":
+                                posIS = TL.IndexOf('=');
+                                if (posIS < 0) { CRASH("Invalid Default Var Definition!"); return false; }
+                                var dvar = qstr.Left(TL, posIS).Trim().ToUpper();
+                                var dval = qstr.Right(TL, TL.Length - (posIS + 1)).Trim();
+                                defaults[dvar] = dval;
+                                break;
                             case "Structure":
                                 var TTL = TL;
                                 TTL = TTL.Replace("\t", " ");
@@ -375,7 +396,7 @@ namespace MyData
 
                                 if (qstr.Upper(qstr.Left(TL, 4)) == "REC:")
                                 {
-                                    if (recs.ContainsKey(qstr.Right(TL, TL.Length - 4))) //MapContains(recs, Upper(Trim(Right(TL, Len(TL)-4))))
+                                    if (recs.ContainsKey(qstr.Right(TL, TL.Length - 4).Trim())) //MapContains(recs, Upper(Trim(Right(TL, Len(TL)-4))))
                                     {
                                         switch (QuickGTK.Proceed("Duplicate record definition:\n\n" + qstr.Upper(qstr.MyTrim(qstr.Right(TL, qstr.Len(TL) - 4))) + "\n\nShall I merge the data with the existing record?"))
                                         {
@@ -385,11 +406,11 @@ namespace MyData
                                             case 0:
                                                 //Print "Destroying the old"
                                                 TRec = new MyRecord();
-                                                recs[qstr.Right(TL, TL.Length - 4)] = TRec;
+                                                recs[qstr.Right(TL, TL.Length - 4).Trim()] = TRec;
                                                 break;
                                             case 1:
                                                 //Print "Merging!"
-                                                TRec = recs[qstr.Right(TL, TL.Length - 4)]; //StringMap(MapValueForKey(Recs, Upper(Trim(Right(TL, Len(TL) - 4)))))
+                                                TRec = recs[qstr.Right(TL, TL.Length - 4).Trim()]; //StringMap(MapValueForKey(Recs, Upper(Trim(Right(TL, Len(TL) - 4)))))
                                                                                             //For Local k$= EachIn MapKeys(TRec) Print K+" = " + TRec.Value(K) Next ' debug line
                                                 break;
                                         } //End Select
@@ -397,7 +418,7 @@ namespace MyData
                                 else
                                 {
                                     TRec = new MyRecord(); //New StringMap
-                                    recs[qstr.Right(TL, TL.Length - 4)] = TRec;
+                                    recs[qstr.Right(TL, TL.Length - 4).Trim()] = TRec;
                                 }
                                 } else if (TL.IndexOf('=') != -1) {
                             if (TRec == null) { CRASH("Definition without starting a record first in line #" + linecount + "~n~n" + L); return false; }

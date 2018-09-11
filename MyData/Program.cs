@@ -20,7 +20,7 @@
 // 		
 // 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 // 	to the project the exceptions are needed for.
-// Version: 18.09.11
+// Version: 18.09.12
 // EndLic
 
 ﻿using System;
@@ -52,6 +52,11 @@ namespace MyData
         static HBox MenuBoxRow1 = new HBox();
         static HBox MenuBoxRow2 = new HBox();
         static HBox MenuBoxRow3 = new HBox();
+        static public HBox MenuBoxInput = new HBox();
+        static readonly Label QI_Label = new Label("---");
+        static readonly Entry QI_Input = new Entry();
+        static readonly Button QI_Confirm = new Button("Go for it!");
+        static string want = "";
         public static Button ButNew = new Button("New Record");
         public static Button ButDupe = new Button("Duplicate Record");
         public static Button ButRemove = new Button("Remove Record");
@@ -70,7 +75,7 @@ namespace MyData
         public static string sc_rec;
 
         static MainClass(){
-            MKL.Version("MyData For C# - Program.cs","18.09.11");
+            MKL.Version("MyData For C# - Program.cs","18.09.12");
             MKL.Lic    ("MyData For C# - Program.cs","GNU General Public License 3");
             new JCR6_WAD();
             new JCR6_lzma();
@@ -145,9 +150,68 @@ namespace MyData
 
         static void OnRemove(object sender, EventArgs e){
             if (QuickGTK.Confirm($"Are you sure you want to remove {sc_rec}?")){
-                QuickGTK.Info("KILL AND DESTROY!!"); // debug
+                MyDataBase.RemoveRec(sc_rec);
+                Pages.Sensitive = false;
+                ButRemove.Sensitive = false;
+                ButForceMod.Sensitive = false;
+                sc_rec="";
+                //QuickGTK.Info("KILL AND DESTROY!!"); // debug
             }
         }
+
+        static void OnForceMod(object sender, EventArgs e){
+            if (sc_rec == "") { ButForceMod.Sensitive = false; return; }
+            if (MyDataBase.Record.ContainsKey(sc_rec)){
+                MyDataBase.Record[sc_rec].MODIFIED = true;
+                //QuickGTK.Info($"Forcemodding {sc_rec}");
+                ButForceMod.Sensitive = false;
+            }
+            else {
+                QuickGTK.Error($"ForceModding {sc_rec} failed!");
+            }
+        }
+
+        static void OnNewRecord(object sender, EventArgs e){
+            want = "NEW";
+            QI_Label.Text = "Name new record:";
+            QI_Input.Text = "";
+            MenuBoxInput.Show();
+        }
+
+        static bool QIValidName(string name){
+            var ret = true;
+            var ca = name.ToUpper().ToCharArray();
+            const string allowed = "ABCDEFGHIJKLMNOPQRSTUVWXYZ_1234567890";
+            foreach (char ch in ca)
+                ret = ret && allowed.IndexOf(ch)>=0;            
+            return ret;
+        }
+
+        static void OnQIConfirm(object sender, EventArgs e){
+            var input = QI_Input.Text;
+            var name = input.ToUpper();
+            MenuBoxInput.Hide();
+            if (!QIValidName(name)) { QuickGTK.Error("Invalid record name!\n\nRecord names may only contain letters, numbers and underscores!"); return; }
+            if (MyDataBase.Record.ContainsKey(name)) { if (!QuickGTK.Confirm($"A record named {name} already exists!\n\nIf you continue the old record will be destroyed and replaced by the new one!\n\nAre you sure?")) return; }
+            switch(want){
+                case "NEW":
+                    var newrec = new MyRecord();
+                    MyDataBase.Record[name]=newrec;
+                    foreach(string k in MyDataBase.fields.Keys){
+                        newrec.value[k] = "";
+                        if (MyDataBase.defaults.ContainsKey(k)) newrec.value[k] = MyDataBase.defaults[k];
+                    }
+                    MyDataBase.UpdateRecView();
+                    // TODO: New record should add default values if set.
+                    QuickGTK.Info($"Record {name} has been created!");
+                    break;
+                default:
+                    QuickGTK.Error($"Internal error!\n\n\nInvalid input request --> {want}!");
+                    break;
+            }
+        }
+
+
 
         public static void Main(string[] args) {
             Application.Init();
@@ -173,9 +237,9 @@ namespace MyData
             HeadBox.Add(MenuBoxRoot);
             //Girl.SetSizeRequest(390, 364);
             //MenuBoxRoot.SetSizeRequest(1000 - 390, 364);
-            MenuBoxRoot.Add(MenuBoxRow1); MenuBoxRow1.SetSizeRequest(1000 - 390, 121);
-            MenuBoxRoot.Add(MenuBoxRow2); MenuBoxRow2.SetSizeRequest(1000 - 390, 121);
-            MenuBoxRoot.Add(MenuBoxRow3); MenuBoxRow3.SetSizeRequest(1000 - 390, 121);
+            MenuBoxRoot.Add(MenuBoxRow1); MenuBoxRow1.SetSizeRequest(1000 - 390, 114);
+            MenuBoxRoot.Add(MenuBoxRow2); MenuBoxRow2.SetSizeRequest(1000 - 390, 114);
+            MenuBoxRoot.Add(MenuBoxRow3); MenuBoxRow3.SetSizeRequest(1000 - 390, 114);
             MenuBoxRow1.Add(ButNew);
             MenuBoxRow1.Add(ButDupe);
             MenuBoxRow1.Add(ButRemove);
@@ -186,6 +250,9 @@ namespace MyData
             MainBox.Add(WorkBox);
             ButRemove.Clicked += OnRemove;
             ButRemove.Sensitive = false;
+            ButForceMod.Clicked += OnForceMod;
+            ButForceMod.Sensitive = false;
+            ButNew.Clicked += OnNewRecord;
             //ListRecords.SetSizeRequest(250, 800);
             var tvc = new TreeViewColumn();
             var NameCell = new CellRendererText();
@@ -202,7 +269,16 @@ namespace MyData
             win.Add(MainBox);
             win.Resize(1000, 800);
             Pages.Sensitive = false;
+            MenuBoxInput.Add(QI_Label);
+            MenuBoxInput.Add(QI_Input);
+            MenuBoxInput.Add(QI_Confirm);
+            QI_Confirm.SetSizeRequest(250, 21);
+            QI_Input.SetSizeRequest(500, 21);
+            QI_Label.SetSizeRequest(250, 21);
+            QI_Confirm.Clicked += OnQIConfirm;
+            MenuBoxRoot.Add(MenuBoxInput);
             win.ShowAll();
+            MenuBoxInput.Hide(); // Only show when requested
             Application.Run(); 
         }
     }
