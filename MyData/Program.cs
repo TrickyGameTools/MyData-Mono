@@ -180,6 +180,21 @@ namespace MyData
             MenuBoxInput.Show();
         }
 
+        static void OnDupe(object s,EventArgs e){
+            want = "DUPE";
+            QI_Label.Text = "Duplicate to new record:";
+            QI_Input.Text = "";
+            MenuBoxInput.Show();
+        }
+
+        static void OnRename(object s, EventArgs e)
+        {
+            want = "RENAME";
+            QI_Label.Text = "Rename as:";
+            QI_Input.Text = sc_rec;
+            MenuBoxInput.Show();
+        }
+
         static bool QIValidName(string name){
             var ret = true;
             var ca = name.ToUpper().ToCharArray();
@@ -203,9 +218,30 @@ namespace MyData
                         newrec.value[k] = "";
                         if (MyDataBase.defaults.ContainsKey(k)) newrec.value[k] = MyDataBase.defaults[k];
                     }
+                    newrec.MODIFIED = true;
                     MyDataBase.UpdateRecView();
                     // TODO: New record should add default values if set.
                     QuickGTK.Info($"Record {name} has been created!");
+                    break;
+                case "DUPE":
+                    var rec = MyDataBase.Record[sc_rec];
+                    newrec = new MyRecord();
+                    MyDataBase.Record[name] = newrec;
+                    foreach (string k in MyDataBase.fields.Keys)
+                    {
+                        newrec.value[k] =rec.value[k];
+                    }
+                    newrec.MODIFIED = true;
+                    MyDataBase.UpdateRecView();
+                    QuickGTK.Info($"Record {sc_rec} has been duplicated into {name}");
+                    break;
+                case "RENAME":
+                    var crec = MyDataBase.Record[sc_rec];
+                    MyDataBase.Record.Remove(sc_rec);
+                    MyDataBase.Record[name] = crec;
+                    crec.MODIFIED = true;
+                    MyDataBase.UpdateRecView();
+                    QuickGTK.Info($"Record {sc_rec} has been renamed to {name}\n\nWARNING!\nIf you've set MyData to record-by-record export files with the old name will remain!");
                     break;
                 default:
                     QuickGTK.Error($"Internal error!\n\n\nInvalid input request --> {want}!");
@@ -253,7 +289,9 @@ namespace MyData
             ButRemove.Clicked += OnRemove;
             ButRemove.Sensitive = false;
             ButRename.Sensitive = false;
+            ButRename.Clicked += OnRename;
             ButDupe.Sensitive = false;
+            ButDupe.Clicked += OnDupe;
             ButForceMod.Clicked += OnForceMod;
             ButForceMod.Sensitive = false;
             ButNew.Clicked += OnNewRecord;
