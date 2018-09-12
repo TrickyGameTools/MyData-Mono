@@ -27,6 +27,7 @@
 using TrickyUnits.GTK;
 using UseJCR6;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using Gtk;
 
@@ -44,9 +45,11 @@ namespace MyData
                 trueMODIFIED = value;
                 MainClass.ButForceMod.Sensitive = !trueMODIFIED;
                 MainClass.MenuBoxInput.Hide();
+                MainClass.ButSave.Sensitive = true;
             }
         }
     }
+
 
     public class MyBase
     {
@@ -56,6 +59,8 @@ namespace MyData
 
     public class MyDataBase
     {
+        //static public Dictionary<string, Export> Exporters = new Dictionary<string, Export>();
+        static readonly ExportMyData MySave = new ExportMyData();
         static public Dictionary<string, string> defaults = new Dictionary<string, string>();
         static public Dictionary<string, string> fields = new Dictionary<string, string>();
         static public SortedDictionary<string, MyRecord> Record = new SortedDictionary<string, MyRecord>();
@@ -64,11 +69,19 @@ namespace MyData
         static public Dictionary<string, string> recexport = new Dictionary<string, string>();
         static public Dictionary<string, string> basexport = new Dictionary<string, string>();
         static SortedDictionary<string, MyRecord> recs { get => Record; }
-        static bool RemoveNonExistent
+        static public bool RemoveNonExistent
         {
             get
             {
-                return (!sys.ContainsKey("REMOVENONEXISTENT")) || sys["REMOVENONEXISTENT"].ToLower() == "yes" || sys["REMOVENONEXISTENT"].ToLower() == "true";
+                return (sys.ContainsKey("REMOVENONEXISTENT")) && ( sys["REMOVENONEXISTENT"].ToLower() == "yes" || sys["REMOVENONEXISTENT"].ToLower() == "true");
+            }
+        }
+
+        static public string License
+        {
+            get
+            {
+                if (sys.ContainsKey("LICENSE")) return sys["LICENSE"]; else return "<< No License information present >>";
             }
         }
 
@@ -218,7 +231,7 @@ namespace MyData
                                     if (exportcheck(sexp)) { basexport[sexp] = sval; }
                                 } else if (qstr.Prefixed(svar, "OUTPUT") && qstr.Suffixed(svar, "REC")) {
                                     sexp = qstr.Mid(svar, 7, svar.Length - 9);
-                                    if (exportcheck(sexp)) { basexport[sexp] = sval; }
+                                    if (exportcheck(sexp)) { recexport[sexp] = sval; }
                                 }
                                 else {
                                     sys[svar] = sval;
@@ -461,8 +474,41 @@ namespace MyData
             return ret;
         }
 
-        public void Save(string filename){
+        public static void Save(string filename){
             // saver comes here later!
+            MySave.filename = filename;
+            QOpen.SaveString(filename,MySave.XBase());
+            foreach(string drv in MainClass.exportdrivers.Keys){
+                // Export the entire database
+                var ok = false;
+                if (basexport.ContainsKey(drv) && basexport[drv] != "")
+                {
+                    ok = true;
+                    var pth = Path.GetDirectoryName(basexport[drv]);
+                    if (!Directory.Exists(pth)) {
+                        ok = QuickGTK.Confirm($"Directory {pth} does not exist for exporting to {drv}.\n\nDo you want to create it?");
+                        if (ok) Directory.CreateDirectory(pth);
+                    }
+                }
+                if (ok) { QOpen.SaveString($"{basexport[drv]}.{MainClass.exportext[drv]}", MainClass.exportdrivers[drv].XBase()); }
+                // Export record by record
+                ok = false;
+                if (recexport.ContainsKey(drv) && recexport[drv] != "")
+                {
+                    ok = true;
+                    if (!Directory.Exists(recexport[drv]))
+                    {
+                        ok = QuickGTK.Confirm($"Directory {recexport[drv]} does not exist for exporting to {drv}.\n\nDo you want to create it?");
+                        if (ok) Directory.CreateDirectory(recexport[drv]);
+                    }
+                }
+                if (ok) { 
+                    foreach(string recID in Record.Keys){
+                        Console.WriteLine($"Exporting {recID} to {drv}.");
+                        QOpen.SaveString($"{recexport[drv]}/{recID}.{MainClass.exportext[drv]}",MainClass.exportdrivers[drv].XRecord(recID,true));
+                    }
+                }
+            }
         }
 
         public void DataBase(){

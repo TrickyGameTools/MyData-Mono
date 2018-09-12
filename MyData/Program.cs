@@ -38,7 +38,8 @@ namespace MyData
     class MainClass
     {
         // Core crap
-        public static Dictionary<string, export> exportdrivers = new Dictionary<string, export>();
+        public static Dictionary<string, Export> exportdrivers = new Dictionary<string, Export>();
+        public static Dictionary<string, string> exportext = new Dictionary<string, string>();
 
         // GUI
         public const int winwidth = 1250;
@@ -249,9 +250,24 @@ namespace MyData
             }
         }
 
+        static void OnSave(object sender,EventArgs e){
+            MyDataBase.Save(filename);
+            ButSave.Sensitive = false;
+        }
 
+        static void rex(string name,string extentie, Export e){
+            exportdrivers[name] = e;
+            exportext[name] = extentie;
+            Console.WriteLine($"Exporter for {name} set up");
+        }
+
+        static void InitExporters(){
+            rex("LUA", "lua", new ExportLua());
+            rex("XML", "xml", new ExportXML());
+        }
 
         public static void Main(string[] args) {
+            InitExporters();
             Application.Init();
             Window tWin = new Window("MyData");
             tWin.Resize(400, 400);
@@ -295,6 +311,8 @@ namespace MyData
             ButForceMod.Clicked += OnForceMod;
             ButForceMod.Sensitive = false;
             ButNew.Clicked += OnNewRecord;
+            ButSave.Sensitive = false;
+            ButSave.Clicked += OnSave;
             //ListRecords.SetSizeRequest(250, 800);
             var tvc = new TreeViewColumn();
             var NameCell = new CellRendererText();

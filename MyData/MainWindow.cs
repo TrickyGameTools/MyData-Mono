@@ -11,6 +11,7 @@ public partial class MainWindow : Gtk.Window
 
     protected void OnDeleteEvent(object sender, DeleteEventArgs a)
     {
+        MyDataBase.Save(MainClass.filename);
         Application.Quit();
         a.RetVal = true;
     }
