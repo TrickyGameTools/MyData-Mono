@@ -1,6 +1,7 @@
 # WORK IN PROGRESS!
 
 This tool is not fully usable YET!
+The most important core features technically work, meaning that when you compile from source you got something you can use, but I advice to wait.
 
 ![image](https://user-images.githubusercontent.com/11202073/45264687-eb192380-b440-11e8-858d-79c9d5ac5420.png)
 
