@@ -266,6 +266,7 @@ namespace MyData
             rex("XML", "xml", new ExportXML());
             rex("YAML", "yaml", new ExportYAML());
             rex("JSON", "json", new ExportJSON());
+            rex("PYTHON", "py", new ExportPython());
         }
 
         public static void Main(string[] args) {
