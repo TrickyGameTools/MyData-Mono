@@ -265,6 +265,7 @@ namespace MyData
             rex("LUA", "lua", new ExportLua());
             rex("XML", "xml", new ExportXML());
             rex("YAML", "yaml", new ExportYAML());
+            rex("JSON", "json", new ExportJSON());
         }
 
         public static void Main(string[] args) {

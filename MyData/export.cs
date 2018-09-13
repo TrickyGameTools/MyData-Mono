@@ -235,5 +235,68 @@ namespace MyData
             return ret;
         }
     }
+
+    class ExportJSON : Export
+    {
+
+        public override string XRecord(string recname = "", bool addreturn = false)
+        {
+            var t = ""; if (!addreturn) t = "\t";
+            var ret = t+"{"+eol;
+            var first = true;
+            foreach(string k in MyDataBase.Record[recname].value.Keys ){
+                var ok = !(MyDataBase.RemoveNonExistent && (k == "" || (MyDataBase.fields[k] == "bool" && k.ToUpper() != "TRUE")));
+                var lin = $"\t{t}\"{k}\" : ";
+                if (!ok) { lin += "null"; }
+                else
+                {
+                    switch (MyDataBase.fields[k])
+                    {
+                        case "string":
+                        case "mc":
+                            byte[] bytes = System.Text.Encoding.ASCII.GetBytes(MyDataBase.Record[recname].value[k]);
+                            lin += "\"";
+                            foreach (byte b in bytes)
+                            {
+                                if (b > 31 && b < 128) { lin += qstr.Chr(b); }
+                                else
+                                {
+                                    lin += "\\" + qstr.Right("00" + Convert.ToString(b, 8), 3);
+                                }
+                            }
+                            lin += "\"";
+                            break;
+                        case "int":
+                        case "double":
+                            lin += MyDataBase.Record[recname].value[k];
+                            break;
+                        case "bool":
+                            if (MyDataBase.Record[recname].value[k].ToUpper() == "TRUE") lin += "true"; else lin += "false";
+                            break;
+                    }
+                }
+                if (ok || (!MyDataBase.sys.ContainsKey("NONULL") || MyDataBase.sys["NONULL"].ToUpper()!="TRUE" )){
+                    if (!first) ret += $",{eol}"; first = false;
+                    ret += lin;
+                }
+
+            }
+            ret += "}" + eol;
+            return ret;
+        }
+
+        public override string XBase()
+        {
+            var ret = "{"+eol;
+            var first = true;
+            foreach(string rID in MyDataBase.Record.Keys){
+                if (!first) ret += $",{eol}"; first = false;
+                ret += $"\t\"{rID}\" : {XRecord(rID, false)}";
+            }
+            ret += "}"+eol+eol;
+            return ret;
+
+        }
+    }
 }
 
