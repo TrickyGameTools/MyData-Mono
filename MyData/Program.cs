@@ -20,7 +20,7 @@
 // 		
 // 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 // 	to the project the exceptions are needed for.
-// Version: 18.09.12
+// Version: 18.09.13
 // EndLic
 
 ﻿using System;
@@ -76,7 +76,7 @@ namespace MyData
         public static string sc_rec;
 
         static MainClass(){
-            MKL.Version("MyData For C# - Program.cs","18.09.12");
+            MKL.Version("MyData For C# - Program.cs","18.09.13");
             MKL.Lic    ("MyData For C# - Program.cs","GNU General Public License 3");
             new JCR6_WAD();
             new JCR6_lzma();
@@ -264,6 +264,7 @@ namespace MyData
         static void InitExporters(){
             rex("LUA", "lua", new ExportLua());
             rex("XML", "xml", new ExportXML());
+            rex("YAML", "yaml", new ExportYAML());
         }
 
         public static void Main(string[] args) {
