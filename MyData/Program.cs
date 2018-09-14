@@ -268,6 +268,7 @@ namespace MyData
             rex("JSON", "json", new ExportJSON());
             rex("PYTHON", "py", new ExportPython());
             rex("PHP", "php", new ExportPHP());
+            rex("GINI", "gini", new ExportGINI());
         }
 
         public static void Main(string[] args) {
