@@ -125,7 +125,9 @@ namespace MyData
             stream.Dispose();
         }
 
-        static void OnSelectRecord(object sender, RowActivatedArgs a){
+        //static void OnSelectRecord(object sender, RowActivatedArgs a){
+        static void OnSelectRecord(object sender, EventArgs a)
+        {
             //var ra = ListRecords.Selection.Data;
             /* debug
             QuickGTK.Info($"Activated {ra}");
@@ -326,7 +328,8 @@ namespace MyData
             tvc.AddAttribute(NameCell, "text", 0);
             ListRecords.HeightRequest = 800 - 390;
             ListRecords.AppendColumn(tvc);
-            ListRecords.RowActivated += OnSelectRecord;
+            //ListRecords.RowActivated += OnSelectRecord;
+            ListRecords.CursorChanged += OnSelectRecord;
             //ListRecords.CursorChanged += OnSelectRecord;
             WorkBox.Add(ListRecords);
             WorkBox.Add(Pages);
