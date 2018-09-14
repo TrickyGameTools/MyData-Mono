@@ -475,9 +475,10 @@ namespace MyData
         }
 
         public static void Save(string filename){
-            // saver comes here later!
+            // Save database itself           
             MySave.filename = filename;
             QOpen.SaveString(filename,MySave.XBase());
+            // Loop for the export drivers
             foreach(string drv in MainClass.exportdrivers.Keys){
                 // Export the entire database
                 var ok = false;
@@ -504,11 +505,21 @@ namespace MyData
                 }
                 if (ok) { 
                     foreach(string recID in Record.Keys){
-                        Console.WriteLine($"Exporting {recID} to {drv}.");
-                        QOpen.SaveString($"{recexport[drv]}/{recID}.{MainClass.exportext[drv]}",MainClass.exportdrivers[drv].XRecord(recID,true));
+                        var expfile = $"{recexport[drv]}/{recID}.{MainClass.exportext[drv]}";
+                        if (Record[recID].MODIFIED || (!File.Exists(expfile))) 
+                        {
+                            Console.WriteLine($"Exporting {recID} to {drv}.");
+                            QOpen.SaveString(expfile, MainClass.exportdrivers[drv].XRecord(recID, true));
+                        }
+                        else
+                        {
+                            Console.WriteLine($" Skipping {recID} to {drv}. Record not modified and exported file exists");
+                        }
                     }
                 }
             }
+            // Reset MODIFED
+            foreach (string recID in Record.Keys) Record[recID].MODIFIED = false;
         }
 
         public void DataBase(){
