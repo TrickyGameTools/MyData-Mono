@@ -118,32 +118,34 @@ namespace MyData
             {
                 if (!addreturn) ret += "\t";
                 ret += $"\t[\"{k}\"] = ";
-                switch (MyDataBase.fields[k])
-                {
-                    case "string":
-                    case "mc":
-                        byte[] bytes = System.Text.Encoding.ASCII.GetBytes(MyDataBase.Record[recname].value[k]);
-                        ret += "\"";
-                        foreach (byte b in bytes)
-                        {
-                            if (b > 31 && b < 128) { ret += qstr.Chr(b); }
-                            else
+                if (!(MyDataBase.RemoveNonExistent && (k == "" || (MyDataBase.fields[k] == "bool" && k.ToUpper() != "TRUE")))){
+                    switch (MyDataBase.fields[k])
+                    {
+                        case "string":
+                        case "mc":
+                            byte[] bytes = System.Text.Encoding.ASCII.GetBytes(MyDataBase.Record[recname].value[k]);
+                            ret += "\"";
+                            foreach (byte b in bytes)
                             {
-                                ret += "\\" + qstr.Right("00" + Convert.ToString(b, 8), 3);
+                                if (b > 31 && b < 128) { ret += qstr.Chr(b); }
+                                else
+                                {
+                                    ret += "\\" + qstr.Right("00" + Convert.ToString(b, 8), 3);
+                                }
                             }
-                        }
-                        ret += "\"";
-                        break;
-                    case "int":
-                    case "double":
-                        ret += MyDataBase.Record[recname].value[k];
-                        break;
-                    case "bool":
-                        if (MyDataBase.Record[recname].value[k].ToUpper() == "TRUE") ret += "true"; else ret += "false";
-                        break;
+                            ret += "\"";
+                            break;
+                        case "int":
+                        case "double":
+                            ret += MyDataBase.Record[recname].value[k];
+                            break;
+                        case "bool":
+                            if (MyDataBase.Record[recname].value[k].ToUpper() == "TRUE") ret += "true"; else ret += "false";
+                            break;
 
+                    }
+                    ret += "," + eol;
                 }
-                ret += "," + eol;
             }
             if (addreturn)
             {
