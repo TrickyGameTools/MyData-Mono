@@ -8,4 +8,4 @@ echo If the building tools deems the build "succeeded", all should be fine.
 echo This script was tested with Microsoft \(R\) Build Engine version 15.7.224.30163 \(xplat-master/d375bb6e Sat Jun 30 05:26:28 EDT 2018\) for Mono
 
 
-msbuild /p:Config=Release MyData.sln
+msbuild /p:Configuration=Release MyData.sln
