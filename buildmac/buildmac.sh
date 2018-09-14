@@ -1,6 +1,6 @@
 #!/bin/sh
 
-MACBUNDLE=MyData_Test1.app
+MACBUNDLE=MyData.app
 
 echo Mac application creation script
 echo ===============================
