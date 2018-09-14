@@ -20,7 +20,7 @@
 // 		
 // 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 // 	to the project the exceptions are needed for.
-// Version: 18.09.13
+// Version: 18.09.14
 // EndLic
 
 ﻿using System;
@@ -31,7 +31,7 @@ namespace MyData
     {
         public Export()
         {
-            MKL.Version("MyData For C# - export.cs","18.09.13");
+            MKL.Version("MyData For C# - export.cs","18.09.14");
             MKL.Lic    ("MyData For C# - export.cs","GNU General Public License 3");
         }
 
