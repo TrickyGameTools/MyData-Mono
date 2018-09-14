@@ -20,7 +20,7 @@
 // 		
 // 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 // 	to the project the exceptions are needed for.
-// Version: 18.09.12
+// Version: 18.09.14
 // EndLic
 ﻿using System;
 using System.Text;
@@ -62,7 +62,7 @@ namespace MyData
             if (!objlink.ContainsKey(sender)) { QuickGTK.Error("INTERNAL ERROR!\n\nTextbox not properly bound to memory field!\n\nPlease report!"); return; }
             var field = objlink[sender];
             //var txtf = (sender as TextView);
-            var buf = (sender as TextBuffer );//txtf.Buffer;
+            var buf = (sender as Entry); //(sender as TextBuffer );//txtf.Buffer;
             var txt = buf.Text;
             int itxt = 0;
             double dtxt = 0;
@@ -108,7 +108,7 @@ namespace MyData
 
         static Field2Gui()
         {
-            MKL.Version("MyData For C# - Field2Gui.cs","18.09.12");
+            MKL.Version("MyData For C# - Field2Gui.cs","18.09.14");
             MKL.Lic    ("MyData For C# - Field2Gui.cs","GNU General Public License 3");
         }
 
@@ -126,12 +126,13 @@ namespace MyData
             var nm = new Label(name); nm.SetSizeRequest(400, 25);
             tbox.Add(tp);
             tbox.Add(nm);
-            var ttxt = new TextView(); ttxt.SetSizeRequest(400, 25);
+            //var ttxt = new TextView(); ttxt.SetSizeRequest(400, 25);
+            var ttxt = new Entry(); ttxt.SetSizeRequest(400, 25);
             var col1 = new Gdk.Color(); var suc1 = Gdk.Color.Parse("#b400ff",ref col1); 
             var col2 = new Gdk.Color(); var suc2 = Gdk.Color.Parse("#0b000f",ref col2);
             if (!suc1) tbox.Add(new Label("FG color parse failure!")); // debug only
             if (!suc2) tbox.Add(new Label("BG color parse failure!")); // debug only
-            ttxt.BorderWidth = 2;
+            //ttxt.BorderWidth = 2;
             ttxt.ModifyBg(StateType.Normal,col2);
             ttxt.ModifyFg(StateType.Normal,col1);
             MainClass.DStrings[name] = ttxt;
@@ -140,8 +141,10 @@ namespace MyData
             // Database
             MyDataBase.fields[name] = "string";
             MyDataBase.defaults[name] = "";
-            objlink[ttxt.Buffer] = name;
-            ttxt.Buffer.Changed += OnTxt;
+            //objlink[ttxt.Buffer] = name;
+            objlink[ttxt] = name;
+            //ttxt.Buffer.Changed += OnTxt;
+            ttxt.Changed += OnTxt;
 
         }
 
@@ -152,12 +155,13 @@ namespace MyData
             var nm = new Label(name); nm.SetSizeRequest(400, 25);
             tbox.Add(tp);
             tbox.Add(nm);
-            var ttxt = new TextView(); ttxt.SetSizeRequest(400, 25);
+            //var ttxt = new TextView(); ttxt.SetSizeRequest(400, 25);
+            var ttxt = new Entry(); ttxt.SetSizeRequest(400, 25);
             var col1 = new Gdk.Color(); var suc1 = Gdk.Color.Parse("#00b4ff", ref col1);
             var col2 = new Gdk.Color(); var suc2 = Gdk.Color.Parse("#000b0f", ref col2);
             if (!suc1) tbox.Add(new Label("FG color parse failure!")); // debug only
             if (!suc2) tbox.Add(new Label("BG color parse failure!")); // debug only
-            ttxt.BorderWidth = 2;
+            //ttxt.BorderWidth = 2;
             ttxt.ModifyBg(StateType.Normal, col2);
             ttxt.ModifyFg(StateType.Normal, col1);
             MainClass.DStrings[name] = ttxt; // This is only for widget storage... The types only come into play when exporting.
@@ -166,8 +170,10 @@ namespace MyData
             // Database
             MyDataBase.fields[name] = numbertype;
             MyDataBase.defaults[name] = "";
-            objlink[ttxt.Buffer] = name;
-            ttxt.Buffer.Changed += OnTxt;
+            //objlink[ttxt.Buffer] = name;
+            objlink[ttxt] = name;
+            //ttxt.Buffer.Changed += OnTxt;
+            ttxt.Changed += OnTxt;
         }
 
         static public void NewBool(VBox pg,string name){
@@ -261,7 +267,8 @@ namespace MyData
             foreach (string k in MainClass.DStrings.Keys)
             {
                 var tv = MainClass.DStrings[k];
-                tv.Buffer.Text = rec.value[k];
+                //tv.Buffer.Text = rec.value[k];
+                tv.Text = rec.value[k];
             }
 
             // Booleans

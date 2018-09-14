@@ -68,7 +68,8 @@ namespace MyData
         public static TreeView ListRecords = new TreeView();
         public static Notebook Pages = new Notebook();
         public static List<VBox> Panels = new List<VBox>();
-        public static Dictionary<string, TextView> DStrings = new Dictionary<string, TextView>();
+        //public static Dictionary<string, TextView> DStrings = new Dictionary<string, TextView>();
+        public static Dictionary<string, Entry> DStrings = new Dictionary<string, Entry>();
         public static Dictionary<string, RadioButton> RBTbools = new Dictionary<string, RadioButton>();
         public static Dictionary<string, RadioButton> RBFbools = new Dictionary<string, RadioButton>();
         public static Dictionary<string, Dictionary<string,int>> mcval2index = new Dictionary<string,Dictionary<string,int>>();
