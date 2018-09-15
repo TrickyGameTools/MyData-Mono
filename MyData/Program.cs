@@ -219,8 +219,19 @@ namespace MyData
                     var newrec = new MyRecord();
                     MyDataBase.Record[name]=newrec;
                     foreach(string k in MyDataBase.fields.Keys){
+                        var uk = k.ToUpper();
                         newrec.value[k] = "";
-                        if (MyDataBase.defaults.ContainsKey(k)) newrec.value[k] = MyDataBase.defaults[k];
+                        switch(MyDataBase.fields[k]){
+                            case "int":
+                            case "double":
+                                newrec.value[k] = "0";
+                                break;
+                            case "bool":
+                                newrec.value[k] = "FALSE";
+                                break;
+                        }
+                        if (MyDataBase.defaults.ContainsKey(uk)) newrec.value[k] = MyDataBase.defaults[uk];
+                        Console.WriteLine($"Field: {MyDataBase.fields[k]} {k} = {newrec.value[k]}");
                     }
                     newrec.MODIFIED = true;
                     MyDataBase.UpdateRecView();
