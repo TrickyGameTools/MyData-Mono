@@ -20,7 +20,7 @@
 // 		
 // 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 // 	to the project the exceptions are needed for.
-// Version: 18.09.14
+// Version: 18.09.15
 // EndLic
 ﻿using System;
 using System.Text;
@@ -108,7 +108,7 @@ namespace MyData
 
         static Field2Gui()
         {
-            MKL.Version("MyData For C# - Field2Gui.cs","18.09.14");
+            MKL.Version("MyData For C# - Field2Gui.cs","18.09.15");
             MKL.Lic    ("MyData For C# - Field2Gui.cs","GNU General Public License 3");
         }
 
