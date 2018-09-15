@@ -56,6 +56,124 @@ namespace MyData
         public SortedDictionary<string, MyRecord> records = new SortedDictionary<string, MyRecord>();
     }
 
+    class MyDate
+    {
+        ComboBox day;
+        ComboBox month;
+        ComboBox year;
+        public Label weekday;
+        public const int yearmin = 1800;
+        public const int yearmax = 2100;
+        int dayofweek(int d, int m, int y)
+        {
+            // I translated this routine from "pure c", and I hope it works here. ;)
+            int[] t = { 0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4 };
+            if (m < 3) y--; // -= m < 3;
+            return (y + y / 4 - y / 100 + y / 400 + t[m - 1] + d) % 7;
+        }
+        public int Day
+        {
+            get
+            {
+                var value = day.ActiveText;
+                return Int32.Parse(value);
+            }
+            set { day.Active = value - 1;  }
+        }
+        public string MonthString { get => month.ActiveText;  }
+        public int Month
+        {
+            get
+            {
+                for (int m = 0; m < 12; m++)
+                {
+                    if (Field2Gui.months[m] == MonthString) return m + 1;
+                }
+                return 0;
+            }
+            set { month.Active = value - 1;  }
+
+        }
+        public int Year
+        {
+            get => Int32.Parse(year.ActiveText);
+            set
+            {
+                var i = (value - yearmin);
+                year.Active = i;
+
+            }
+        }
+        public string DayOfWeek
+        {
+            get
+            {
+                var ret = "ERROR!";
+                var dow = dayofweek(Day, Month, Year);
+                if (dow < 7) ret = Field2Gui.daysofweek[dow];
+                return ret;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves or sets date into or from the UI Comboboxes
+        /// </summary>
+        /// <value>The date in mm/dd/yyyy format WITHOUT leading zeros!!!</value>
+        public string Value
+        {
+            get => $"{Day}/{Month}/{Year}";
+            set
+            {
+                //QuickGTK.Info($"Hello, I am going to change the date in this record to {value} - Ready?");
+                int[] monthdays = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+                //                   J   F   M   A   M   J   J   A   S   O   N   D
+                var defaultdate = "19/6/1975";
+                var a = value.Split('/');
+                var sd = 19;
+                var sm = 6;
+                var sy = 1975;
+                //QuickGTK.Info($"{value} -- Initial stuff done, let's go!");
+                if (a.Length != 3)
+                {
+                    QuickGTK.Error("Invalid date, resorting to standard date!");
+                    a = defaultdate.Split('/');
+                }
+                try
+                {
+                    sd = Int32.Parse(a[0]);
+                    sm = Int32.Parse(a[1]);
+                    sy = Int32.Parse(a[2]);
+                }
+                catch
+                {
+                    QuickGTK.Error("Invalid date. Parsing date data failed!");
+                }
+                if (sy < yearmin || sy > yearmax) { QuickGTK.Error("Year out of range!"); sy = 1975; }
+                if (sm < 1 || sm > 12) { QuickGTK.Error("Month value out of range in date!"); sm = 6; }
+                var maxdays = monthdays[sm - 1];
+                if (sm == 2)
+                {
+                    if ((sy % 4 == 0 && sy % 100 != 0) || (sy % 400 == 0)) { maxdays = 29; } // leap years every 4 years, but when on 100 round, only once in 400 years. 2000 was leap year, 2100 was not!
+                }
+                if (sd < 1 || sd > maxdays) { QuickGTK.Error($"In the year {sy} the month {Field2Gui.months[sm]} only had {maxdays} days and not {sd}!"); sd = 19; }
+                //QuickGTK.Info($"Ready?\n\n {sd} - {sm} - {sy} ");
+                Day = sd; //QuickGTK.Info($"Day set to {sd}");
+                Month = sm; //QuickGTK.Info($"Month set to {sm}");
+                Year = sy; //QuickGTK.Info($"Year set to {sy}");
+                weekday.Text = DayOfWeek;
+                //QuickGTK.Info("Done!");
+
+            }
+        }
+        public MyDate(Label w,ComboBox d, ComboBox m, ComboBox y)
+        {
+            day = d;
+            month = m;
+            year = y;
+            weekday = w;
+        }
+
+    }
 
     public class MyDataBase
     {
@@ -269,6 +387,11 @@ namespace MyData
                                         CurrentPanel.Add(new Label(TL.Substring(5, TL.Length - 5)));
                                         pagey += 25;
                                         break;
+                                    case "date":
+                                        if (SL.Length != 2) { CRASH("Invalid date declaration in line #" + linecount + "\n\n" + TL); return false; }
+                                        Field2Gui.NewDate(CurrentPanel, SL[1]);
+                                        pagey += 25;
+                                        break;
                                     case "string":
                                         if (SL.Length != 2) { CRASH("Invalid string declaration in line #" + linecount + "\n\n" + TL); return false; }
                                         Field2Gui.NewString(CurrentPanel, SL[1]);
@@ -480,6 +603,7 @@ namespace MyData
             QOpen.SaveString(filename,MySave.XBase());
             // Loop for the export drivers
             foreach(string drv in MainClass.exportdrivers.Keys){
+                // QuickGTK.Info("Exporting to " + drv); // debug
                 // Export the entire database
                 var ok = false;
                 if (basexport.ContainsKey(drv) && basexport[drv] != "")

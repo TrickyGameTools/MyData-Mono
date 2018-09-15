@@ -74,6 +74,7 @@ namespace MyData
         public static Dictionary<string, RadioButton> RBFbools = new Dictionary<string, RadioButton>();
         public static Dictionary<string, Dictionary<string,int>> mcval2index = new Dictionary<string,Dictionary<string,int>>();
         public static Dictionary<string, ComboBox> mc = new Dictionary<string, ComboBox>();
+        static public Dictionary<string, MyDate> Dates = new Dictionary<string, MyDate>();
         public static string sc_rec;
 
         static MainClass(){
@@ -228,6 +229,9 @@ namespace MyData
                                 break;
                             case "bool":
                                 newrec.value[k] = "FALSE";
+                                break;
+                            case "date":
+                                newrec.value[k] = "19/6/1975";
                                 break;
                         }
                         if (MyDataBase.defaults.ContainsKey(uk)) newrec.value[k] = MyDataBase.defaults[uk];

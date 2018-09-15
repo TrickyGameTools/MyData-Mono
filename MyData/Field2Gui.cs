@@ -248,6 +248,50 @@ namespace MyData
 
         }
 
+        static void OnDate(object sender, EventArgs e){
+            if (uneditable) return;
+            var field = objlink[sender];
+            var d = MainClass.Dates[field];
+            currentrec.value[field] = d.Value;
+            currentrec.MODIFIED = true;
+            d.weekday.Text =d .DayOfWeek;
+        }
+
+        static string[] SR(int start,int eind){
+            var lRet = new List<string>();
+            for (int i = start; i <= eind; i++) lRet.Add($"{i}");
+            return lRet.ToArray();
+        }
+
+        static public string[] daysofweek = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+        static public string[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+        static public void NewDate(VBox pg, string name)
+        {
+            var tbox = new HBox();
+            var tp = new Label("date"); tp.SetSizeRequest(200, 25);
+            var nm = new Label(name); nm.SetSizeRequest(400, 25);
+            var datebox = new HBox(); datebox.SetSizeRequest(400, 25);
+            var month = new ComboBox(months);
+            var day = new ComboBox(SR(1, 31));
+            var year = new ComboBox(SR(MyDate.yearmin,MyDate.yearmax));
+            var week = new Label("---");
+            tbox.Add(tp);
+            tbox.Add(nm);
+            tbox.Add(datebox);
+            datebox.Add(week);
+            datebox.Add(month);
+            datebox.Add(day);
+            datebox.Add(year);
+            objlink[day] = name;
+            objlink[month] = name;
+            objlink[year] = name;
+            MainClass.Dates[name] = new MyDate(week,day, month, year);
+            day.Changed += OnDate;
+            month.Changed += OnDate;
+            year.Changed += OnDate;
+            pg.Add(tbox);
+        }
+
         static public void SelectRecord(string recname)
         {
             uneditable = true;
@@ -266,6 +310,9 @@ namespace MyData
             // Strings and other textbox related types
             foreach (string k in MainClass.DStrings.Keys)
             {
+                if (!rec.value.ContainsKey(k)) { QuickGTK.Warn($"{MyDataBase.fields[k]} contains no data in this record! Creating data!");
+                    if (MyDataBase.fields[k] != "string") rec.value[k] = ""; else rec.value[k] = "0";
+                }
                 var tv = MainClass.DStrings[k];
                 //tv.Buffer.Text = rec.value[k];
                 tv.Text = rec.value[k];
@@ -276,6 +323,12 @@ namespace MyData
             {
                 var btrue = MainClass.RBTbools[k];
                 var bfalse = MainClass.RBFbools[k];
+                if (!rec.value.ContainsKey(k))
+                {
+                    QuickGTK.Warn($"{MyDataBase.fields[k]} contains no data in this record! Creating data!");
+                    rec.value[k] = "TRUE";
+                }
+
                 btrue.Active = rec.value[k].ToUpper() == "TRUE";
                 bfalse.Active = rec.value[k].ToUpper() != "TRUE";
             }
@@ -284,6 +337,11 @@ namespace MyData
             {
                 var mc = MainClass.mc[k];
                 var mcid = MainClass.mcval2index;
+                if (!rec.value.ContainsKey(k))
+                {
+                    QuickGTK.Warn($"{MyDataBase.fields[k]} contains no data in this record! Creating data!");
+                    rec.value[k] = "";
+                }
                 if (!mcid.ContainsKey(k)) { QuickGTK.Warn("Empty mc list!"); }
                 else
                 {
@@ -295,6 +353,15 @@ namespace MyData
                     }
                 }
 
+            }
+            foreach (string k in MainClass.Dates.Keys)
+            {
+                if (!rec.value.ContainsKey(k))
+                {
+                    QuickGTK.Warn($"{MyDataBase.fields[k]} contains no data in record '{recname}'! Creating data!");
+                    rec.value[k] = "19/6/1975";
+                }
+                MainClass.Dates[k].Value = rec.value[k];
             }
             uneditable = false;
         }
