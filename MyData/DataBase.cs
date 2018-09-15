@@ -151,7 +151,7 @@ namespace MyData
                 if (sy < yearmin || sy > yearmax) { QuickGTK.Error("Year out of range!"); sy = 1975; }
                 if (sm < 1 || sm > 12) { QuickGTK.Error("Month value out of range in date!"); sm = 6; }
                 var maxdays = monthdays[sm - 1];
-                if (sm == 2)
+                if (maxdays == 28)
                 {
                     if ((sy % 4 == 0 && sy % 100 != 0) || (sy % 400 == 0)) { maxdays = 29; } // leap years every 4 years, but when on 100 round, only once in 400 years. 2000 was leap year, 2100 was not!
                 }
@@ -221,6 +221,44 @@ namespace MyData
             int[] ret = {Hours, Minutes, Seconds};
             return ret;
         }
+    }
+
+    public class MyColor{
+        Label el;
+        Entry er;
+        Entry eb;
+        Entry eg;
+        public MyColor(Label l,Entry r,Entry g,Entry b){
+            el = l;
+            er = r;
+            eg = g;
+            eb = b;
+        }
+        int gb(Entry e){
+            try
+            {
+                var r = Int32.Parse(e.Text);
+                if (r > 255) r = 255;
+                if (r < 0) r = 0;
+                return r;
+            }
+            catch { return 0; }
+        }
+        void pb(Entry e,int v){
+            int vv = v;
+            if (vv < 0) vv = 0; else if (vv > 255) vv = 255;
+            e.Text = $"{vv}";
+        }
+        public int R { get => gb(er); set => pb(er, value); }
+        public int G { get => gb(eg); set => pb(eg, value); }
+        public int B { get => gb(eb); set => pb(eb, value); }
+        public string Value { get => $"{R};{G};{B}"; set{
+                var s = value.Split(';');
+                if (s.Length!=3) { QuickGTK.Error("Invalid color parsing!"); s = "255;255;255".Split(';'); }
+                er.Text = s[0];
+                eg.Text = s[1];
+                eb.Text = s[2];
+            }}
     }
 
 
@@ -446,6 +484,11 @@ namespace MyData
                                     case "time":
                                         if (SL.Length != 2) { CRASH("Invalid date declaration in line #" + linecount + "\n\n" + TL); return false; }
                                         Field2Gui.NewTime(CurrentPanel, SL[1]);
+                                        pagey += 25;
+                                        break;
+                                    case "color":
+                                        if (SL.Length != 2) { CRASH("Invalid date declaration in line #" + linecount + "\n\n" + TL); return false; }
+                                        Field2Gui.NewColor(CurrentPanel, SL[1]);
                                         pagey += 25;
                                         break;
                                     case "string":

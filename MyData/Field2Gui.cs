@@ -148,6 +148,48 @@ namespace MyData
 
         }
 
+        static void PickColor(object sender, EventArgs e)
+        {
+            var f = objlink[sender];
+            var rec = MyDataBase.Record[f];
+            var c = QuickGTK.SelectColor();
+            var myc = MainClass.Colors[f];
+            myc.R = c.red;
+            myc.G = c.green;
+            myc.B = c.blue;
+            rec.MODIFIED = true;
+        }
+
+        static public void NewColor(VBox pg, string name){
+            var tbox = new HBox();
+            var tp = new Label("color"); tp.SetSizeRequest(200, 25);
+            var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25);
+            tbox.Add(tp);
+            tbox.Add(nm);
+            var colbox = new HBox(); colbox.SetSizeRequest(400, 25);
+            var r = new Entry("0"); r.SetSizeRequest(75, 25);
+            var g = new Entry("0"); g.SetSizeRequest(75, 25);
+            var b = new Entry("0"); b.SetSizeRequest(75, 25);
+            var but = new Button("Pick"); but.SetSizeRequest(100, 25);
+            MainClass.Colors[name] = new MyColor(nm, r, g, b);
+            objlink[r] = name;
+            objlink[g] = name;
+            objlink[b] = name;
+            objlink[but] = name;
+            r.Changed += OnColor;
+            g.Changed += OnColor;
+            b.Changed += OnColor;
+            MyDataBase.fields[name] = "color";
+            MyDataBase.defaults[name] = "255;255;255";
+            colbox.Add(new Label("R")); colbox.Add(r);
+            colbox.Add(new Label("G")); colbox.Add(g);
+            colbox.Add(new Label("B")); colbox.Add(b);
+            colbox.Add(but);
+            but.Clicked += PickColor;
+            tbox.Add(colbox);
+            pg.Add(tbox);
+        }
+
         static public void NewNumber(VBox pg, string numbertype, string name){
             // Gui
             var tbox = new HBox();
@@ -246,6 +288,14 @@ namespace MyData
             mmc.Changed += OnCombo;
             return mmc;
 
+        }
+
+        static void OnColor(object sender, EventArgs e){
+            if (uneditable) return;
+            var field = objlink[sender];
+            var d = MainClass.Colors[field];
+            currentrec.value[field] = d.Value; 
+            currentrec.MODIFIED = true;
         }
 
         static void OnDate(object sender, EventArgs e){
@@ -411,6 +461,16 @@ namespace MyData
                 }
                 MainClass.Times[k].Value = rec.value[k];
             }
+            foreach (string k in MainClass.Colors.Keys)
+            {
+                if (!rec.value.ContainsKey(k))
+                {
+                    QuickGTK.Warn($"{MyDataBase.fields[k]} contains no data in record '{recname}'! Creating data!");
+                    rec.value[k] = "255;255;255";
+                }
+                MainClass.Colors[k].Value = rec.value[k];
+            }
+
             uneditable = false;
         }
     }

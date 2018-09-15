@@ -60,13 +60,13 @@ namespace MyData
                 }
             }
         }
-        public static int[] TimeSplit(string time){
-            var s = time.Split(':');
+        public static int[] TimeSplit(string time,char sep=':'){
+            var s = time.Split(sep);
             int[] ret = { 0, 0, 0 };
             try{
                 for (int i = 0; i < ret.Length; i++) ret[i] = Int32.Parse(s[i]);
             } catch {
-
+                ret[0] = 0; // Just a warning suppressor :P
             }
             return ret;
         }
@@ -161,6 +161,10 @@ namespace MyData
                             ds = MyDataBase.Record[recname].value[k].Split(':');
                             ret += "{" + $" hour={ds[0]}, minute={ds[1]}, second ={ds[2]} " + "}";
                             break;
+                        case "color":
+                            ds = MyDataBase.Record[recname].value[k].Split(';');
+                            ret += "{" + $" red={ds[0]}, green={ds[1]}, blue ={ds[2]} " + "}";
+                            break;
                         default:
                             TrickyUnits.GTK.QuickGTK.Info($"I do not know how to deal with type {MyDataBase.fields[k]}");
                             break;
@@ -218,6 +222,10 @@ namespace MyData
                         case "time":
                             ds = MyDataBase.Record[recname].value[k].Split(':');
                             ret += $"<{k}><hour>{ds[0]}</hour><minute>{ds[1]}</minute><second>{ds[2]}</second></{k}>{eol}";
+                            break;
+                        case "color":
+                            ds = MyDataBase.Record[recname].value[k].Split(';');
+                            ret += $"<{k}><red>{ds[0]}</red><green>{ds[1]}</green><blue>{ds[2]}</blue></{k}>{eol}";
                             break;
                         default:
                             ret += $"<{k}>{val}</{k}>{eol}";
@@ -277,6 +285,13 @@ namespace MyData
                             if (!addreturn) ret += "\t"; ret += $"\thour : {ds[0]}{eol}";
                             if (!addreturn) ret += "\t"; ret += $"\tminute : {ds[1]}{eol}";
                             if (!addreturn) ret += "\t"; ret += $"\tsecond : {ds[2]}{eol}";
+                            break;
+                        case "color":
+                            ds = val.Split(';');
+                            ret += $"{k} : {eol}";
+                            if (!addreturn) ret += "\t"; ret += $"\tred : {ds[0]}{eol}";
+                            if (!addreturn) ret += "\t"; ret += $"\tgreen : {ds[1]}{eol}";
+                            if (!addreturn) ret += "\t"; ret += $"\tblue : {ds[2]}{eol}";
                             break;
                         default:
                             ret += $"{k} : {val}{eol}";
@@ -343,6 +358,10 @@ namespace MyData
                         case "time":
                             var si = TimeSplit(MyDataBase.Record[recname].value[k]);
                             lin += "{" + $" \"hour\" : {si[0]}, \"minute\" : {si[1]}, \"second\" : {si[2]} " + "}";
+                            break;
+                        case "color":
+                            si = TimeSplit(MyDataBase.Record[recname].value[k],';');
+                            lin += "{" + $" \"red\" : {si[0]}, \"green\" : {si[1]}, \"blue\" : {si[2]} " + "}";
                             break;
                         default:
                             TrickyUnits.GTK.QuickGTK.Error("I cannot handle type -> " + MyDataBase.fields[k]);
@@ -431,6 +450,10 @@ namespace MyData
                             var si = TimeSplit(MyDataBase.Record[recname].value[k]); //MyDataBase.Record[recname].value[k].Split(':');
                             lin += "{" + $" \"hour\" : {si[0]}, \"minute\" : {si[1]}, \"second\" : {si[2]} " + "}";
                             break;
+                        case "color":
+                            si = TimeSplit(MyDataBase.Record[recname].value[k],';');
+                            lin += "{" + $" \"red\" : {si[0]}, \"green\" : {si[1]}, \"blue\" : {si[2]} " + "}";
+                            break;
                         default:
                             TrickyUnits.GTK.QuickGTK.Error("I cannot handle type -> " + MyDataBase.fields[k]);
                             break;
@@ -518,6 +541,11 @@ namespace MyData
                             var si = TimeSplit(MyDataBase.Record[recname].value[k]);
                             lin += $"array( \"hour\" => {si[0]}, \"minute\" => {si[1]}, \"second\" => {si[2]} )";
                             break;
+                        case "color":
+                            //sd = MyDataBase.Record[recname].value[k].Split(':');
+                            si = TimeSplit(MyDataBase.Record[recname].value[k],';');
+                            lin += $"array( \"red\" => {si[0]}, \"green\" => {si[1]}, \"blue\" => {si[2]} )";
+                            break;
 
                         default:
                             TrickyUnits.GTK.QuickGTK.Error("I cannot handle type -> " + MyDataBase.fields[k]);
@@ -588,6 +616,12 @@ namespace MyData
                             ret += $"{k.ToUpper()}.HOUR={sd[0]}{eol}"; if (!addreturn) ret += $"{recname.ToUpper()}.";
                             ret += $"{k.ToUpper()}.MINUTE={sd[1]}{eol}"; if (!addreturn) ret += $"{recname.ToUpper()}.";
                             ret += $"{k.ToUpper()}.SECOND={sd[2]}{eol}";
+                            break;
+                        case "color":
+                            sd = MyDataBase.Record[recname].value[k].Split(';');
+                            ret += $"{k.ToUpper()}.RED={sd[0]}{eol}"; if (!addreturn) ret += $"{recname.ToUpper()}.";
+                            ret += $"{k.ToUpper()}.GREEN={sd[1]}{eol}"; if (!addreturn) ret += $"{recname.ToUpper()}.";
+                            ret += $"{k.ToUpper()}.BLUE={sd[2]}{eol}";
                             break;
                         default:
                             ret += $"{k.ToUpper()}={val}{eol}";

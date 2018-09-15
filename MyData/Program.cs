@@ -76,6 +76,7 @@ namespace MyData
         public static Dictionary<string, ComboBox> mc = new Dictionary<string, ComboBox>();
         static public Dictionary<string, MyDate> Dates = new Dictionary<string, MyDate>();
         static public Dictionary<string, MyTime> Times = new Dictionary<string, MyTime>();
+        static public Dictionary<string, MyColor> Colors = new Dictionary<string, MyColor>();
         public static string sc_rec;
 
         static MainClass(){
