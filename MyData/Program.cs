@@ -75,6 +75,7 @@ namespace MyData
         public static Dictionary<string, Dictionary<string,int>> mcval2index = new Dictionary<string,Dictionary<string,int>>();
         public static Dictionary<string, ComboBox> mc = new Dictionary<string, ComboBox>();
         static public Dictionary<string, MyDate> Dates = new Dictionary<string, MyDate>();
+        static public Dictionary<string, MyTime> Times = new Dictionary<string, MyTime>();
         public static string sc_rec;
 
         static MainClass(){
@@ -232,6 +233,9 @@ namespace MyData
                                 break;
                             case "date":
                                 newrec.value[k] = "19/6/1975";
+                                break;
+                            case "time":
+                                newrec.value[k] = "00:00:00";
                                 break;
                         }
                         if (MyDataBase.defaults.ContainsKey(uk)) newrec.value[k] = MyDataBase.defaults[uk];

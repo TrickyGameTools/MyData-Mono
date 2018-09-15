@@ -257,9 +257,22 @@ namespace MyData
             d.weekday.Text =d .DayOfWeek;
         }
 
-        static string[] SR(int start,int eind){
+        static void OnTime(object sender, EventArgs e){
+            if (uneditable) return;
+            var field = objlink[sender];
+            var d = MainClass.Times[field];
+            currentrec.value[field] = d.Value;
+            currentrec.MODIFIED = true;
+        }
+
+        static string lz(int i, int nullen=0){
+            if (nullen == 0) return $"{i}";
+            var n = ""; for (int j = 0; j < nullen; j++) n += "0";
+            return qstr.Right($"{n}{i}", 2);
+        }
+        static string[] SR(int start,int eind, int nullen=0){
             var lRet = new List<string>();
-            for (int i = start; i <= eind; i++) lRet.Add($"{i}");
+            for (int i = start; i <= eind; i++) lRet.Add($"{lz(i,nullen)}");
             return lRet.ToArray();
         }
 
@@ -289,6 +302,32 @@ namespace MyData
             day.Changed += OnDate;
             month.Changed += OnDate;
             year.Changed += OnDate;
+            pg.Add(tbox);
+        }
+
+        static public void NewTime(VBox pg,string name){
+            var tbox = new HBox();
+            var tp = new Label("time"); tp.SetSizeRequest(200, 25);
+            var nm = new Label(name); nm.SetSizeRequest(400, 25);
+            var timebox = new HBox(); timebox.SetSizeRequest(400, 25);
+            var uur = new ComboBox(SR(0, 23,2));
+            var minuut = new ComboBox(SR(0, 59,2));
+            var seconde = new ComboBox(SR(0,59,2));
+            timebox.Add(uur);
+            timebox.Add(new Label(":"));
+            timebox.Add(minuut);
+            timebox.Add(new Label(":"));
+            timebox.Add(seconde);
+            objlink[uur] = name;
+            objlink[minuut] = name;
+            objlink[seconde] = name;
+            uur.Changed += OnTime;
+            minuut.Changed += OnTime;
+            seconde.Changed += OnTime;
+            tbox.Add(tp);
+            tbox.Add(nm);
+            tbox.Add(timebox);
+            MainClass.Times[name] = new MyTime(uur, minuut, seconde);
             pg.Add(tbox);
         }
 
@@ -362,6 +401,15 @@ namespace MyData
                     rec.value[k] = "19/6/1975";
                 }
                 MainClass.Dates[k].Value = rec.value[k];
+            }
+            foreach (string k in MainClass.Times.Keys)
+            {
+                if (!rec.value.ContainsKey(k))
+                {
+                    QuickGTK.Warn($"{MyDataBase.fields[k]} contains no data in record '{recname}'! Creating data!");
+                    rec.value[k] = "01:02:03";
+                }
+                MainClass.Times[k].Value = rec.value[k];
             }
             uneditable = false;
         }

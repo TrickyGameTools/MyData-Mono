@@ -175,6 +175,57 @@ namespace MyData
 
     }
 
+    class MyTime
+    {
+        ComboBox hour;
+        ComboBox minute;
+        ComboBox second;
+        public MyTime(ComboBox h, ComboBox m, ComboBox s) { hour = h; minute = m; second = s; }
+        public int Hours
+        {
+            get => hour.Active; set
+            {
+                if (value < 0 || value > 23) hour.Active = 0; else hour.Active = value;
+            }
+        }
+        public int Minutes
+        {
+            get => minute.Active; set
+            {
+                if (value < 0 || value > 59) minute.Active = 0; else minute.Active = value;
+            }
+        }
+        public int Seconds
+        {
+            get => second.Active; set
+            {
+                if (value < 0 || value > 59) second.Active = 0; else second.Active = value;
+            }
+        }
+        public string Value
+        {
+            get => $"{qstr.Right($"0{Hours}", 2)}:{qstr.Right($"0{Minutes}", 2)}:{qstr.Right($"0{Seconds}", 2)}";
+            set
+            {
+                var s = value.Split(':');
+                try{
+                    Hours = Int32.Parse(s[0]);
+                    Minutes = Int32.Parse(s[1]);
+                    Seconds = Int32.Parse(s[2]);
+                } catch {
+                    QuickGTK.Error("Time parse error!");
+                }
+            }
+        }
+        public int[] toInts(){
+            int[] ret = {Hours, Minutes, Seconds};
+            return ret;
+        }
+    }
+
+
+
+
     public class MyDataBase
     {
         //static public Dictionary<string, Export> Exporters = new Dictionary<string, Export>();
@@ -390,6 +441,11 @@ namespace MyData
                                     case "date":
                                         if (SL.Length != 2) { CRASH("Invalid date declaration in line #" + linecount + "\n\n" + TL); return false; }
                                         Field2Gui.NewDate(CurrentPanel, SL[1]);
+                                        pagey += 25;
+                                        break;
+                                    case "time":
+                                        if (SL.Length != 2) { CRASH("Invalid date declaration in line #" + linecount + "\n\n" + TL); return false; }
+                                        Field2Gui.NewTime(CurrentPanel, SL[1]);
                                         pagey += 25;
                                         break;
                                     case "string":
