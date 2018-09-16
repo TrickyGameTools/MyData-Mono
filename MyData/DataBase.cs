@@ -20,7 +20,7 @@
 // 		
 // 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 // 	to the project the exceptions are needed for.
-// Version: 18.09.15
+// Version: 18.09.16
 // EndLic
 
 ﻿using TrickyUnits;
@@ -294,7 +294,7 @@ namespace MyData
 
         static MyDataBase()
         {
-            MKL.Version("MyData For C# - DataBase.cs","18.09.15");
+            MKL.Version("MyData For C# - DataBase.cs","18.09.16");
             MKL.Lic    ("MyData For C# - DataBase.cs","GNU General Public License 3");
         }
 
@@ -471,7 +471,9 @@ namespace MyData
                                 }
                                 switch (SL[0])
                                 {
-                                    case "strike": break;
+                                    case "strike":
+                                        CurrentPanel.Add(new HSeparator());
+                                        break;
                                     case "info":
                                         CurrentPanel.Add(new Label(TL.Substring(5, TL.Length - 5)));
                                         pagey += 25;
