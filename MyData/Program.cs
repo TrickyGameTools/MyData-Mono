@@ -96,7 +96,17 @@ namespace MyData
             Pages.SetSizeRequest(args.Width - 250, args.Height - 364);
         }
 
-        static bool ChooseTheFile(Window w){
+        static bool ChooseTheFile(Window w,string[] a){
+            if (a.Length != 0 && System.IO.File.Exists(a[0])) { filename = a[0]; return true; }
+            var ops = Dirry.C("$AppSupport$/MyData/Startup");
+            if (System.IO.File.Exists(ops)){
+                var file = QOpen.LoadString(ops);
+                System.IO.File.Delete(ops);
+                if (System.IO.File.Exists(file)) {
+                    filename = file;
+                    return true;
+                }
+            }
             FileChooserDialog fcd = new FileChooserDialog("Choose database", w, FileChooserAction.Open,"Select", ResponseType.Accept, "Cancel", ResponseType.Close);
             fcd.SelectMultiple = false;
             var r = fcd.Run(); // This opens the window and waits for the response
@@ -299,7 +309,7 @@ namespace MyData
             Application.Init();
             Window tWin = new Window("MyData");
             tWin.Resize(400, 400);
-            if (!ChooseTheFile(tWin)) return;
+            if (!ChooseTheFile(tWin,args)) return;
             tWin.Hide();
             //TestIncbin(win); // debug ONLY!
             if (!MyDataBase.Load(filename)) return;

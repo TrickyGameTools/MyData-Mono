@@ -424,12 +424,12 @@ namespace MyData
             List<string> myList;
             string[] Boolean;
             var v = "";
-            var presult = false;
+            //var presult = false;
             var work = "";
             var OutCome = false;
             var r = currentrec.value;
             if (r == null) return;
-            var t = "";
+            //var t = "";
             var Blocked = new List<string>();
             var Allow = MyDataBase.Allow; // I'm lazy I know, I don't need YOU to tell me! :P
             var Fields = MyDataBase.fields;
@@ -450,6 +450,8 @@ namespace MyData
                             case "string":
                             case "mc":
                             case "color":
+                            case "date":
+                            case "time":
                                 OutCome = r[v] != "";
                                 break;
                             case "bool": OutCome = r[v] == "TRUE"; break;

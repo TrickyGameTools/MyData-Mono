@@ -147,6 +147,9 @@
     <Compile Include="..\..\TrickyUnits\gtk\QuickGTK.cs">
       <Link>LinkedStuff\QuickGTK.cs</Link>
     </Compile>
+    <Compile Include="..\..\TrickyUnits\Dirry.cs">
+      <Link>LinkedStuff\Dirry.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="LinkedStuff\" />
