@@ -20,7 +20,7 @@
 // 		
 // 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 // 	to the project the exceptions are needed for.
-// Version: 18.09.15
+// Version: 18.09.16
 // EndLic
 ﻿using System;
 using System.Text;
@@ -108,7 +108,7 @@ namespace MyData
 
         static Field2Gui()
         {
-            MKL.Version("MyData For C# - Field2Gui.cs","18.09.15");
+            MKL.Version("MyData For C# - Field2Gui.cs","18.09.16");
             MKL.Lic    ("MyData For C# - Field2Gui.cs","GNU General Public License 3");
         }
 
@@ -122,8 +122,8 @@ namespace MyData
         static public void NewString(VBox pg,string name){
             // Gui
             var tbox = new HBox();
-            var tp = new Label("string"); tp.SetSizeRequest(200, 25);
-            var nm = new Label(name); nm.SetSizeRequest(400, 25);
+            var tp = new Label("string"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0);
+            var nm = new Label(name); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
             tbox.Add(tp);
             tbox.Add(nm);
             //var ttxt = new TextView(); ttxt.SetSizeRequest(400, 25);
@@ -151,19 +151,19 @@ namespace MyData
         static void PickColor(object sender, EventArgs e)
         {
             var f = objlink[sender];
-            var rec = MyDataBase.Record[f];
+            //var rec = MyDataBase.Record[f];
             var c = QuickGTK.SelectColor();
             var myc = MainClass.Colors[f];
             myc.R = c.red;
             myc.G = c.green;
             myc.B = c.blue;
-            rec.MODIFIED = true;
+            currentrec.MODIFIED = true;
         }
 
         static public void NewColor(VBox pg, string name){
             var tbox = new HBox();
-            var tp = new Label("color"); tp.SetSizeRequest(200, 25);
-            var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25);
+            var tp = new Label("color"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0);
+            var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
             tbox.Add(tp);
             tbox.Add(nm);
             var colbox = new HBox(); colbox.SetSizeRequest(400, 25);
@@ -193,8 +193,8 @@ namespace MyData
         static public void NewNumber(VBox pg, string numbertype, string name){
             // Gui
             var tbox = new HBox();
-            var tp = new Label(numbertype); tp.SetSizeRequest(200, 25);
-            var nm = new Label(name); nm.SetSizeRequest(400, 25);
+            var tp = new Label(numbertype); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0);
+            var nm = new Label(name); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
             tbox.Add(tp);
             tbox.Add(nm);
             //var ttxt = new TextView(); ttxt.SetSizeRequest(400, 25);
@@ -219,11 +219,11 @@ namespace MyData
         }
 
         static public void NewBool(VBox pg,string name){
-            var but1 = new RadioButton("True");
-            var but2 = new RadioButton(but1, "False");
-            var tbox = new HBox();
-            var tp = new Label("bool"); tp.SetSizeRequest(200, 25);
-            var nm = new Label(name); nm.SetSizeRequest(400, 25);
+            var but1 = new RadioButton("True"); but1.SetAlignment(0, 0);
+            var but2 = new RadioButton(but1, "False"); but2.SetAlignment(0, 0);
+            var tbox = new HBox(); 
+            var tp = new Label("bool"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0);
+            var nm = new Label(name); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
             tbox.Add(tp);
             tbox.Add(nm);
             var bbox = new HBox(); bbox.SetSizeRequest(400, 25);
@@ -273,9 +273,9 @@ namespace MyData
             CellRendererText text = new CellRendererText();
             mmc.PackStart(text, false);
             mmc.AddAttribute(text, "text", 0);
-            var tp = new Label("mc"); tp.SetSizeRequest(200, 25); // FYI: mc = Multiple Choice
-            var nm = new Label(name); nm.SetSizeRequest(400, 25);
-            mmc.SetSizeRequest(400, 25);
+            var tp = new Label("mc"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0); // FYI: mc = Multiple Choice
+            var nm = new Label(name); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
+            mmc.SetSizeRequest(400, 25); 
             tbox.Add(tp);
             tbox.Add(nm);
             tbox.Add(mmc);
@@ -357,8 +357,8 @@ namespace MyData
 
         static public void NewTime(VBox pg,string name){
             var tbox = new HBox();
-            var tp = new Label("time"); tp.SetSizeRequest(200, 25);
-            var nm = new Label(name); nm.SetSizeRequest(400, 25);
+            var tp = new Label("time"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0);
+            var nm = new Label(name); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
             var timebox = new HBox(); timebox.SetSizeRequest(400, 25);
             var uur = new ComboBox(SR(0, 23,2));
             var minuut = new ComboBox(SR(0, 59,2));
