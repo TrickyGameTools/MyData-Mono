@@ -381,6 +381,181 @@ namespace MyData
             pg.Add(tbox);
         }
 
+
+
+        static void Dance(string fld, List<string> BanList, bool v){
+            var o = v &&( ! BanList.Contains(fld));
+            //Print "allow."+fld+" = "+o
+            if (!o) BanList.Add(fld); //ListAddLast banlist, fld
+            //Select fields.value(fld)
+            //        Case "bool"
+            //gadfield(fld+".True").setenabled o
+            //
+            //gadfield(fld+".False").setenabled o
+            //
+            // Case "color"    
+            //gadfield(fld+".Red").setenabled o
+
+            //gadfield(fld+".Green").setenabled o
+            //
+            //gadfield(fld+".Blue").setenabled o
+            //
+            //Default
+            //gadfield(fld).setenabled o
+            //End Select
+            foreach(object obj in objlink.Keys){
+                if (objlink[obj] == fld)
+                {
+                    var w = obj as Widget;
+                    w.Sensitive = o;
+                }
+            }
+        }// End Function
+
+
+        static void error(string e){
+            QuickGTK.Error(e);
+            throw new Exception(e); // Just to force the program to quit!
+        }
+
+        public static void RunAllow()
+        {
+            //var key = "";
+            List<string> myList;
+            string[] Boolean;
+            var v = "";
+            var presult = false;
+            var work = "";
+            var OutCome = false;
+            var r = currentrec.value;
+            if (r == null) return;
+            var t = "";
+            var Blocked = new List<string>();
+            var Allow = MyDataBase.Allow; // I'm lazy I know, I don't need YOU to tell me! :P
+            var Fields = MyDataBase.fields;
+            var fieldonpage = MyDataBase.fieldonpage;
+            var o = false;
+            foreach (string key in Allow.Keys)
+            {
+                myList = Allow[key];//TList(MapValueForKey(Allow, key))
+                Boolean = key.Split(' ');
+                //'If (Len boolean)<>1 And Len(Boolean)<>3 Error "Misformed Allow condition"
+                v = Boolean[0];
+                if (qstr.Prefixed(v, "!")) { v = qstr.Right(v, qstr.Len(v) - 1); o = true; }
+                switch (Boolean.Length)
+                {
+                    case 1:
+                        switch (Fields[v])
+                        {
+                            case "string":
+                            case "mc":
+                            case "color":
+                                OutCome = r[v] != "";
+                                break;
+                            case "bool": OutCome = r[v] == "TRUE"; break;
+                            case "int":
+                            case "double":
+                                OutCome = qstr.ToInt(r[v]) != 0;
+                                break;
+                            case "":
+                                error("Non-existent variable: " + v);
+                                break; // Unreachable, but required!
+                            default:
+                                error("Type \"" + Fields[v] + "\" is not (yet) compatible with the [ALLOW] conditional definitions");
+                                break;
+                        }
+                        break;
+                    case 3:
+                        switch (Boolean[1])
+                        {
+                            case "=":
+                            case "==":
+                                OutCome = r[v] == Boolean[2]; //'Print v +" = "+r.value(v)+" = "+boolean[2]+" >>> "+outcome
+                                break;
+                            case "{}":
+                                OutCome = false;
+                                foreach (string vvv in Boolean[2].Split(',')) OutCome = OutCome || r[v] == vvv;
+                                break;
+                            case "!=":
+                            case "<>":
+                            case "~=":
+                            case "=/=":
+                                OutCome = r[v] != Boolean[2];
+                                break;
+                            case "<":
+                                switch (Fields[v])
+                                {
+                                    case "int": OutCome = qstr.ToInt(r[v]) < qstr.ToInt(Fields[Boolean[2]]); break;
+                                    case "double": error("double not yet supported for > or < comparing "); break;
+                                    //Case "double"   outcome = r.value(v).todouble()<fields.value(boolean[2]).todouble()
+                                    default: error("Illegal type"); break;
+                                }
+                                break;
+                            case ">":
+                                switch (Fields[v])
+                                {
+                                    case "int": OutCome = qstr.ToInt(r[v]) > qstr.ToInt(Fields[Boolean[2]]); break;
+                                    case "double": error("double not yet supported for > or < comparing "); break;
+                                    //Case "double"   outcome = r.value(v).todouble()<fields.value(boolean[2]).todouble()
+                                    default: error("Illegal type"); break;
+                                }
+                                break;
+                            case "<=":
+                                switch (Fields[v])
+                                {
+                                    case "int": OutCome = qstr.ToInt(r[v]) <= qstr.ToInt(Fields[Boolean[2]]); break;
+                                    case "double": error("double not yet supported for > or < comparing "); break;
+                                    //Case "double"   outcome = r.value(v).todouble()<fields.value(boolean[2]).todouble()
+                                    default: error("Illegal type"); break;
+                                }
+                                break;
+                            case ">=":
+                                switch (Fields[v])
+                                {
+                                    case "int": OutCome = qstr.ToInt(r[v]) > qstr.ToInt(Fields[Boolean[2]]); break;
+                                    case "double": error("double not yet supported for > or < comparing "); break;
+                                    //Case "double"   outcome = r.value(v).todouble()<fields.value(boolean[2]).todouble()
+                                    default: error("Illegal type"); break;
+                                }
+                                break;
+                            default:
+                                error("Unknown operator");
+                                break;
+                        }
+                        break;
+                    default: error("Misformed Allow condition"); break;
+                }
+                if (o) OutCome = !OutCome;
+                bool oc;
+                foreach (string wwork in Allow[key])
+                {
+                    work = wwork;
+                    oc = OutCome;
+                    if (qstr.Prefixed(work, "!")) { work = qstr.RemPrefix(work, "!"); oc = !OutCome; }
+                    //'presult = outcome And (Not ListContains(banned,work))  
+                    if (qstr.Prefixed(work, "PREFIX:"))
+                    {
+                        foreach (string w in Fields.Keys)
+                            if (qstr.RemPrefix(work, "PREFIX:") == w) Dance(w, Blocked, oc);
+                    }
+                    else if (qstr.Prefixed(work, "PAGE:"))
+                    {
+                        //Print "Work with "+work+" >>> "+RemPrefix(work,"PAGE:")
+                        foreach (string w in fieldonpage.Keys)
+                        {
+                            //'Print w+" = "+fieldonpage.value(w)+" "+remprefix(work,"PAGE:")+" "+Int(Trim(remprefix(work,"PAGE:"))=fieldonpage.value(w))
+                            if (qstr.MyTrim(qstr.RemPrefix(work, "PAGE:")) == fieldonpage[w]) Dance(w, Blocked, oc);
+                        }
+                    }
+                    else
+                    {
+                        Dance(work, Blocked, oc);
+                    }
+                }
+            }
+        }
+
+
         static public void SelectRecord(string recname)
         {
             uneditable = true;
@@ -470,8 +645,119 @@ namespace MyData
                 }
                 MainClass.Colors[k].Value = rec.value[k];
             }
-
+            RunAllow();
             uneditable = false;
         }
     }
 }
+
+
+/* Below is the original BlitzMax code of the allow feature, only placed here for reference purposes, and making my life easier :P
+
+  Function Dance(fld$,BanList:TList,v:Byte)
+    Local o = v And (Not ListContains(banlist,fld))
+    Print "allow."+fld+" = "+o  
+    If Not o ListAddLast banlist,fld
+    Select fields.value(fld)
+        Case "bool"
+            gadfield(fld+".True").setenabled o
+            gadfield(fld+".False").setenabled o
+        Case "color"    
+            gadfield(fld+".Red").setenabled o
+            gadfield(fld+".Green").setenabled o
+            gadfield(fld+".Blue").setenabled o
+        Default
+            gadfield(fld).setenabled o
+    End Select
+End Function        
+    
+
+Function RunAllow()
+    Local key$,List:TList
+    Local Boolean$[],v$,o,presult,work$
+    Local OutCome:Byte
+    Local r:StringMap = rec(currentrec)
+    If Not r Return
+    Local t$
+    Local Blocked:TList = New TList
+    For key$ = EachIn MapKeys(Allow)
+        list = TList(MapValueForKey(Allow,key))
+        boolean = key.split(" ")
+        'If (Len boolean)<>1 And Len(Boolean)<>3 Error "Misformed Allow condition"
+        v = boolean[0]
+        If Prefixed(v,"!") v=Right(v,Len(v)-1); o=1
+        Select (Len Boolean)
+            Case 1              
+                Select Fields.value(v)
+                    Case "string","mc","color"
+                            outcome = r.value(v)<>""
+                    Case "bool" outcome = r.value(v)="TRUE"
+                    Case "int","double" 
+                            outcome = r.value(v).toInt()<>0
+                    Case ""
+                            error "Non-existent variable: "+v
+                    Default     error "Type ~q"+fields.value(v)+"~q is not (yet) compatible with the [ALLOW] conditional definitions"
+                End Select
+            Case 3
+                Select Boolean[1]
+                    Case "=","=="
+                            outcome = r.value(v)=boolean[2]; 'Print v +" = "+r.value(v)+" = "+boolean[2]+" >>> "+outcome
+                    Case "{}"
+                            outcome = False
+                            For Local vvvv$=EachIn boolean[2].split(",") 
+                                outcome = outcome Or r.value(v)=vvvv
+                            Next            
+                    Case "!=","<>","~~=","=/="
+                            outcome = r.value(v)=boolean[2] 
+                    Case "<"
+                            Select fields.value(v)
+                                Case "int"  outcome = r.value(v).toint()<fields.value(boolean[2]).toint()
+                                Case "double"   outcome = r.value(v).todouble()<fields.value(boolean[2]).todouble()
+                                Default error "Illegal type"
+                            End Select      
+                    Case ">"
+                            Select fields.value(v)
+                                Case "int"  outcome = r.value(v).toint()>fields.value(boolean[2]).toint()
+                                Case "double"   outcome = r.value(v).todouble()>fields.value(boolean[2]).todouble()
+                                Default error "Illegal type"
+                            End Select      
+                    Case "<="
+                            Select fields.value(v)
+                                Case "int"  outcome = r.value(v).toint()<=fields.value(boolean[2]).toint()
+                                Case "double"   outcome = r.value(v).todouble()<=fields.value(boolean[2]).todouble()
+                                Default error "Illegal type"
+                            End Select      
+                    Case ">="
+                            Select fields.value(v)
+                                Case "int"  outcome = r.value(v).toint()>=fields.value(boolean[2]).toint()
+                                Case "double"   outcome = r.value(v).todouble()>=fields.value(boolean[2]).todouble()
+                                Default error "Illegal type"
+                            End Select  
+                    Default     Error "Unknown operand: "+boolean[1]    
+                End Select                                                  
+            Default Error "Misformed Allow condition"
+        End Select  
+        If o outcome = Not outcome
+        Local oc
+        For Local wwork$ = EachIn TList(MapValueForKey(allow,key))
+            work = wwork
+            oc = outcome
+            If Prefixed(work,"!") work=RemPrefix(work,"!") oc = Not outcome
+            'presult = outcome And (Not ListContains(banned,work))  
+            If Prefixed(work,"PREFIX:")
+                For Local w$=EachIn MapKeys(fields)
+                    If RemPrefix(work,"PREFIX:")=w dance w,blocked,oc
+                Next
+            ElseIf Prefixed(work,"PAGE:")
+                Print "Work with "+work+" >>> "+RemPrefix(work,"PAGE:")
+                For Local w$=EachIn MapKeys(fieldonpage)
+                    'Print w+" = "+fieldonpage.value(w)+" "+remprefix(work,"PAGE:")+" "+Int(Trim(remprefix(work,"PAGE:"))=fieldonpage.value(w))
+                    If Trim(RemPrefix(work,"PAGE:"))=fieldonpage.value(w) dance w,blocked,oc
+                Next
+            Else
+                dance work,blocked,oc   
+            EndIf                   
+        Next    
+    Next
+End Function
+*/

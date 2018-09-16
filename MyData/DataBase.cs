@@ -46,6 +46,7 @@ namespace MyData
                 MainClass.ButForceMod.Sensitive = !trueMODIFIED;
                 MainClass.MenuBoxInput.Hide();
                 MainClass.ButSave.Sensitive = true;
+                Field2Gui.RunAllow();
             }
         }
     }
@@ -270,12 +271,14 @@ namespace MyData
         static readonly ExportMyData MySave = new ExportMyData();
         static public Dictionary<string, string> defaults = new Dictionary<string, string>();
         static public Dictionary<string, string> fields = new Dictionary<string, string>();
+        static public Dictionary<string, string> fieldonpage = new Dictionary<string, string>();
         static public SortedDictionary<string, MyRecord> Record = new SortedDictionary<string, MyRecord>();
         static public SortedDictionary<string, string> MyStructure = new SortedDictionary<string, string>();
         static public Dictionary<string, string> sys = new Dictionary<string, string>();
         static public Dictionary<string, string> recexport = new Dictionary<string, string>();
         static public Dictionary<string, string> basexport = new Dictionary<string, string>();
         static SortedDictionary<string, MyRecord> recs { get => Record; }
+        static public Dictionary<string, List<string>> Allow = new Dictionary<string, List<string>>();
         static public bool RemoveNonExistent
         {
             get
@@ -351,6 +354,7 @@ namespace MyData
             }
         }
         public static bool Load(string filename){
+            List <string> AllowList = null ;
             bool ret = true;
             string[] lines;
             string OnlyAllowExt = "";
@@ -414,6 +418,12 @@ namespace MyData
                         else if (TL.Length > 7 && TL.ToUpper().Substring(0, 7) == "[ALLOW:")
                         {
                             Chunk = "Allow";
+                            AllowList = new List<string>();
+                            var check = qstr.MyTrim(qstr.Mid(TL, 8, qstr.Len(TL) - 8));
+                            if (Allow.ContainsKey(check))
+                                AllowList = Allow[check];
+                            else
+                                Allow[check] = AllowList;
                         }
                         else
                         {
@@ -444,6 +454,11 @@ namespace MyData
                                     sys[svar] = sval;
                                 }
                                     break;
+                            case "Allow":
+                                var ATL = L.Trim();
+                                AllowList.Add(ATL);
+                                AllowList.Sort();
+                                break;
                             case "Default":
                                 posIS = TL.IndexOf('=');
                                 if (posIS < 0) { CRASH("Invalid Default Var Definition!"); return false; }
@@ -467,6 +482,7 @@ namespace MyData
                                 {
                                     if (fields.ContainsKey(SL[1])){ CRASH("Duplicate field: " + SL[1]); return false; }
                                     fields[SL[1]] = SL[0].ToLower();
+                                    fieldonpage[SL[1]] = pagename;
                                     // MapInsert fieldonpage, SL[1], pagename
                                 }
                                 switch (SL[0])
@@ -989,3 +1005,7 @@ For L=EachIn LF
     Next
 
  */
+
+
+
+
