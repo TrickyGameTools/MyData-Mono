@@ -129,7 +129,8 @@ namespace MyData
             {
                 if (!addreturn) ret += "\t";
                 ret += $"\t[\"{k}\"] = ";
-                if (!(MyDataBase.RemoveNonExistent && (k == "" || (MyDataBase.fields[k] == "bool" && k.ToUpper() != "TRUE")))){
+                var v = MyDataBase.Record[recname].value[k];
+                if (!(MyDataBase.RemoveNonExistent && (v == "" || (MyDataBase.fields[k] == "bool" && v.ToUpper() != "TRUE")))){
                     switch (MyDataBase.fields[k])
                     {
                         case "string":
@@ -210,7 +211,7 @@ namespace MyData
             foreach (string k in MyDataBase.Record[recname].value.Keys)
             {
                 var val = MyDataBase.Record[recname].value[k];
-                if (!(MyDataBase.RemoveNonExistent && (k == "" || (MyDataBase.fields[k] == "bool" && k.ToUpper() != "TRUE"))))
+                if (!(MyDataBase.RemoveNonExistent && (val == "" || (MyDataBase.fields[k] == "bool" && val.ToUpper() != "TRUE"))))
                 {
                     if (!addreturn) ret += "\t";
                     switch (MyDataBase.fields[k])
@@ -267,7 +268,7 @@ namespace MyData
             foreach (string k in MyDataBase.Record[recname].value.Keys)
             {
                 var val = MyDataBase.Record[recname].value[k];
-                if (!(MyDataBase.RemoveNonExistent && (k == "" || (MyDataBase.fields[k] == "bool" && k.ToUpper() != "TRUE"))))
+                if (!(MyDataBase.RemoveNonExistent && (val == "" || (MyDataBase.fields[k] == "bool" && val.ToUpper() != "TRUE"))))
                 {
                     if (!addreturn) ret += "\t";
                     switch (MyDataBase.fields[k])
@@ -323,7 +324,8 @@ namespace MyData
             var first = true;
             foreach (string k in MyDataBase.Record[recname].value.Keys)
             {
-                var ok = !(MyDataBase.RemoveNonExistent && (k == "" || (MyDataBase.fields[k] == "bool" && k.ToUpper() != "TRUE")));
+                var val = MyDataBase.Record[recname].value[k];
+                var ok = !(MyDataBase.RemoveNonExistent && (val == "" || (MyDataBase.fields[k] == "bool" && val.ToUpper() != "TRUE")));
                 var lin = $"\t{t}\"{k}\" : ";
                 if (!ok) { lin += "null"; }
                 else
@@ -414,7 +416,8 @@ namespace MyData
             var first = true;
             foreach (string k in MyDataBase.Record[recname].value.Keys)
             {
-                var ok = !(MyDataBase.RemoveNonExistent && (k == "" || (MyDataBase.fields[k] == "bool" && k.ToUpper() != "TRUE")));
+                var val = MyDataBase.Record[recname].value[k];
+                var ok = !(MyDataBase.RemoveNonExistent && (val == "" || (MyDataBase.fields[k] == "bool" && val.ToUpper() != "TRUE")));
                 var lin = $"\t{t}\"{k}\" : ";
                 if (!ok) { lin += "null"; }
                 else
@@ -504,7 +507,8 @@ namespace MyData
             var first = true;
             foreach (string k in MyDataBase.Record[recname].value.Keys)
             {
-                var ok = !(MyDataBase.RemoveNonExistent && (k == "" || (MyDataBase.fields[k] == "bool" && k.ToUpper() != "TRUE")));
+                var val = MyDataBase.Record[recname].value[k];
+                var ok = !(MyDataBase.RemoveNonExistent && (val == "" || (MyDataBase.fields[k] == "bool" && val.ToUpper() != "TRUE")));
                 var lin = $"\t{t}\"{k}\" => ";
                 if (!ok) { lin += "null"; }
                 else
@@ -600,7 +604,7 @@ namespace MyData
             foreach (string k in MyDataBase.Record[recname].value.Keys)
             {
                 var val = MyDataBase.Record[recname].value[k];
-                if (!(MyDataBase.RemoveNonExistent && (k == "" || (MyDataBase.fields[k] == "bool" && k.ToUpper() != "TRUE"))))
+                if (!(MyDataBase.RemoveNonExistent && (val == "" || (MyDataBase.fields[k] == "bool" && val.ToUpper() != "TRUE"))))
                 {
                     if (!addreturn) ret += $"{recname.ToUpper()}.";
                     switch (MyDataBase.fields[k])
