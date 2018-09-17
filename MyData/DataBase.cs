@@ -20,7 +20,7 @@
 // 		
 // 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 // 	to the project the exceptions are needed for.
-// Version: 18.09.16
+// Version: 18.09.17
 // EndLic
 
 ﻿using TrickyUnits;
@@ -253,9 +253,10 @@ namespace MyData
         public int R { get => gb(er); set => pb(er, value); }
         public int G { get => gb(eg); set => pb(eg, value); }
         public int B { get => gb(eb); set => pb(eb, value); }
-        public string Value { get => $"{R};{G};{B}"; set{
-                var s = value.Split(';');
-                if (s.Length!=3) { QuickGTK.Error("Invalid color parsing!"); s = "255;255;255".Split(';'); }
+        public string Value { get => $"{R},{G},{B}"; set{
+                var s = value.Split(',');
+                if (s.Length == 1) s=value.Split(';'); // Left-over from wrong setting.
+                if (s.Length!=3) { QuickGTK.Error("Invalid color parsing!"); s = "255,255,255".Split(','); }
                 er.Text = s[0];
                 eg.Text = s[1];
                 eb.Text = s[2];
@@ -297,7 +298,7 @@ namespace MyData
 
         static MyDataBase()
         {
-            MKL.Version("MyData For C# - DataBase.cs","18.09.16");
+            MKL.Version("MyData For C# - DataBase.cs","18.09.17");
             MKL.Lic    ("MyData For C# - DataBase.cs","GNU General Public License 3");
         }
 
@@ -558,7 +559,7 @@ namespace MyData
                                         }
                                         //'For Local F$=EachIn OnlyAllowPathlist DebugLog "Dir Allowed: "+f; Next
                                         //'For Local F$=EachIn OnlyAllowextlist  DebugLog "Ext Allowed: "+F; Next
-                                        CRASH($"JCR6 {itext} has {JD.CountEntries} entries"); // debug
+                                        //CRASH($"JCR6 {itext} has {JD.CountEntries} entries"); // debug
                                         foreach ( string DK in JD.Entries.Keys) //For Local D: TJCREntry = EachIn MapValues(JD.Entries)
                                         {
                                             TJCREntry DE = JD.Entries[DK];
@@ -578,7 +579,7 @@ namespace MyData
                                             if (OnlyAllowExtList != null && OnlyAllowExtList.Length>0) Ok = Ok && ListContains(OnlyAllowExtList, qstr.Upper(qstr.ExtractExt(DE.Entry)));//'DebugLog "    Ext Check: "+D.FileName+" >>> "+Ok
                                             if (OnlyAllowPathList != null && OnlyAllowPathList.Length>0) Ok = Ok && ListContains(OnlyAllowPathList, qstr.Upper(qstr.ExtractDir(DE.Entry))); //'DebugLog "    Dir Check: "+D.FileName+" >>> "+Ok
                                             if (OnlyAllowPrefix != "") Ok = Ok && qstr.Prefixed(DE.Entry, OnlyAllowPrefix);
-                                            CRASH($"Entry: {DE.Entry} / {Ok}");
+                                            //CRASH($"Entry: {DE.Entry} / {Ok}");
                                             if (Ok)
                                             {
                                                 regmc(DE.Entry); //CurrentListStore.AppendValues(DE.Entry); //AddGadgetItem lastlist,D.FileName
@@ -611,7 +612,7 @@ namespace MyData
                                             {
                                                 readrec = false;
                                             }
-                                            if (l.Length >= 5 && l.Substring(0, 5) == "Rec: " && readrec) regmc(l.Substring(4, l.Length - 4)); //CurrentListStore.AppendValues(l.Substring(4, l.Length - 4));
+                                            if (l.Length >= 5 && l.Substring(0, 5) == "Rec: " && readrec) regmc(l.Substring(4, l.Length - 4).Trim()); //CurrentListStore.AppendValues(l.Substring(4, l.Length - 4));
                                         }
                                         break;
                                     case "@noextfilter":

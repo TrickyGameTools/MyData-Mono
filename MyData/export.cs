@@ -20,7 +20,7 @@
 // 		
 // 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 // 	to the project the exceptions are needed for.
-// Version: 18.09.16
+// Version: 18.09.17
 // EndLic
 
 ﻿using System;
@@ -31,7 +31,7 @@ namespace MyData
     {
         public Export()
         {
-            MKL.Version("MyData For C# - export.cs","18.09.16");
+            MKL.Version("MyData For C# - export.cs","18.09.17");
             MKL.Lic    ("MyData For C# - export.cs","GNU General Public License 3");
         }
 
@@ -163,7 +163,7 @@ namespace MyData
                             ret += "{" + $" hour={ds[0]}, minute={ds[1]}, second ={ds[2]} " + "}";
                             break;
                         case "color":
-                            ds = MyDataBase.Record[recname].value[k].Split(';');
+                            ds = MyDataBase.Record[recname].value[k].Split(',');
                             ret += "{" + $" red={ds[0]}, green={ds[1]}, blue ={ds[2]} " + "}";
                             break;
                         default:
@@ -225,7 +225,7 @@ namespace MyData
                             ret += $"<{k}><hour>{ds[0]}</hour><minute>{ds[1]}</minute><second>{ds[2]}</second></{k}>{eol}";
                             break;
                         case "color":
-                            ds = MyDataBase.Record[recname].value[k].Split(';');
+                            ds = MyDataBase.Record[recname].value[k].Split(',');
                             ret += $"<{k}><red>{ds[0]}</red><green>{ds[1]}</green><blue>{ds[2]}</blue></{k}>{eol}";
                             break;
                         default:
@@ -288,7 +288,7 @@ namespace MyData
                             if (!addreturn) ret += "\t"; ret += $"\tsecond : {ds[2]}{eol}";
                             break;
                         case "color":
-                            ds = val.Split(';');
+                            ds = val.Split(',');
                             ret += $"{k} : {eol}";
                             if (!addreturn) ret += "\t"; ret += $"\tred : {ds[0]}{eol}";
                             if (!addreturn) ret += "\t"; ret += $"\tgreen : {ds[1]}{eol}";
@@ -362,7 +362,7 @@ namespace MyData
                             lin += "{" + $" \"hour\" : {si[0]}, \"minute\" : {si[1]}, \"second\" : {si[2]} " + "}";
                             break;
                         case "color":
-                            si = TimeSplit(MyDataBase.Record[recname].value[k],';');
+                            si = TimeSplit(MyDataBase.Record[recname].value[k],',');
                             lin += "{" + $" \"red\" : {si[0]}, \"green\" : {si[1]}, \"blue\" : {si[2]} " + "}";
                             break;
                         default:
@@ -454,7 +454,7 @@ namespace MyData
                             lin += "{" + $" \"hour\" : {si[0]}, \"minute\" : {si[1]}, \"second\" : {si[2]} " + "}";
                             break;
                         case "color":
-                            si = TimeSplit(MyDataBase.Record[recname].value[k],';');
+                            si = TimeSplit(MyDataBase.Record[recname].value[k],',');
                             lin += "{" + $" \"red\" : {si[0]}, \"green\" : {si[1]}, \"blue\" : {si[2]} " + "}";
                             break;
                         default:
@@ -547,7 +547,7 @@ namespace MyData
                             break;
                         case "color":
                             //sd = MyDataBase.Record[recname].value[k].Split(':');
-                            si = TimeSplit(MyDataBase.Record[recname].value[k],';');
+                            si = TimeSplit(MyDataBase.Record[recname].value[k],',');
                             lin += $"array( \"red\" => {si[0]}, \"green\" => {si[1]}, \"blue\" => {si[2]} )";
                             break;
 
@@ -622,7 +622,7 @@ namespace MyData
                             ret += $"{k.ToUpper()}.SECOND={sd[2]}{eol}";
                             break;
                         case "color":
-                            sd = MyDataBase.Record[recname].value[k].Split(';');
+                            sd = MyDataBase.Record[recname].value[k].Split(',');
                             ret += $"{k.ToUpper()}.RED={sd[0]}{eol}"; if (!addreturn) ret += $"{recname.ToUpper()}.";
                             ret += $"{k.ToUpper()}.GREEN={sd[1]}{eol}"; if (!addreturn) ret += $"{recname.ToUpper()}.";
                             ret += $"{k.ToUpper()}.BLUE={sd[2]}{eol}";
