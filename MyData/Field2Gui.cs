@@ -22,6 +22,7 @@
 // 	to the project the exceptions are needed for.
 // Version: 18.09.16
 // EndLic
+
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
@@ -123,7 +124,7 @@ namespace MyData
             // Gui
             var tbox = new HBox();
             var tp = new Label("string"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0);
-            var nm = new Label(name); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
+            var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
             tbox.Add(tp);
             tbox.Add(nm);
             //var ttxt = new TextView(); ttxt.SetSizeRequest(400, 25);
@@ -133,8 +134,8 @@ namespace MyData
             if (!suc1) tbox.Add(new Label("FG color parse failure!")); // debug only
             if (!suc2) tbox.Add(new Label("BG color parse failure!")); // debug only
             //ttxt.BorderWidth = 2;
-            ttxt.ModifyBg(StateType.Normal,col2);
-            ttxt.ModifyFg(StateType.Normal,col1);
+            ttxt.ModifyBase(StateType.Normal,col2);
+            ttxt.ModifyText(StateType.Normal,col1);
             MainClass.DStrings[name] = ttxt;
             tbox.Add(ttxt);
             pg.Add(tbox);
@@ -194,7 +195,7 @@ namespace MyData
             // Gui
             var tbox = new HBox();
             var tp = new Label(numbertype); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0);
-            var nm = new Label(name); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
+            var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
             tbox.Add(tp);
             tbox.Add(nm);
             //var ttxt = new TextView(); ttxt.SetSizeRequest(400, 25);
@@ -204,8 +205,8 @@ namespace MyData
             if (!suc1) tbox.Add(new Label("FG color parse failure!")); // debug only
             if (!suc2) tbox.Add(new Label("BG color parse failure!")); // debug only
             //ttxt.BorderWidth = 2;
-            ttxt.ModifyBg(StateType.Normal, col2);
-            ttxt.ModifyFg(StateType.Normal, col1);
+            ttxt.ModifyBase(StateType.Normal, col2);
+            ttxt.ModifyText(StateType.Normal, col1);
             MainClass.DStrings[name] = ttxt; // This is only for widget storage... The types only come into play when exporting.
             tbox.Add(ttxt);
             pg.Add(tbox);
@@ -223,7 +224,7 @@ namespace MyData
             var but2 = new RadioButton(but1, "False"); but2.SetAlignment(0, 0);
             var tbox = new HBox(); 
             var tp = new Label("bool"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0);
-            var nm = new Label(name); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
+            var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
             tbox.Add(tp);
             tbox.Add(nm);
             var bbox = new HBox(); bbox.SetSizeRequest(400, 25);
@@ -274,7 +275,7 @@ namespace MyData
             mmc.PackStart(text, false);
             mmc.AddAttribute(text, "text", 0);
             var tp = new Label("mc"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0); // FYI: mc = Multiple Choice
-            var nm = new Label(name); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
+            var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
             mmc.SetSizeRequest(400, 25); 
             tbox.Add(tp);
             tbox.Add(nm);
@@ -332,7 +333,7 @@ namespace MyData
         {
             var tbox = new HBox();
             var tp = new Label("date"); tp.SetSizeRequest(200, 25);
-            var nm = new Label(name); nm.SetSizeRequest(400, 25);
+            var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25);
             var datebox = new HBox(); datebox.SetSizeRequest(400, 25);
             var month = new ComboBox(months);
             var day = new ComboBox(SR(1, 31));
@@ -358,7 +359,7 @@ namespace MyData
         static public void NewTime(VBox pg,string name){
             var tbox = new HBox();
             var tp = new Label("time"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0);
-            var nm = new Label(name); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
+            var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
             var timebox = new HBox(); timebox.SetSizeRequest(400, 25);
             var uur = new ComboBox(SR(0, 23,2));
             var minuut = new ComboBox(SR(0, 59,2));
