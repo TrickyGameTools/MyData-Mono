@@ -316,6 +316,8 @@ namespace MyData
             win = new MainWindow();
             QuickGTK.MyMainWindow = win;
             win.Title = filename + " - MyData - Coded by Tricky";
+            win.ModifyBg(StateType.Normal, new Gdk.Color(12, 0, 16));
+            win.ModifyFg(StateType.Normal, new Gdk.Color(180, 0, 255));
             MainBox = new VBox();
             HeadBox = new HBox();
             SetIcon(win);
@@ -359,6 +361,10 @@ namespace MyData
             tvc.AddAttribute(NameCell, "text", 0);
             ListRecords.HeightRequest = 800 - 390;
             ListRecords.AppendColumn(tvc);
+            ListRecords.RulesHint = true;
+            ListRecords.ModifyText(StateType.Normal, new Gdk.Color(0, 0xf, 0));
+            ListRecords.ModifyBase(StateType.Selected, new Gdk.Color(0xb, 0xf, 0));
+            ListRecords.ModifyText(StateType.Selected, new Gdk.Color(0xbf, 0xff, 0));
             //ListRecords.RowActivated += OnSelectRecord;
             ListRecords.CursorChanged += OnSelectRecord;
             //ListRecords.CursorChanged += OnSelectRecord;

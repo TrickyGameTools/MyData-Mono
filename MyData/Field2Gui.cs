@@ -136,6 +136,8 @@ namespace MyData
             //ttxt.BorderWidth = 2;
             ttxt.ModifyBase(StateType.Normal,col2);
             ttxt.ModifyText(StateType.Normal,col1);
+            ttxt.ModifyBase(StateType.Insensitive, new Gdk.Color(0x2b,0x20,0x2f));
+            ttxt.ModifyText(StateType.Insensitive, new Gdk.Color(90, 0, 127));
             MainClass.DStrings[name] = ttxt;
             tbox.Add(ttxt);
             pg.Add(tbox);
@@ -182,9 +184,9 @@ namespace MyData
             b.Changed += OnColor;
             MyDataBase.fields[name] = "color";
             MyDataBase.defaults[name] = "255;255;255";
-            colbox.Add(new Label("R")); colbox.Add(r);
-            colbox.Add(new Label("G")); colbox.Add(g);
-            colbox.Add(new Label("B")); colbox.Add(b);
+            colbox.Add(new Label("R")); colbox.Add(r); r.ModifyBase(StateType.Normal, new Gdk.Color(0x0f, 0x00, 0x00)); r.ModifyText(StateType.Normal, new Gdk.Color(0xff, 0x00, 0x00));
+            colbox.Add(new Label("G")); colbox.Add(g); g.ModifyBase(StateType.Normal, new Gdk.Color(0x00, 0x0f, 0x00)); g.ModifyText(StateType.Normal, new Gdk.Color(0x00, 0xff, 0x00));
+            colbox.Add(new Label("B")); colbox.Add(b); b.ModifyBase(StateType.Normal, new Gdk.Color(0x00, 0x0f, 0x00)); b.ModifyText(StateType.Normal, new Gdk.Color(0x00, 0x00, 0xff));
             colbox.Add(but);
             but.Clicked += PickColor;
             tbox.Add(colbox);
@@ -207,6 +209,8 @@ namespace MyData
             //ttxt.BorderWidth = 2;
             ttxt.ModifyBase(StateType.Normal, col2);
             ttxt.ModifyText(StateType.Normal, col1);
+            ttxt.ModifyText(StateType.Insensitive, new Gdk.Color(0, 90, 127));
+            ttxt.ModifyBase(StateType.Insensitive, new Gdk.Color(0x02, 0x2b, 0x2f));
             MainClass.DStrings[name] = ttxt; // This is only for widget storage... The types only come into play when exporting.
             tbox.Add(ttxt);
             pg.Add(tbox);
