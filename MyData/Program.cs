@@ -20,7 +20,7 @@
 // 		
 // 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 // 	to the project the exceptions are needed for.
-// Version: 18.09.16
+// Version: 18.09.24
 // EndLic
 
 ﻿using System;
@@ -80,7 +80,7 @@ namespace MyData
         public static string sc_rec;
 
         static MainClass(){
-            MKL.Version("MyData For C# - Program.cs","18.09.16");
+            MKL.Version("MyData For C# - Program.cs","18.09.24");
             MKL.Lic    ("MyData For C# - Program.cs","GNU General Public License 3");
             new JCR6_WAD();
             new JCR6_lzma();
@@ -362,7 +362,9 @@ namespace MyData
             //ListRecords.RowActivated += OnSelectRecord;
             ListRecords.CursorChanged += OnSelectRecord;
             //ListRecords.CursorChanged += OnSelectRecord;
-            WorkBox.Add(ListRecords);
+            var ListRecordsScroll = new ScrolledWindow();
+            ListRecordsScroll.Add(ListRecords);
+            WorkBox.Add(ListRecordsScroll);
             WorkBox.Add(Pages);
             //WorkBox.SetSizeRequest(1000, 800 - 390);
             win.Add(MainBox);
