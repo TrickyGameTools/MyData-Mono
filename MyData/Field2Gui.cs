@@ -572,7 +572,7 @@ namespace MyData
             MainClass.ButRemove.Sensitive = true;
             MainClass.ButRename.Sensitive = true;
             MainClass.ButDupe.Sensitive = true;
-            // TODO: Full enabling and disabling based on the [ALLOW] tags
+
 
             // Strings and other textbox related types
             foreach (string k in MainClass.DStrings.Keys)
