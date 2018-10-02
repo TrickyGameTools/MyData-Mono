@@ -8,4 +8,4 @@ With MyData this data can be maintained quickly, and it can export to various sc
 Read the Wiki for more detailed information on how to use MyData
 
 
-![Screenshot](https://user-images.githubusercontent.com/11202073/45584759-c2c67480-b8d9-11e8-9ea7-af9ae5a387b6.png)
+![image](https://user-images.githubusercontent.com/11202073/46367176-38be3000-c67d-11e8-866a-234866a07f53.png)
