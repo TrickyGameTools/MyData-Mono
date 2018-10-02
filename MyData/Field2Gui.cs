@@ -247,6 +247,17 @@ namespace MyData
             bbox.Add(but2); but2.SetSizeRequest(200, 25);
             tbox.Add(bbox);
             pg.Add(tbox);
+            but1.ModifyText(StateType.Normal, new Gdk.Color(0, 255, 0));
+            but2.ModifyText(StateType.Normal, new Gdk.Color(255, 0, 0));
+            but1.ModifyBg(StateType.Normal, new Gdk.Color(180, 255, 180));
+            but2.ModifyBg(StateType.Normal, new Gdk.Color(255, 180, 180));
+            //bbox.ModifyBase(StateType.Normal, new Gdk.Color(180, 180, 100));
+            but1.Child.ModifyFg(StateType.Normal, new Gdk.Color(0, 255, 0));
+            but2.Child.ModifyFg(StateType.Normal, new Gdk.Color(255, 0, 0));
+            but1.Child.ModifyFg(StateType.Active, new Gdk.Color(50, 255, 50));
+            but2.Child.ModifyFg(StateType.Active, new Gdk.Color(255, 50, 50));
+            but1.Child.ModifyFg(StateType.Prelight, new Gdk.Color(150, 255, 150));
+            but2.Child.ModifyFg(StateType.Prelight, new Gdk.Color(255, 150, 150));
             MainClass.RBTbools[name] = but1;
             MainClass.RBFbools[name] = but2;
             MyDataBase.fields[name] = "bool";
