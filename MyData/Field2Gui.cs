@@ -115,16 +115,21 @@ namespace MyData
 
         static public VBox NewPage(string pagename){
             VBox ret = new VBox();
+            Label newLabel = new Label(pagename);
+            newLabel.ModifyFg(StateType.Normal, new Gdk.Color(255, 255, 0));
+            newLabel.ModifyFg(StateType.Insensitive, new Gdk.Color(255, 180, 0));
             MainClass.Panels.Add(ret);
-            MainClass.Pages.AppendPage(ret, new Label(pagename));
+            MainClass.Pages.AppendPage(ret, newLabel);
             return ret;
         }
 
         static public void NewString(VBox pg,string name){
             // Gui
             var tbox = new HBox();
-            var tp = new Label("string"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0);
+            var tp = new Label("string"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0); 
             var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
+            tp.ModifyFg(StateType.Normal, new Gdk.Color(255, 180, 0));
+            nm.ModifyFg(StateType.Normal, new Gdk.Color(180, 255, 0));
             tbox.Add(tp);
             tbox.Add(nm);
             //var ttxt = new TextView(); ttxt.SetSizeRequest(400, 25);
@@ -167,6 +172,8 @@ namespace MyData
             var tbox = new HBox();
             var tp = new Label("color"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0);
             var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
+            tp.ModifyFg(StateType.Normal, new Gdk.Color(255, 180, 0));
+            nm.ModifyFg(StateType.Normal, new Gdk.Color(180, 255, 0));
             tbox.Add(tp);
             tbox.Add(nm);
             var colbox = new HBox(); colbox.SetSizeRequest(400, 25);
@@ -198,6 +205,8 @@ namespace MyData
             var tbox = new HBox();
             var tp = new Label(numbertype); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0);
             var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
+            tp.ModifyFg(StateType.Normal, new Gdk.Color(255, 180, 0));
+            nm.ModifyFg(StateType.Normal, new Gdk.Color(180, 255, 0));
             tbox.Add(tp);
             tbox.Add(nm);
             //var ttxt = new TextView(); ttxt.SetSizeRequest(400, 25);
@@ -229,6 +238,8 @@ namespace MyData
             var tbox = new HBox(); 
             var tp = new Label("bool"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0);
             var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
+            tp.ModifyFg(StateType.Normal, new Gdk.Color(255, 180, 0));
+            nm.ModifyFg(StateType.Normal, new Gdk.Color(180, 255, 0));
             tbox.Add(tp);
             tbox.Add(nm);
             var bbox = new HBox(); bbox.SetSizeRequest(400, 25);
@@ -280,6 +291,8 @@ namespace MyData
             mmc.AddAttribute(text, "text", 0);
             var tp = new Label("mc"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0); // FYI: mc = Multiple Choice
             var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
+            tp.ModifyFg(StateType.Normal, new Gdk.Color(255, 180, 0));
+            nm.ModifyFg(StateType.Normal, new Gdk.Color(180, 255, 0));
             mmc.SetSizeRequest(400, 25); 
             tbox.Add(tp);
             tbox.Add(nm);
@@ -338,6 +351,8 @@ namespace MyData
             var tbox = new HBox();
             var tp = new Label("date"); tp.SetSizeRequest(200, 25);
             var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25);
+            tp.ModifyFg(StateType.Normal, new Gdk.Color(255, 180, 0));
+            nm.ModifyFg(StateType.Normal, new Gdk.Color(180, 255, 0));
             var datebox = new HBox(); datebox.SetSizeRequest(400, 25);
             var month = new ComboBox(months);
             var day = new ComboBox(SR(1, 31));
@@ -364,6 +379,8 @@ namespace MyData
             var tbox = new HBox();
             var tp = new Label("time"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0);
             var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
+            tp.ModifyFg(StateType.Normal, new Gdk.Color(255, 180, 0));
+            nm.ModifyFg(StateType.Normal, new Gdk.Color(180, 255, 0));
             var timebox = new HBox(); timebox.SetSizeRequest(400, 25);
             var uur = new ComboBox(SR(0, 23,2));
             var minuut = new ComboBox(SR(0, 59,2));

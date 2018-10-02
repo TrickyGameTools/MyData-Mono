@@ -492,7 +492,10 @@ namespace MyData
                                         CurrentPanel.Add(new HSeparator());
                                         break;
                                     case "info":
-                                        CurrentPanel.Add(new Label(TL.Substring(5, TL.Length - 5)));
+                                        var infoLabel = new Label(TL.Substring(5, TL.Length - 5));
+                                        CurrentPanel.Add(infoLabel);
+                                        infoLabel.ModifyFg(StateType.Normal, new Gdk.Color(60, 180, 255));
+                                        infoLabel.SetAlignment(0, 0);
                                         pagey += 25;
                                         break;
                                     case "date":

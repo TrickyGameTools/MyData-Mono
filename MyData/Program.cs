@@ -362,6 +362,7 @@ namespace MyData
             ListRecords.HeightRequest = 800 - 390;
             ListRecords.AppendColumn(tvc);
             ListRecords.RulesHint = true;
+            //ListRecords.ModifyBg(StateType.Normal, new Gdk.Color(0, 0x3, 0));
             ListRecords.ModifyText(StateType.Normal, new Gdk.Color(0, 0xf, 0));
             ListRecords.ModifyBase(StateType.Selected, new Gdk.Color(0xb, 0xf, 0));
             ListRecords.ModifyText(StateType.Selected, new Gdk.Color(0xbf, 0xff, 0));
@@ -372,10 +373,17 @@ namespace MyData
             ListRecordsScroll.Add(ListRecords);
             WorkBox.Add(ListRecordsScroll);
             WorkBox.Add(Pages);
+            Pages.ModifyBg(StateType.Normal, new Gdk.Color(4, 0, 0));
+            Pages.ModifyText(StateType.Normal, new Gdk.Color(255, 255, 0));
             //WorkBox.SetSizeRequest(1000, 800 - 390);
             win.Add(MainBox);
             win.Resize(1000, 800);
             Pages.Sensitive = false;
+            QI_Label.ModifyFg(StateType.Normal, new Gdk.Color(255, 0, 180));
+            QI_Input.ModifyText(StateType.Normal, new Gdk.Color(255, 0, 180));
+            QI_Input.ModifyBase(StateType.Normal, new Gdk.Color(25, 0, 18));
+            QI_Confirm.ModifyBg(StateType.Normal, new Gdk.Color(180, 0, 100));
+            QI_Confirm.ModifyBg(StateType.Prelight, new Gdk.Color(190,0,120));
             MenuBoxInput.Add(QI_Label);
             MenuBoxInput.Add(QI_Input);
             MenuBoxInput.Add(QI_Confirm);
