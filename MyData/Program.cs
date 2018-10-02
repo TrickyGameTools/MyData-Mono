@@ -340,6 +340,14 @@ namespace MyData
             MenuBoxRow2.Add(ButRename);
             MenuBoxRow2.Add(ButForceMod);
             MenuBoxRow2.Add(ButSave);
+            foreach(Button butt in new Button[]{ButNew,ButDupe,ButRemove,ButRename,ButForceMod,ButSave}){
+                butt.ModifyBg(StateType.Normal, new Gdk.Color(0, 0, 120));
+                butt.ModifyBg(StateType.Prelight, new Gdk.Color(0, 120, 0));
+                butt.ModifyBg(StateType.Insensitive, new Gdk.Color(120, 0, 0));
+                butt.Child.ModifyFg(StateType.Normal, new Gdk.Color(0, 180, 255));
+                butt.Child.ModifyFg(StateType.Prelight, new Gdk.Color(180, 255, 0));
+                butt.Child.ModifyFg(StateType.Insensitive, new Gdk.Color(255, 0, 0));
+            }
             MainBox.Add(HeadBox);
             MainBox.Add(WorkBox);
             ButRemove.Clicked += OnRemove;
