@@ -360,8 +360,8 @@ namespace MyData
         static public void NewDate(VBox pg, string name)
         {
             var tbox = new HBox();
-            var tp = new Label("date"); tp.SetSizeRequest(200, 25);
-            var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25);
+            var tp = new Label("date"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0);
+            var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
             tp.ModifyFg(StateType.Normal, new Gdk.Color(255, 180, 0));
             nm.ModifyFg(StateType.Normal, new Gdk.Color(180, 255, 0));
             var datebox = new HBox(); datebox.SetSizeRequest(400, 25);
@@ -390,7 +390,7 @@ namespace MyData
             var tbox = new HBox();
             var tp = new Label("time"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0);
             var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
-            tp.ModifyFg(StateType.Normal, new Gdk.Color(255, 180, 0));
+            tp.ModifyFg(StateType.Normal, new Gdk.Color(255, 180, 0)); 
             nm.ModifyFg(StateType.Normal, new Gdk.Color(180, 255, 0));
             var timebox = new HBox(); timebox.SetSizeRequest(400, 25);
             var uur = new ComboBox(SR(0, 23,2));

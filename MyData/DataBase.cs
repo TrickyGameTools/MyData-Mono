@@ -355,6 +355,7 @@ namespace MyData
             }
         }
         public static bool Load(string filename){
+            Console.WriteLine($"Loading {filename}");
             List <string> AllowList = null ;
             bool ret = true;
             string[] lines;
