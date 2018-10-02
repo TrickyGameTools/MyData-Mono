@@ -432,6 +432,7 @@ namespace MyData
             //var presult = false;
             var work = "";
             var OutCome = false;
+            if (currentrec == null )return;
             var r = currentrec.value;
             if (r == null) return;
             //var t = "";
