@@ -722,7 +722,7 @@ namespace MyData
         public static void Save(string filename){
             // Save database itself           
             MySave.filename = filename;
-            QOpen.SaveString(filename,MySave.XBase());
+            QuickStream.SaveString(filename,MySave.XBase());
             // Loop for the export drivers
             foreach(string drv in MainClass.exportdrivers.Keys){
                 // QuickGTK.Info("Exporting to " + drv); // debug
@@ -737,7 +737,7 @@ namespace MyData
                         if (ok) Directory.CreateDirectory(pth);
                     }
                 }
-                if (ok) { QOpen.SaveString($"{basexport[drv]}.{MainClass.exportext[drv]}", MainClass.exportdrivers[drv].XBase()); }
+                if (ok) { QuickStream.SaveString(qstr.SetSuffix($"{basexport[drv]}",$".{MainClass.exportext[drv]}"), MainClass.exportdrivers[drv].XBase()); }
                 // Export record by record
                 ok = false;
                 if (recexport.ContainsKey(drv) && recexport[drv] != "")
@@ -751,11 +751,11 @@ namespace MyData
                 }
                 if (ok) { 
                     foreach(string recID in Record.Keys){
-                        var expfile = $"{recexport[drv]}/{recID}.{MainClass.exportext[drv]}";
+                        var expfile = qstr.SetSuffix($"{recexport[drv]}/{recID}",$".{MainClass.exportext[drv]}");
                         if (Record[recID].MODIFIED || (!File.Exists(expfile))) 
                         {
                             Console.WriteLine($"Exporting {recID} to {drv}.");
-                            QOpen.SaveString(expfile, MainClass.exportdrivers[drv].XRecord(recID, true));
+                            QuickStream.SaveString(expfile, MainClass.exportdrivers[drv].XRecord(recID, true));
                         }
                         else
                         {
