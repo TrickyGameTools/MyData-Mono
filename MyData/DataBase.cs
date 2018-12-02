@@ -23,7 +23,7 @@
 // Version: 18.12.02
 // EndLic
 
-﻿using TrickyUnits;
+using TrickyUnits;
 using TrickyUnits.GTK;
 using UseJCR6;
 using System;
