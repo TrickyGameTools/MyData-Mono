@@ -149,7 +149,10 @@ namespace MyData
                             break;
                         case "int":
                         case "double":
-                            ret += MyDataBase.Record[recname].value[k];
+                            if (MyDataBase.Record[recname].value[k].Trim() == "")
+                                ret += "0";
+                            else                            
+                                ret += MyDataBase.Record[recname].value[k];
                             break;
                         case "bool":
                             if (MyDataBase.Record[recname].value[k].ToUpper() == "TRUE") ret += "true"; else ret += "false";
