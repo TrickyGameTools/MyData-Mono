@@ -23,7 +23,7 @@
 // Version: 18.09.17
 // EndLic
 
-﻿using System;
+using System;
 using TrickyUnits;
 namespace MyData
 {
