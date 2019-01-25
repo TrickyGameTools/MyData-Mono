@@ -4,7 +4,7 @@
 // 	
 // 	
 // 	
-// 	(c) Jeroen P. Broks, 2018, All rights reserved
+// 	(c) Jeroen P. Broks, 2018, 2019, All rights reserved
 // 	
 // 		This program is free software: you can redistribute it and/or modify
 // 		it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 // 		
 // 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 // 	to the project the exceptions are needed for.
-// Version: 18.12.02
+// Version: 19.01.25
 // EndLic
 
 ﻿using System;
@@ -109,7 +109,7 @@ namespace MyData
 
         static Field2Gui()
         {
-            MKL.Version("MyData For C# - Field2Gui.cs","18.12.02");
+            MKL.Version("MyData For C# - Field2Gui.cs","19.01.25");
             MKL.Lic    ("MyData For C# - Field2Gui.cs","GNU General Public License 3");
         }
 
@@ -610,8 +610,20 @@ namespace MyData
             // Strings and other textbox related types
             foreach (string k in MainClass.DStrings.Keys)
             {
-                if (!rec.value.ContainsKey(k)) { QuickGTK.Warn($"{MyDataBase.fields[k]} contains no data in this record! Creating data!");
-                    if (MyDataBase.fields[k] != "string") rec.value[k] = ""; else rec.value[k] = "0";
+                if (!rec.value.ContainsKey(k)) { QuickGTK.Warn($"{MyDataBase.fields[k]} {k} contains no data in this record! Creating data!");
+                    //if (MyDataBase.fields[k] == "string") rec.value[k] = ""; else rec.value[k] = "0";
+                    switch(MyDataBase.fields[k]){
+                        case "bool":
+                            rec.value[k] = "false";
+                            break;
+                        case "int":
+                        case "double":
+                            rec.value[k] = "0";
+                            break;
+                        default:
+                            rec.value[k] = "";
+                            break;
+                    }
                 }
                 var tv = MainClass.DStrings[k];
                 //tv.Buffer.Text = rec.value[k];
