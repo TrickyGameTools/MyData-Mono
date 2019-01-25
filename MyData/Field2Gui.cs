@@ -610,11 +610,11 @@ namespace MyData
             // Strings and other textbox related types
             foreach (string k in MainClass.DStrings.Keys)
             {
-                if (!rec.value.ContainsKey(k)) { QuickGTK.Warn($"{MyDataBase.fields[k]} {k} contains no data in this record! Creating data!");
+                if (!rec.value.ContainsKey(k)) { QuickGTK.Warn($"The {MyDataBase.fields[k]} {k} contains no data in this record! Creating data!");
                     //if (MyDataBase.fields[k] == "string") rec.value[k] = ""; else rec.value[k] = "0";
                     switch(MyDataBase.fields[k]){
                         case "bool":
-                            rec.value[k] = "false";
+                            rec.value[k] = "FALSE";
                             break;
                         case "int":
                         case "double":
@@ -637,10 +637,10 @@ namespace MyData
                 var bfalse = MainClass.RBFbools[k];
                 if (!rec.value.ContainsKey(k))
                 {
-                    QuickGTK.Warn($"{MyDataBase.fields[k]} contains no data in this record! Creating data!");
-                    rec.value[k] = "TRUE";
+                    //QuickGTK.Warn($"{MyDataBase.fields[k]} contains no data in this record! Creating data!");
+                    QuickGTK.Warn($"Boolean {k} contains no data in this record! Creating data!");
+                    rec.value[k] = "FALSE";
                 }
-
                 btrue.Active = rec.value[k].ToUpper() == "TRUE";
                 bfalse.Active = rec.value[k].ToUpper() != "TRUE";
             }
@@ -670,7 +670,7 @@ namespace MyData
             {
                 if (!rec.value.ContainsKey(k))
                 {
-                    QuickGTK.Warn($"{MyDataBase.fields[k]} contains no data in record '{recname}'! Creating data!");
+                    QuickGTK.Warn($"{MyDataBase.fields[k]} {k} contains no data in record '{recname}'! Creating data!");
                     rec.value[k] = "19/6/1975";
                 }
                 MainClass.Dates[k].Value = rec.value[k];
@@ -679,7 +679,7 @@ namespace MyData
             {
                 if (!rec.value.ContainsKey(k))
                 {
-                    QuickGTK.Warn($"{MyDataBase.fields[k]} contains no data in record '{recname}'! Creating data!");
+                    QuickGTK.Warn($"{MyDataBase.fields[k]} {k} contains no data in record '{recname}'! Creating data!");
                     rec.value[k] = "01:02:03";
                 }
                 MainClass.Times[k].Value = rec.value[k];
@@ -688,7 +688,7 @@ namespace MyData
             {
                 if (!rec.value.ContainsKey(k))
                 {
-                    QuickGTK.Warn($"{MyDataBase.fields[k]} contains no data in record '{recname}'! Creating data!");
+                    QuickGTK.Warn($"{MyDataBase.fields[k]} {k} contains no data in record '{recname}'! Creating data!");
                     rec.value[k] = "255;255;255";
                 }
                 MainClass.Colors[k].Value = rec.value[k];
