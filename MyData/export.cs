@@ -20,7 +20,7 @@
 // 		
 // 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 // 	to the project the exceptions are needed for.
-// Version: 19.01.25
+// Version: 19.02.10
 // EndLic
 
 using System;
@@ -31,7 +31,7 @@ namespace MyData
     {
         public Export()
         {
-            MKL.Version("MyData For C# - export.cs","19.01.25");
+            MKL.Version("MyData For C# - export.cs","19.02.10");
             MKL.Lic    ("MyData For C# - export.cs","GNU General Public License 3");
         }
 
@@ -139,7 +139,7 @@ namespace MyData
                             ret += "\"";
                             foreach (byte b in bytes)
                             {
-                                if (b > 31 && b < 128) { ret += qstr.Chr(b); }
+                                if ((b > 31 && b < 128) && b!='"') { ret += qstr.Chr(b); }
                                 else
                                 {
                                     ret += "\\" + qstr.Right("00" + Convert.ToString(b, 8), 3);
@@ -341,7 +341,7 @@ namespace MyData
                             lin += "\"";
                             foreach (byte b in bytes)
                             {
-                                if (b > 31 && b < 128) { lin += qstr.Chr(b); }
+                                if ((b > 31 && b < 128) && b!='"') { lin += qstr.Chr(b); }
                                 else
                                 {
                                     lin += "\\" + qstr.Right("00" + Convert.ToString(b, 8), 3);
@@ -433,7 +433,7 @@ namespace MyData
                             lin += "\"";
                             foreach (byte b in bytes)
                             {
-                                if (b > 31 && b < 128) { lin += qstr.Chr(b); }
+                                if ((b > 31 && b < 128) && b!='"') { lin += qstr.Chr(b); }
                                 else
                                 {
                                     lin += "\\" + qstr.Right("00" + Convert.ToString(b, 8), 3);
@@ -524,7 +524,7 @@ namespace MyData
                             lin += "\"";
                             foreach (byte b in bytes)
                             {
-                                if (b > 31 && b < 128) { lin += qstr.Chr(b); }
+                                if ((b > 31 && b < 128) && b!='"') { lin += qstr.Chr(b); }
                                 else
                                 {
                                     lin += "\\" + qstr.Right("00" + Convert.ToString(b, 8), 3);
