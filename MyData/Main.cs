@@ -295,6 +295,7 @@ namespace MyData
         }
 
         static void InitExporters(){
+            rex("NIL", "nil", new ExportNIL());
             rex("LUA", "lua", new ExportLua());
             rex("XML", "xml", new ExportXML());
             rex("YAML", "yaml", new ExportYAML());
