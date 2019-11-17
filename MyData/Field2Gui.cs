@@ -23,7 +23,11 @@
 // Version: 19.01.25
 // EndLic
 
-﻿using System;
+// Some builds do not respect the dark background color the tabs should have, for reasons unknown.
+// If you have such a system, this should be set to "define" otherwise undef this!
+#define RottenBackGround
+
+using System;
 using System.Text;
 using System.Collections.Generic;
 using TrickyUnits;
@@ -128,8 +132,13 @@ namespace MyData
             var tbox = new HBox();
             var tp = new Label("string"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0); 
             var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
+#if RottenBackGround
+            tp.ModifyFg(StateType.Normal, new Gdk.Color(125, 18, 0));
+            nm.ModifyFg(StateType.Normal, new Gdk.Color(18, 125, 0));
+#else
             tp.ModifyFg(StateType.Normal, new Gdk.Color(255, 180, 0));
             nm.ModifyFg(StateType.Normal, new Gdk.Color(180, 255, 0));
+#endif
             tbox.Add(tp);
             tbox.Add(nm);
             //var ttxt = new TextView(); ttxt.SetSizeRequest(400, 25);
@@ -172,8 +181,13 @@ namespace MyData
             var tbox = new HBox();
             var tp = new Label("color"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0);
             var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
+#if RottenBackGround
+            tp.ModifyFg(StateType.Normal, new Gdk.Color(125, 18, 0));
+            nm.ModifyFg(StateType.Normal, new Gdk.Color(18, 125, 0));
+#else
             tp.ModifyFg(StateType.Normal, new Gdk.Color(255, 180, 0));
             nm.ModifyFg(StateType.Normal, new Gdk.Color(180, 255, 0));
+#endif
             tbox.Add(tp);
             tbox.Add(nm);
             var colbox = new HBox(); colbox.SetSizeRequest(400, 25);
@@ -205,8 +219,13 @@ namespace MyData
             var tbox = new HBox();
             var tp = new Label(numbertype); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0);
             var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
+#if RottenBackGround
+            tp.ModifyFg(StateType.Normal, new Gdk.Color(125, 18, 0));
+            nm.ModifyFg(StateType.Normal, new Gdk.Color(18, 125, 0));
+#else
             tp.ModifyFg(StateType.Normal, new Gdk.Color(255, 180, 0));
             nm.ModifyFg(StateType.Normal, new Gdk.Color(180, 255, 0));
+#endif
             tbox.Add(tp);
             tbox.Add(nm);
             //var ttxt = new TextView(); ttxt.SetSizeRequest(400, 25);
@@ -238,8 +257,13 @@ namespace MyData
             var tbox = new HBox(); 
             var tp = new Label("bool"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0);
             var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
+#if RottenBackGround
+            tp.ModifyFg(StateType.Normal, new Gdk.Color(125, 18, 0));
+            nm.ModifyFg(StateType.Normal, new Gdk.Color(18, 125, 0));
+#else
             tp.ModifyFg(StateType.Normal, new Gdk.Color(255, 180, 0));
             nm.ModifyFg(StateType.Normal, new Gdk.Color(180, 255, 0));
+#endif
             tbox.Add(tp);
             tbox.Add(nm);
             var bbox = new HBox(); bbox.SetSizeRequest(400, 25);
@@ -302,8 +326,13 @@ namespace MyData
             mmc.AddAttribute(text, "text", 0);
             var tp = new Label("mc"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0); // FYI: mc = Multiple Choice
             var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
+#if RottenBackGround
+            tp.ModifyFg(StateType.Normal, new Gdk.Color(125, 18, 0));
+            nm.ModifyFg(StateType.Normal, new Gdk.Color(18, 125, 0));
+#else
             tp.ModifyFg(StateType.Normal, new Gdk.Color(255, 180, 0));
             nm.ModifyFg(StateType.Normal, new Gdk.Color(180, 255, 0));
+#endif
             mmc.SetSizeRequest(400, 25); 
             tbox.Add(tp);
             tbox.Add(nm);
@@ -362,13 +391,19 @@ namespace MyData
             var tbox = new HBox();
             var tp = new Label("date"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0);
             var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
+#if RottenBackGround
+            tp.ModifyFg(StateType.Normal, new Gdk.Color(125, 18, 0));
+            nm.ModifyFg(StateType.Normal, new Gdk.Color(18, 125, 0));
+#else
             tp.ModifyFg(StateType.Normal, new Gdk.Color(255, 180, 0));
             nm.ModifyFg(StateType.Normal, new Gdk.Color(180, 255, 0));
+#endif
             var datebox = new HBox(); datebox.SetSizeRequest(400, 25);
             var month = new ComboBox(months);
             var day = new ComboBox(SR(1, 31));
             var year = new ComboBox(SR(MyDate.yearmin,MyDate.yearmax));
             var week = new Label("---");
+            tbox.ModifyBg(StateType.Normal, new Gdk.Color(0, 0, 0));
             tbox.Add(tp);
             tbox.Add(nm);
             tbox.Add(datebox);
@@ -390,12 +425,18 @@ namespace MyData
             var tbox = new HBox();
             var tp = new Label("time"); tp.SetSizeRequest(200, 25); tp.SetAlignment(0, 0);
             var nm = new Label(name.Replace("_","__")); nm.SetSizeRequest(400, 25); nm.SetAlignment(0, 0);
-            tp.ModifyFg(StateType.Normal, new Gdk.Color(255, 180, 0)); 
+#if RottenBackGround
+            tp.ModifyFg(StateType.Normal, new Gdk.Color(125, 18, 0));
+            nm.ModifyFg(StateType.Normal, new Gdk.Color(18, 125, 0));
+#else
+            tp.ModifyFg(StateType.Normal, new Gdk.Color(255, 180, 0));
             nm.ModifyFg(StateType.Normal, new Gdk.Color(180, 255, 0));
+#endif
             var timebox = new HBox(); timebox.SetSizeRequest(400, 25);
             var uur = new ComboBox(SR(0, 23,2));
             var minuut = new ComboBox(SR(0, 59,2));
             var seconde = new ComboBox(SR(0,59,2));
+            tbox.ModifyBg(StateType.Normal, new Gdk.Color(0, 0, 0));
             timebox.Add(uur);
             timebox.Add(new Label(":"));
             timebox.Add(minuut);
@@ -476,6 +517,10 @@ namespace MyData
                 //'If (Len boolean)<>1 And Len(Boolean)<>3 Error "Misformed Allow condition"
                 v = Boolean[0];
                 if (qstr.Prefixed(v, "!")) { v = qstr.Right(v, qstr.Len(v) - 1); o = true; }
+                if (!Fields.ContainsKey(v)) {
+                    QuickGTK.Error($"Trying to check {v} for allowance. That field does not exist!\n\nAllow check aborted!");
+                    return;
+                }
                 switch (Boolean.Length)
                 {
                     case 1:
