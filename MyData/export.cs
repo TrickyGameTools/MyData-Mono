@@ -662,7 +662,8 @@ namespace MyData
 
         public override string XRecord(string recname = "", bool addreturn = false) {
             var ret = "";
-            if (addreturn) { ret = header + "table ret\nret={\n"; }
+            var retname = recname; if (retname != "") retname = $"_{retname}";
+            if (addreturn) { ret = header + $"do\n\n\ntable ret{retname}\nret{retname}={'{'}\n"; }
             foreach (string k in MyDataBase.Record[recname].value.Keys) {
                 if (!addreturn) ret += "\t";
                 ret += $"\t[\"{k}\"] = ";
@@ -712,7 +713,7 @@ namespace MyData
             }
             if (addreturn) {
                 ret += "}\n\n";
-                ret += "return ret\n\n";
+                ret += $"return ret{retname}\n\n\nend";
             }
             return ret;
         }
@@ -720,7 +721,7 @@ namespace MyData
         public override string XBase() {
             var ret = $"{header}\ntable ret\nret = " + "{\n";
             foreach (string recID in MyDataBase.Record.Keys) {
-                ret += $"\t[\"{recID}\"] = " + "{" + $"{eol}{XRecord(recID)}{eol}\t" + "},\n"
+                ret += $"\t[\"{recID}\"] = " + "{" + $"{eol}{XRecord(recID)}{eol}\t" + "},\n";
             }
             ret += $"\n" + "}" + $"\n\nreturn ret\n\n";
             return ret;
