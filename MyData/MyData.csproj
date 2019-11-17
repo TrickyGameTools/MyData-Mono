@@ -64,6 +64,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\TrickyUnits\FileList.cs">
+      <Link>LinkedStuff\FileList.cs</Link>
+    </Compile>
     <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="MainWindow.cs" />
     <Compile Include="gtk-gui\MainWindow.cs" />
