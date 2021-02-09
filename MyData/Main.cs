@@ -1,29 +1,31 @@
 // Lic:
-// 	MyData for C#
-// 	Main Program
-// 	
-// 	
-// 	
-// 	(c) Jeroen P. Broks, 2018, All rights reserved
-// 	
-// 		This program is free software: you can redistribute it and/or modify
-// 		it under the terms of the GNU General Public License as published by
-// 		the Free Software Foundation, either version 3 of the License, or
-// 		(at your option) any later version.
-// 		
-// 		This program is distributed in the hope that it will be useful,
-// 		but WITHOUT ANY WARRANTY; without even the implied warranty of
-// 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// 		GNU General Public License for more details.
-// 		You should have received a copy of the GNU General Public License
-// 		along with this program.  If not, see <http://www.gnu.org/licenses/>.
-// 		
-// 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
-// 	to the project the exceptions are needed for.
-// Version: 18.12.02
+// My Data
+// Simplistic Database
+// 
+// 
+// 
+// (c) Jeroen P. Broks, 2018, 2021
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// 
+// Please note that some references to data like pictures or audio, do not automatically
+// fall under this licenses. Mostly this is noted in the respective files.
+// 
+// Version: 21.02.09
 // EndLic
 
-﻿using System;
+
+using System;
 using Gtk;
 using System.Reflection;
 using System.Collections.Generic;
@@ -80,8 +82,8 @@ namespace MyData
         public static string sc_rec;
 
         static MainClass(){
-            MKL.Version("MyData For C# - Program.cs","18.12.02");
-            MKL.Lic    ("MyData For C# - Program.cs","GNU General Public License 3");
+            MKL.Version("MyData For C# - Main.cs","21.02.09");
+            MKL.Lic    ("MyData For C# - Main.cs","GNU General Public License 3");
             new JCR6_WAD();
             new JCR6_lzma();
             var rd = new JCR6_RealDir(); rd.automerge = false;
@@ -303,6 +305,7 @@ namespace MyData
             rex("PYTHON", "py", new ExportPython());
             rex("PHP", "php", new ExportPHP());
             rex("GINI", "gini", new ExportGINI());
+            rex("NEIL", "neil", new ExportNeil());
         }
 
         public static void Main(string[] args) {

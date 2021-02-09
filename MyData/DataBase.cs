@@ -1,26 +1,27 @@
 // Lic:
-// 	MyData for C#
-// 	Database
-// 	
-// 	
-// 	
-// 	(c) Jeroen P. Broks, 2018, 2019, All rights reserved
-// 	
-// 		This program is free software: you can redistribute it and/or modify
-// 		it under the terms of the GNU General Public License as published by
-// 		the Free Software Foundation, either version 3 of the License, or
-// 		(at your option) any later version.
-// 		
-// 		This program is distributed in the hope that it will be useful,
-// 		but WITHOUT ANY WARRANTY; without even the implied warranty of
-// 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// 		GNU General Public License for more details.
-// 		You should have received a copy of the GNU General Public License
-// 		along with this program.  If not, see <http://www.gnu.org/licenses/>.
-// 		
-// 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
-// 	to the project the exceptions are needed for.
-// Version: 19.01.25
+// My Data
+// Simplistic Database
+// 
+// 
+// 
+// (c) Jeroen P. Broks, 2018, 2021
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// 
+// Please note that some references to data like pictures or audio, do not automatically
+// fall under this licenses. Mostly this is noted in the respective files.
+// 
+// Version: 21.02.09
 // EndLic
 
 using TrickyUnits;
@@ -298,7 +299,7 @@ namespace MyData
 
         static MyDataBase()
         {
-            MKL.Version("MyData For C# - DataBase.cs","19.01.25");
+            MKL.Version("MyData For C# - DataBase.cs","21.02.09");
             MKL.Lic    ("MyData For C# - DataBase.cs","GNU General Public License 3");
         }
 
@@ -749,7 +750,12 @@ namespace MyData
                         if (ok) Directory.CreateDirectory(recexport[drv]);
                     }
                 }
-                if (ok) { 
+                if (ok) {
+                    var classstring = MainClass.exportdrivers[drv].XClass(qstr.StripAll(recexport[drv]));
+                    if (classstring != "") {
+                        var clfile = $"{recexport[drv]}/MyData_ClassFile_{qstr.StripDir(recexport[drv])}.{MainClass.exportext[drv]}";
+                        QuickStream.SaveString(clfile, classstring);
+                    }
                     foreach(string recID in Record.Keys){
                         var expfile = qstr.SetSuffix($"{recexport[drv]}/{recID}",$".{MainClass.exportext[drv]}");
                         if (Record[recID].MODIFIED || (!File.Exists(expfile))) 
@@ -1010,7 +1016,3 @@ For L=EachIn LF
     Next
 
  */
-
-
-
-
