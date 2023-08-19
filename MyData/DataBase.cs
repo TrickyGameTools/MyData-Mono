@@ -4,7 +4,7 @@
 // 
 // 
 // 
-// (c) Jeroen P. Broks, 2018, 2021
+// (c) Jeroen P. Broks, 2018, 2021, 2023
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 // Please note that some references to data like pictures or audio, do not automatically
 // fall under this licenses. Mostly this is noted in the respective files.
 // 
-// Version: 21.02.09
+// Version: 23.08.19
 // EndLic
 
 using TrickyUnits;
@@ -299,7 +299,7 @@ namespace MyData
 
         static MyDataBase()
         {
-            MKL.Version("MyData For C# - DataBase.cs","21.02.09");
+            MKL.Version("MyData For C# - DataBase.cs","23.08.19");
             MKL.Lic    ("MyData For C# - DataBase.cs","GNU General Public License 3");
         }
 
@@ -605,7 +605,8 @@ namespace MyData
                                         {
                                             sf = System.IO.Path.GetDirectoryName(filename) + "/" + sf;
                                         }
-                                        var sdb = System.IO.File.ReadAllLines(sf);
+                                        try {
+                                            var sdb = System.IO.File.ReadAllLines(sf);
                                         var readrec = false;
                                         foreach (string l in sdb)
                                         {
@@ -618,6 +619,9 @@ namespace MyData
                                                 readrec = false;
                                             }
                                             if (l.Length >= 5 && l.Substring(0, 5) == "Rec: " && readrec) regmc(l.Substring(4, l.Length - 4).Trim()); //CurrentListStore.AppendValues(l.Substring(4, l.Length - 4));
+                                        }
+                                        } catch(Exception E) {
+                                            QuickGTK.Error($"ERROR while loading:\n\n {E.Message}\n\nExternal {sf}");
                                         }
                                         break;
                                     case "@noextfilter":

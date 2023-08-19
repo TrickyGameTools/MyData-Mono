@@ -4,7 +4,7 @@
 // 
 // 
 // 
-// (c) Jeroen P. Broks, 2018, 2021
+// (c) Jeroen P. Broks, 2018, 2021, 2023
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 // Please note that some references to data like pictures or audio, do not automatically
 // fall under this licenses. Mostly this is noted in the respective files.
 // 
-// Version: 21.02.09
+// Version: 23.08.19
 // EndLic
 
 
@@ -82,7 +82,7 @@ namespace MyData
         public static string sc_rec;
 
         static MainClass(){
-            MKL.Version("MyData For C# - Main.cs","21.02.09");
+            MKL.Version("MyData For C# - Main.cs","23.08.19");
             MKL.Lic    ("MyData For C# - Main.cs","GNU General Public License 3");
             new JCR6_WAD();
             new JCR6_lzma();
@@ -306,6 +306,7 @@ namespace MyData
             rex("PHP", "php", new ExportPHP());
             rex("GINI", "gini", new ExportGINI());
             rex("NEIL", "neil", new ExportNeil());
+            rex("GINIE", "ini", new ExportGINIESource());
         }
 
         public static void Main(string[] args) {
